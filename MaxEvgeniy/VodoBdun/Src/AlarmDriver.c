@@ -10,11 +10,11 @@ void AlarmDrive(void)
 {
 	if (AlarmActive == true)
 	{
-		
+		HAL_GPIO_WritePin(LightAlarm_GPIO_Port, LightAlarm_Pin, GPIO_PIN_SET);
 	}
 	else
 	{
-		
+		HAL_GPIO_WritePin(LightAlarm_GPIO_Port, LightAlarm_Pin, GPIO_PIN_RESET);
 	}
 	
 }
