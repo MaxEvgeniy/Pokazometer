@@ -137,7 +137,6 @@ int main(void)
 
   /* USER CODE END Init */
 
-  /* Configure the system clock */
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
@@ -526,7 +525,7 @@ void StartTaskAlarm(void *argument)
   /* Infinite loop */
   for(;;)
   {
-	  
+	AlarmDrive();
     osDelay(1);
   }
   /* USER CODE END StartTaskAlarm */
