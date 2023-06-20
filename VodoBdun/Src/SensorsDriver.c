@@ -14,7 +14,7 @@ void SensorDrive(void)
 		ADCComplete = false; // Сбрасываем флажок о регистрации полученных значений
 		HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&adc, 2); // Запуск расчета АЦП
 	} // Если АЦП выдал значение
-	if (adc < 4000)
+	if (adc < 3000)
 	{
 		AlarmActive = true; // Включить тревогу
 	}
