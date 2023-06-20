@@ -94,6 +94,7 @@
     <ClCompile Include="..\Middlewares\Third_Party\FreeRTOS\Source\tasks.c" />
     <ClCompile Include="..\Middlewares\Third_Party\FreeRTOS\Source\timers.c" />
     <ClCompile Include="..\Src\AlarmDriver.c" />
+    <ClCompile Include="..\Src\Buzzer.c" />
     <ClCompile Include="..\Src\freertos.c" />
     <ClCompile Include="..\Src\main.c" />
     <ClCompile Include="..\Src\SensorsDriver.c" />
@@ -112,6 +113,7 @@
     <Xml Include="MCU.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Inc\Buzzer.h" />
     <ClInclude Include="..\Inc\GlobalHeader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

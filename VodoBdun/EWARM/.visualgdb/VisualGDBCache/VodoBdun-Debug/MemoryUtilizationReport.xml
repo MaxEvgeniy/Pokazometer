@@ -3,12 +3,12 @@
   <Memories>
     <MemoryUtilization>
       <MemoryName>ROM</MemoryName>
-      <Used>19822</Used>
+      <Used>19922</Used>
       <Total>65535</Total>
     </MemoryUtilization>
     <MemoryUtilization>
       <MemoryName>RAM</MemoryName>
-      <Used>9660</Used>
+      <Used>9672</Used>
       <Total>20479</Total>
     </MemoryUtilization>
   </Memories>
