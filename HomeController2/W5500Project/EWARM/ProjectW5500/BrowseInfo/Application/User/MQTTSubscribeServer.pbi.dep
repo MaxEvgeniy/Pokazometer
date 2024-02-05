@@ -1,0 +1,18 @@
+D:\PDF\Prog\MyMQTTPoject\EWARM\ProjectW5500\BrowseInfo\Application\User\MQTTSubscribeServer.pbi: \
+  D:\PDF\Prog\MyMQTTPoject\MQTT\MQTTPacket\src\MQTTSubscribeServer.c \
+  D:\PDF\Prog\MyMQTTPoject\MQTT\MQTTPacket\src\MQTTPacket.h \
+  D:\PDF\Prog\MyMQTTPoject\MQTT\MQTTPacket\src\MQTTConnect.h \
+  D:\PDF\Prog\MyMQTTPoject\MQTT\MQTTPacket\src\MQTTPublish.h \
+  D:\PDF\Prog\MyMQTTPoject\MQTT\MQTTPacket\src\MQTTSubscribe.h \
+  D:\PDF\Prog\MyMQTTPoject\MQTT\MQTTPacket\src\MQTTUnsubscribe.h \
+  D:\PDF\Prog\MyMQTTPoject\MQTT\MQTTPacket\src\MQTTFormat.h \
+  D:\PDF\Prog\MyMQTTPoject\MQTT\MQTTPacket\src\StackTrace.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\stdio.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\ycheck.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\yvals.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\DLib_Defaults.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\DLib_Config_Full.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\DLib_Product.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\ysizet.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\string.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\DLib_Product_string.h

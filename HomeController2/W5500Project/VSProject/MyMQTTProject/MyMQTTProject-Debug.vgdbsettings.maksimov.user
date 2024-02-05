@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<VisualGDBUserPreferences xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <UserDefinedVariableValues />
+  <DebugPreferences xsi:type="com.visualgdb.debug.embedded.preferences">
+    <CatchpointConfiguration>
+      <Exec>false</Exec>
+      <Fork>false</Fork>
+      <Vfork>false</Vfork>
+      <Syscalls />
+      <CXXCatchpoints />
+    </CatchpointConfiguration>
+    <VisualWatchPreferences />
+    <MaskInterruptsWhileStepping>false</MaskInterruptsWhileStepping>
+    <MemoryWindowPreferences>
+      <MemoryWindowPreferences>
+        <SymbolicMode>true</SymbolicMode>
+        <TakeAddressMode>false</TakeAddressMode>
+        <Format>
+          <DataWidth>OneByte</DataWidth>
+          <DataFormat>Hexadecimal</DataFormat>
+          <TextFormat>ANSI</TextFormat>
+        </Format>
+        <LiveMemorySettings>
+          <Enabled>false</Enabled>
+          <BreakOnChanges>false</BreakOnChanges>
+          <AutoRefresh>false</AutoRefresh>
+          <RefreshTimeout>0</RefreshTimeout>
+        </LiveMemorySettings>
+        <ShowStatusBar>true</ShowStatusBar>
+        <DisplaySymbols>false</DisplaySymbols>
+      </MemoryWindowPreferences>
+    </MemoryWindowPreferences>
+    <b />
+    <c>
+      <a>
+        <a>com.sysprogs.AllGlobals</a>
+        <b>
+          <p5>
+            <g>InitializationMQTTDone</g>
+            <b>com.sysprogs.types.builtin.HexInt8</b>
+            <a>true</a>
+            <h>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </h>
+            <e>false</e>
+            <f>false</f>
+            <d>false</d>
+          </p5>
+          <p5>
+            <g>MessageFromQueue</g>
+            <a>true</a>
+            <h>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </h>
+            <e>false</e>
+            <f>false</f>
+            <d>false</d>
+          </p5>
+          <p5>
+            <g>MessageFromQueue.Address</g>
+            <b>com.sysprogs.fixed</b>
+            <a>true</a>
+            <h>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </h>
+            <e>false</e>
+            <f>false</f>
+            <d>false</d>
+          </p5>
+          <p5>
+            <g>PubMessage</g>
+            <a>true</a>
+            <h>
+              <ComparisonMode>Equals</ComparisonMode>
+              <Enabled>false</Enabled>
+            </h>
+            <e>false</e>
+            <f>false</f>
+            <d>false</d>
+          </p5>
+        </b>
+      </a>
+      <a>
+        <a>com.sysprogs.SpecificVariables</a>
+        <b />
+      </a>
+      <a>
+        <a>com.sysprogs.Custom</a>
+        <b />
+      </a>
+    </c>
+    <e>
+      <b>AllGlobals</b>
+      <a>false</a>
+    </e>
+    <Suggestions />
+    <HardwareRegisters />
+  </DebugPreferences>
+</VisualGDBUserPreferences>
