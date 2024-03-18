@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34601.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pokazometr", "Pokazometr.vcxproj", "{EEFF23EB-F7B9-4C5C-917A-1B81036AFCE7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|VisualGDB = Debug|VisualGDB
+		Release|VisualGDB = Release|VisualGDB
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EEFF23EB-F7B9-4C5C-917A-1B81036AFCE7}.Debug|VisualGDB.ActiveCfg = Debug|VisualGDB
+		{EEFF23EB-F7B9-4C5C-917A-1B81036AFCE7}.Debug|VisualGDB.Build.0 = Debug|VisualGDB
+		{EEFF23EB-F7B9-4C5C-917A-1B81036AFCE7}.Release|VisualGDB.ActiveCfg = Release|VisualGDB
+		{EEFF23EB-F7B9-4C5C-917A-1B81036AFCE7}.Release|VisualGDB.Build.0 = Release|VisualGDB
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AE85D635-F9AB-420E-AD84-2D952E218079}
+	EndGlobalSection
+EndGlobal
