@@ -1,0 +1,104 @@
+# ninja log v5
+1	268	7321235154518275	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Application/User/freertos.o	2b27ab685e0d5d1f
+4	295	7321235154707765	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Application/User/stm32f1xx_hal_timebase_tim.o	cd724a6c9bec706e
+7	351	7321235155326104	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Application/User/stm32f1xx_hal_msp.o	9e56b99286c98e1c
+363	525	7321235157141235	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/Fonts/Myriad_Pro_16.o	542184745c82aac0
+308	542	7321235157121279	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Application/User/stm32f1xx_it.o	485207489f729c36
+280	747	7321235159255543	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Application/User/main.o	8b86fc60c1eb0592
+538	773	7321235159455006	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Application/User/usb_device.o	cbc820cecf2d9f55
+555	840	7321235160232922	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Application/User/usbd_conf.o	e9077c8f4a66229b
+759	1007	7321235161888470	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Application/User/usbd_desc.o	c223aa58c58f3058
+786	1022	7321235161908420	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/CMSIS/system_stm32f1xx.o	d9e4ae873afb1851
+852	1096	7321235162806010	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_exti.o	76875882fdc0e989
+1034	1365	7321235165478819	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_flash.o	ba8dade167f6d39c
+1109	1394	7321235165558608	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_cortex.o	b7c1215fab299f23
+1019	1469	7321235166526013	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/MyDrivers/GLCD.o	3afcafda5ea69e3c
+1481	1508	7321235167014691	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/portasm.o	60d77733acba5826
+1513	1539	7321235167323862	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Application/EWARM/startup_stm32f103xg.o	160b0520704c3c9b
+1382	1624	7321235168081824	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal.o	e0242ddb0a357ff9
+1636	1819	7321235170036820	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_gpio_ex.o	158950a648810620
+1543	1856	7321235170355716	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Application/User/BME280.o	e39b2b247df29085
+1408	1875	7321235170365695	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_dma.o	a9d392abfcd2f706
+1889	2082	7321235172659768	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pcd_ex.o	ce405a86a98d205d
+1837	2174	7321235173577298	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_flash_ex.o	e91c1d36b39423ce
+2099	2364	7321235175452020	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_gpio.o	3ab30aec4e01c6d7
+2192	2623	7321235177995183	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pcd.o	7281bf3337010507
+2377	2640	7321235178045051	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rtc_ex.o	b357493c4f0dbdd6
+2636	2930	7321235181136742	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_sram.o	d3bc3e9f5e9e6542
+2652	3068	7321235182503075	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rtc.o	24fc4b2bc6fa19fe
+2948	3202	7321235183859428	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rcc_ex.o	c87968bc0376aa2
+3214	3453	7321235186372958	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pwr.o	e44780e8f6fdcdc8
+3081	3485	7321235186542215	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rcc.o	c9d8f1eee4f1ba03
+1871	3503	7321235186572133	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_i2c.o	3cffcd407ab90558
+3500	3947	7321235191289458	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_ll_usb.o	8aa6783bfe9ecd71
+3469	3972	7321235191369243	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_tim_ex.o	49e31580088bb3b2
+3515	4047	7321235192306722	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/cmsis_os2.o	55a9c0c8e2de82a1
+4061	4153	7321235193383832	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/croutine.o	1867e8a7c79817
+3960	4272	7321235194550938	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_ll_fsmc.o	ca929ea68f462da6
+4166	4387	7321235195687639	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/heap_4.o	29f1a5dc098f48c1
+4290	4417	7321235195787375	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/list.o	7f2e7ee109acc9ce
+4429	4555	7321235197413005	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/port.o	2f4a4cebfdd12cb7
+4402	4590	7321235197752092	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/event_groups.o	c23685938c8357f0
+4602	4938	7321235201212790	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Middlewares/USB_Device_Library/usbd_ctlreq.o	a5487492b61704a9
+4568	4997	7321235201811182	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/queue.o	6c267aa0d5f90692
+3984	5102	7321235202818481	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_tim.o	f6e49e941ba7cc79
+4953	5231	7321235204134936	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Middlewares/USB_Device_Library/usbd_hid.o	98ee9d68c9ed467b
+5010	5308	7321235204902875	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Middlewares/USB_Device_Library/usbd_core.o	7e57938bae319982
+5245	5500	7321235206857621	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/timers.o	32766f6e0c273cab
+5321	5591	7321235207765425	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/stream_buffer.o	9538d1ed2d1d8618
+5115	5722	7321235209051723	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/tasks.o	61f25dd2fe2976a6
+5514	5735	7321235209061700	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Obj/Middlewares/USB_Device_Library/usbd_ioreq.o	17c79c9fc47219fe
+5749	5942	7321235211196205	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Exe/Pokazometr.out	ae1c7005b2efac3b
+5993	6013	7321235212055877	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/Exe/Pokazometr.hex	5fa81fd582795bde
+13	157	7321998510585659	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/Fonts/Myriad_Pro_16.o	efd57e3120f1a011
+16	274	7321998511702666	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Application/User/stm32f1xx_it.o	4395f7e8bf641455
+9	298	7321998511852259	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Application/User/usbd_desc.o	e1717744f0429b49
+169	401	7321998512979236	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/CMSIS/system_stm32f1xx.o	90b88b4f477bb4aa
+283	510	7321998514056353	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Application/User/usb_device.o	b5ce08bdc2fe3223
+306	601	7321998514963911	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Application/User/usbd_conf.o	922c3881dd4f8933
+410	666	7321998515622147	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_exti.o	c478c162a87ac70
+609	883	7321998517786340	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_cortex.o	56273a7d77ddb3fc
+676	916	7321998518115460	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal.o	ed9de342c0ab0867
+522	978	7321998518733799	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/MyDrivers/GLCD.o	ef0a8fba25b79a2f
+986	1256	7321998521516573	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_gpio.o	b804f0eeed1f44f5
+925	1284	7321998521665928	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_flash.o	e2f5610364c4ceeb
+892	1335	7321998522304216	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_dma.o	f99b7718e307b714
+1296	1509	7321998524049543	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_gpio_ex.o	7a79188e4f15711a
+1343	1672	7321998525675175	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_flash_ex.o	5c968213f99a0348
+1681	1916	7321998528118619	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pwr.o	3230f34cf338617
+1518	2125	7321998530193058	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pcd.o	296960804838cfdc
+1925	2325	7321998532197671	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rcc.o	6fae856527b4559b
+2136	2384	7321998532806041	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rcc_ex.o	f8fcff61a2ac7971
+2393	2422	7321998533274786	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/portasm.o	399b81d19482ccd9
+2425	2446	7321998533514139	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Application/EWARM/startup_stm32f103xg.o	7d83a7468a61c26a
+2333	2557	7321998534531413	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pcd_ex.o	360bdc4b4b64c89c
+2449	2654	7321998535508789	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Application/User/freertos.o	3b17f98a1e4fc02c
+2565	2779	7321998536745474	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Application/User/stm32f1xx_hal_timebase_tim.o	8358b7f081e38101
+1268	3002	7321998538919638	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_i2c.o	dc0dc5cd59d0da3d
+2790	3049	7321998539448222	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Application/User/stm32f1xx_hal_msp.o	50386d97f1963316
+2663	3159	7321998540526878	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Application/User/main.o	13f5379e7ee64b80
+3011	3363	7321998542579812	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Application/User/BME280.o	5004560eb8894e95
+3167	3584	7321998544793876	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rtc.o	a21e44309e724b34
+3372	3630	7321998545242670	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rtc_ex.o	fef145893a3702f6
+3057	3736	7321998546299837	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_tim_ex.o	b5397fda581523ea
+3593	3917	7321998548124937	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_sram.o	f68cef74c8863954
+3745	4245	7321998551416107	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/cmsis_os2.o	6a5843c166ff9494
+3926	4485	7321998553789736	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_ll_usb.o	da117b7546909fd3
+4255	4541	7321998554358209	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_ll_fsmc.o	5454a1baf96938c6
+4493	4588	7321998554886797	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/croutine.o	9694b74dd27d4556
+4597	4772	7321998556711896	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/event_groups.o	be19b9ae21a70ad9
+4781	4922	7321998558197911	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/heap_4.o	6f06862d6e3ff4a9
+4931	5050	7321998559494433	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/port.o	fe6f1f4122cf98ee
+3639	5089	7321998559783660	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_tim.o	449df1fa009b12c2
+5059	5167	7321998560601472	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/list.o	53b98892691e309c
+4550	5344	7321998562346776	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_uart.o	352656df1570453c
+5176	5497	7321998563932521	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Middlewares/USB_Device_Library/usbd_core.o	d81e964f12fb8842
+5098	5551	7321998564471076	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/queue.o	f4918726b7e9dbf7
+5353	5620	7321998565169205	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/stream_buffer.o	6e43d78ab53c3859
+5629	5885	7321998567802142	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Middlewares/USB_Device_Library/usbd_hid.o	5efcf744c12c2794
+5560	5921	7321998568161184	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Middlewares/USB_Device_Library/usbd_ctlreq.o	8d59939eb0a25b53
+5894	6127	7321998570215667	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Middlewares/USB_Device_Library/usbd_ioreq.o	816c3e61c25d0c43
+5507	6147	7321998570305425	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/tasks.o	5cd1ca8c1ed19576
+5930	6166	7321998570634539	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Obj/Middlewares/FreeRTOS/timers.o	8ac1ff52a96e64
+6175	6483	7321998573721710	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Exe/Pokazometr.out	22b07517e4f10809
+6511	6538	7321998574429807	C:/MyProjects/Pokazometer/EWARM/Pokazometr/Exe/Pokazometr.hex	f943a182e73f4bdc

@@ -1,0 +1,269 @@
+# ninja log v5
+6	109	7321235130000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Application/User/main.xcl	a3f5c112016e301
+8	123	7321235130000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Application/User/stm32f1xx_it.xcl	582c83a9d1f58318
+2	137	7321235130000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Application/User/usb_device.xcl	fa540b1924635b29
+120	215	7321235130000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Application/User/stm32f1xx_hal_timebase_tim.xcl	575424abc282d14
+134	233	7321235130000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Application/User/stm32f1xx_hal_msp.xcl	11851db551c542e5
+148	247	7321235130000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Application/User/usbd_conf.xcl	e164f2096f9baca
+228	333	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal.xcl	bffcf5a87c683341
+244	361	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Application/User/usbd_desc.xcl	67970b1d3caa60bc
+258	375	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_cortex.xcl	e1cf9cc8acaf6e03
+347	464	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/Fonts/Myriad_Pro_16.xcl	c4a056729df1786c
+373	485	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/MyDrivers/GLCD.xcl	21a97c9908d5eff2
+389	499	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/CMSIS/system_stm32f1xx.xcl	4c4e75dc233e2b8e
+476	609	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_gpio.xcl	2448860cd105966a
+510	654	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_flash.xcl	be987c0eb53e78d2
+497	668	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_exti.xcl	a155028fe4af9868
+622	734	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_gpio_ex.xcl	1e7f12c9449466ec
+666	784	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_flash_ex.xcl	eadb2c38cc2d9c79
+679	807	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_dma.xcl	aad9e6108a2e747c
+747	848	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rcc.xcl	dbd57f60ccff59ba
+796	906	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pwr.xcl	d2cf72ac56d37b7f
+819	923	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rcc_ex.xcl	dd7dbee34af6e22c
+860	967	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_i2c.xcl	d9c2c286c248f6eb
+918	1021	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pcd.xcl	5264b0a9eb9728cf
+934	1035	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pcd_ex.xcl	563e253eaf4b37b4
+978	1082	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_ll_fsmc.xcl	65469550be6e6a7
+1032	1132	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rtc_ex.xcl	d33bc9fa0e1a0526
+1047	1147	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_sram.xcl	2c1d264808f25422
+1093	1189	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_tim.xcl	5e1d680e80d09d6d
+1144	1237	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rtc.xcl	d38add8b05e23c6e
+1158	1262	7321235140000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_tim_ex.xcl	43b719b2df1e925d
+1202	1300	7321235150000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/cmsis_os2.xcl	5f6e1efd1a85baf2
+1249	1348	7321235150000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/heap_4.xcl	665cbea57d970bc2
+1274	1376	7321235150000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/croutine.xcl	3ae8b181fa140117
+6	107	7321235210000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/event_groups.xcl	9c7494721fb7598c
+2	121	7321235210000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_ll_usb.xcl	38a944946beb6703
+8	135	7321235210000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/stream_buffer.xcl	cc2c23ea6511c009
+132	237	7321235210000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/tasks.xcl	e826568a518eba49
+118	251	7321235210000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/queue.xcl	94d9e1885502097e
+147	266	7321235210000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/list.xcl	187fd7abb4b63315
+248	350	7321235210000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/timers.xcl	4b477f28affafddc
+263	364	7321235210000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/port.xcl	8a8d78c7d3418882
+277	377	7321235210000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_ctlreq.xcl	5d4ed04529c199b8
+361	461	7321235210000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_hid.xcl	298e443f09a5f0e5
+388	483	7321235210000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_core.xcl	de4772052879c137
+473	567	7321235210000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_ioreq.xcl	f6f89b8baf49f65e
+495	588	7321235210000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Application/User/BME280.xcl	452103341bc55c6e
+578	664	7321235210000000	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Application/User/freertos.xcl	2be8dc6bd39cc3c2
+374	718	7321235220383218	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Application/User/main.pbi	c058095686c090c2
+599	861	7321235221809388	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Application/User/BME280.pbi	31ed8c6b017c9517
+675	934	7321235222537429	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Application/User/freertos.pbi	aa3d7cdc46dce79f
+721	1058	7321235223784080	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/CMSIS/system_stm32f1xx.pbi	5c098cf9e2f6c868
+865	1100	7321235224192979	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_cortex.pbi	26a692ec49d025ce
+937	1106	7321235224222907	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/Fonts/Myriad_Pro_16.pbi	779e13d12d2bc1b3
+1062	1433	7321235227531655	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Application/User/usbd_desc.pbi	34c5c8fe779b5352
+1104	1439	7321235227591500	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Application/User/stm32f1xx_hal_timebase_tim.pbi	e11abc271270c080
+1109	1459	7321235227790967	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Application/User/stm32f1xx_hal_msp.pbi	69e5eb284f06949a
+1436	1694	7321235230144630	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Application/User/usb_device.pbi	9530e58067808659
+1443	1700	7321235230164579	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Application/User/stm32f1xx_it.pbi	22626f250152f957
+1462	1836	7321235231560824	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Application/User/usbd_conf.pbi	7cc5be824ed556c
+1697	1892	7321235232119326	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/MyDrivers/GLCD.pbi	135f71939f6e3a34
+1703	1941	7321235232617983	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal.pbi	2da94cf150203760
+1839	2078	7321235233984312	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_exti.pbi	3f158b43537edef9
+1895	2146	7321235234652518	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_dma.pbi	59dacd113a002a84
+1944	2183	7321235235031497	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pwr.pbi	445d1889df9006f0
+2082	2318	7321235236387857	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pcd_ex.pbi	fab57e3ee007fd60
+2150	2385	7321235237046084	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_gpio.pbi	3e464e1834f136c5
+2186	2435	7321235237554718	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rcc.pbi	9c9df53699dc8d03
+2389	2624	7321235239439662	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_gpio_ex.pbi	5536b8d9b2eec5c0
+2322	2675	7321235239958259	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_flash.pbi	8bed392e7be41d38
+2439	2781	7321235241015421	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rcc_ex.pbi	602beec61c017cda
+2679	2928	7321235242481476	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rtc_ex.pbi	ea2d288d20ff2bb5
+2785	3033	7321235243528665	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_flash_ex.pbi	67230b8ff65d6d78
+2627	3053	7321235243728133	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_i2c.pbi	c908987c44219a0b
+2932	3184	7321235245044589	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pcd.pbi	b2c455570aaddd16
+3036	3290	7321235246091774	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rtc.pbi	8b265981548b246d
+3293	3352	7321235246720085	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/port.pbi	207f1e05ef290db
+3056	3400	7321235247199501	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_sram.pbi	7e4358c8ca1e4942
+3188	3646	7321235249073768	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_tim.pbi	9e4f3bd95aebb880
+3403	3791	7321235251117074	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/event_groups.pbi	f69315e105f57474
+3650	3806	7321235251256706	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/cmsis_os2.pbi	934d3621d1916d7e
+3355	3824	7321235251436217	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_ll_fsmc.pbi	c3a50bedd502f5a0
+3795	3857	7321235251765332	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/croutine.pbi	c379ddbde01279d8
+3828	3904	7321235252244039	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/stream_buffer.pbi	c1c197e7718f18cd
+3859	3961	7321235252812520	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/tasks.pbi	6f8e8a57dc49328
+3907	3981	7321235253011981	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/heap_4.pbi	c2857309d22c8afb
+3984	4076	7321235253959438	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/queue.pbi	950429b353bbe800
+3810	4088	7321235254079113	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_tim_ex.pbi	4c41f379cf4c9cbe
+10	73	7321235305278619	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/list.pbi	fbeeb01f8179b2e5
+5	85	7321235305408272	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/timers.pbi	2653754725eeba90
+8	275	7321235307293202	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_ll_usb.pbi	a42a6a0f8671288f
+76	345	7321235307991323	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_core.pbi	af585008ea92e41a
+279	351	7321235308021245	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Pokazometr_part5.pbi	9edf4301a708429f
+89	482	7321235309377599	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Pokazometr_part3.pbi	f025d4923ca3f01f
+360	630	7321235310853630	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_ctlreq.pbi	c6ba790b6e3c7a72
+490	749	7321235312040442	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_ioreq.pbi	71dd8a05410c5c2a
+349	763	7321235312180069	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Pokazometr_part0.pbi	edf9c228836f75c7
+635	956	7321235314124841	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Pokazometr_part1.pbi	4de7f72e5904c7f1
+754	1018	7321235314733207	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_hid.pbi	d7180f996e538287
+771	1165	7321235316189294	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Pokazometr_part2.pbi	877238168aaa2ae5
+1022	1278	7321235317336211	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Pokazometr_part6.pbi	65fa381cfc6eccae
+967	1285	7321235317386083	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Pokazometr_part4.pbi	14588cfbe7d278e0
+1293	1681	7321235321365384	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Pokazometr.pbd	13d335c4e0314872
+1687	3585	7321235339881488	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Pokazometr.pbw	eacf31f5e4eab59
+8	209	7321235998516360	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/tasks.pbi	6f8e8a57dc49328
+4	275	7321235999164378	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Application/User/BME280.pbi	31ed8c6b017c9517
+212	286	7321235999284062	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Pokazometr_part5.pbi	9edf4301a708429f
+279	695	7321236003383047	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Pokazometr_part0.pbi	edf9c228836f75c7
+702	1131	7321236007741582	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Pokazometr.pbd	13d335c4e0314872
+1138	3014	7321236026046694	D:/PDF/Prog/Pokazometr/Частотомер с дребезгом/EWARM/Pokazometr/BrowseInfo/Pokazometr.pbw	eacf31f5e4eab59
+215	320	7321244320000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_flash.xcl	3521399ff5948913
+205	332	7321244320000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/Fonts/Myriad_Pro_16.xcl	b270c29616d82dc1
+218	343	7321244320000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/usbd_conf.xcl	27242d4433f1db92
+328	438	7321244320000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/usbd_desc.xcl	c0679e4cd023cbef
+340	449	7321244320000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/usb_device.xcl	43220ce8997e9282
+352	460	7321244320000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/CMSIS/system_stm32f1xx.xcl	4a5b370d3c1f75d5
+447	546	7321244320000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_dma.xcl	1d96de6c05a7e26b
+458	564	7321244320000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/MyDrivers/GLCD.xcl	48396532bbddfadd
+468	575	7321244320000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal.xcl	3e25e33ed143b2b0
+554	673	7321244320000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_exti.xcl	6463280d145ffb3
+572	685	7321244320000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_cortex.xcl	c3ed2eec6b3830a2
+582	696	7321244320000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_i2c.xcl	ae6f4b17faa051dd
+682	788	7321244320000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pcd.xcl	bf8935c7a1d83b33
+693	799	7321244320000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_flash_ex.xcl	7cc150848499f76c
+704	810	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_gpio_ex.xcl	6fb0b72879c7c291
+797	899	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_gpio.xcl	cb17e3ef998a28a4
+808	910	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rtc_ex.xcl	7b60d7e596cf6a2a
+819	921	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rcc_ex.xcl	a3969e1de551cf52
+908	1007	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rcc.xcl	e01879bc599d3434
+918	1030	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pcd_ex.xcl	52112cb385ed77a6
+929	1041	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pwr.xcl	d3a7a74ba3b7eca5
+1016	1120	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rtc.xcl	b3c74dcfea4ddcd5
+1051	1149	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/cmsis_os2.xcl	945d600f51fb0a1a
+1038	1161	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_ll_usb.xcl	a2cd7661802692cf
+1129	1233	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_sram.xcl	873edfd56a679ba7
+1158	1266	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_tim.xcl	2db249012f9c0d5e
+1169	1277	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_tim_ex.xcl	6c65cc29a5010a44
+1244	1345	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_ll_fsmc.xcl	d66950d5b997b892
+1274	1379	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/event_groups.xcl	92124abff3a33e3e
+1285	1391	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/croutine.xcl	474d772458469f4b
+1353	1452	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/list.xcl	a568dccaf75f6e2f
+1388	1499	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/heap_4.xcl	77983d911fdcd3ff
+1399	1518	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/stream_buffer.xcl	f74c54de49444748
+1460	1586	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/queue.xcl	bd6040432498917f
+1526	1630	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/port.xcl	d1671242775a5447
+1594	1696	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/tasks.xcl	f1a5ac8cbe6bdf31
+1638	1736	7321244330000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/timers.xcl	7b677e7ad619a772
+1705	1805	7321244340000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_hid.xcl	270f9e27e9e95f64
+1507	1828	7321244340318592	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/usbd_conf.pbi	24759da7b7155e77
+1744	1837	7321244340000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_ioreq.xcl	7352d625375e4f89
+1813	1912	7321244340000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_ctlreq.xcl	7720ff0839bd3b05
+1831	1924	7321244340000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_core.xcl	a44f37650e5f5d0d
+1932	2193	7321244343965777	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/usbd_desc.pbi	400bf7e0ed9e5f62
+1846	2215	7321244344185188	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/usb_device.pbi	693c557640d75fc0
+1920	2267	7321244344713765	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_gpio.pbi	4deb378e6f7fb5e0
+2217	2272	7321244344753661	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/Fonts/Myriad_Pro_16.pbi	a9ab0cde841ac422
+2270	2462	7321244346658547	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/MyDrivers/GLCD.pbi	3fe61ae75cf8208b
+2274	2511	7321244347147233	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_exti.pbi	b271858d9d8ecb85
+2195	2558	7321244347605996	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_dma.pbi	811aea72847d66a8
+2465	2717	7321244349201710	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_flash.pbi	dd810f369ced623c
+2514	2759	7321244349620583	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_flash_ex.pbi	c2d683a3785afbd1
+2561	2795	7321244349979620	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/CMSIS/system_stm32f1xx.pbi	41371d0c2b3317a1
+2761	2996	7321244351984235	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal.pbi	e2db4308237a00c4
+2797	3031	7321244352343285	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_gpio_ex.pbi	35ae7bcccd0b3354
+2719	3069	7321244352722251	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_cortex.pbi	c9f16fdbaa7e878d
+3034	3125	7321244350000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/BME280.xcl	6aff64296c8852d2
+3072	3173	7321244350000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/freertos.xcl	fb4b9370e110d24b
+2999	3337	7321244355405045	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_i2c.pbi	4e5e7241de214c4
+3134	3421	7321244356242803	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/BME280.pbi	9d1a03d3609f1f01
+3340	3450	7321244350000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/stm32f1xx_hal_msp.xcl	52109c1e9467b920
+3181	3469	7321244356701567	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/freertos.pbi	f7248cb07b52e4b9
+3426	3528	7321244350000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/stm32f1xx_it.xcl	f64c20002714e6e0
+3472	3582	7321244350000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/stm32f1xx_hal_timebase_tim.xcl	c053211b5f1cc54d
+3461	3711	7321244359144998	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/stm32f1xx_hal_msp.pbi	745fb3dcb570e4a0
+3536	3804	7321244360082482	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/stm32f1xx_it.pbi	1a651719e1fa3cb9
+3713	3809	7321244360000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/main.xcl	de0417bb8b6d936d
+3590	3834	7321244360371703	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/stm32f1xx_hal_timebase_tim.pbi	6754b61fd6f17264
+3806	4049	7321244362525913	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rtc_ex.pbi	a92460a7143daddc
+3816	4147	7321244363503287	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/main.pbi	69b7feda3eca48bd
+3836	4194	7321244363972031	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pwr.pbi	cf4e0ce975a57539
+4053	4424	7321244366275836	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rtc.pbi	d75192d3703cb190
+4198	4448	7321244366515196	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_sram.pbi	d899ef4f11fd8123
+4150	4558	7321244367612248	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_tim.pbi	3870663c7148b35d
+4426	4676	7321244368799059	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_tim_ex.pbi	e34b1c5cdeeb1ff8
+4450	4690	7321244368938686	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_ll_fsmc.pbi	d2b2c04d6b719db6
+4560	4811	7321244370145442	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rcc.pbi	f87cba164d5a3503
+4680	4919	7321244371232520	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pcd_ex.pbi	dfa880fc7229b452
+4693	5047	7321244372509090	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pcd.pbi	b5b21ee9f9ac27d0
+4813	5053	7321244372558957	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rcc_ex.pbi	66e5c83ee388a0d1
+5055	5135	7321244373386731	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/timers.pbi	35160a2fdf44e5e4
+5050	5152	7321244373556280	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/cmsis_os2.pbi	1e20f99b293c530a
+4922	5193	7321244373955206	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_ll_usb.pbi	611e95bab28323fe
+5154	5225	7321244374284323	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/heap_4.pbi	96bde8e5e9bef714
+5137	5231	7321244374354140	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/queue.pbi	c66450252f325ec1
+5195	5268	7321244374713168	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/event_groups.pbi	7b66fbc42b51ddf9
+5234	5326	7321244375301591	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/tasks.pbi	87059adf4d52309e
+5329	5389	7321244375924467	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/croutine.pbi	a1c82e0219bf17f3
+5227	5395	7321244375934445	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/port.pbi	20fce74df583cfd1
+5270	5439	7321244376433103	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/list.pbi	3f7c69cc4d844d1c
+5393	5472	7321244376762221	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/stream_buffer.pbi	1b4da1745af9d7d4
+5475	5544	7321244377480290	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Pokazometr_part5.pbi	e53fc48adbbf0f1
+5397	5672	7321244378756857	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_ctlreq.pbi	bd2ff1b64583212
+5442	5711	7321244379135845	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_core.pbi	d340a285d134a5cb
+5549	5806	7321244380093562	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_ioreq.pbi	8a2939bfc4efb287
+5674	5994	7321244381988185	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Pokazometr_part4.pbi	61fa0c8f65761945
+5713	6094	7321244382975530	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_hid.pbi	ae1fad4de8aec23d
+5810	6141	7321244383454234	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Pokazometr_part1.pbi	5c6a9c54b95446f5
+6096	6352	7321244385558587	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Pokazometr_part6.pbi	7c607030acee3fbc
+5999	6391	7321244385957761	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Pokazometr_part2.pbi	7cad24c5f0062422
+6147	6547	7321244387513571	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Pokazometr_part0.pbi	240f20a2ef336184
+6358	6722	7321244389268624	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Pokazometr_part3.pbi	159fe0bd71d1ac74
+6728	7117	7321244393218250	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Pokazometr.pbd	b270978dfdae87e7
+7122	8862	7321244410218623	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Pokazometr.pbw	ed7ecb51e010e521
+230	353	7321998570000000	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_uart.xcl	6ae6d8ba8dd9e6c9
+256	676	7321998582924336	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_gpio_ex.pbi	35ae7bcccd0b3354
+362	699	7321998583143749	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/freertos.pbi	f7248cb07b52e4b9
+277	783	7321998583991475	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/main.pbi	69b7feda3eca48bd
+680	1000	7321998586165639	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/BME280.pbi	9d1a03d3609f1f01
+786	1076	7321998586923609	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/stm32f1xx_hal_timebase_tim.pbi	6754b61fd6f17264
+701	1097	7321998587143023	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/stm32f1xx_hal_msp.pbi	745fb3dcb570e4a0
+1002	1284	7321998589008018	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/stm32f1xx_it.pbi	1a651719e1fa3cb9
+1078	1392	7321998590085124	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/usb_device.pbi	693c557640d75fc0
+1100	1500	7321998591162232	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_cortex.pbi	c9f16fdbaa7e878d
+1286	1599	7321998592149586	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/usbd_desc.pbi	400bf7e0ed9e5f62
+1395	1693	7321998593097293	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_dma.pbi	811aea72847d66a8
+1503	1898	7321998595151533	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_flash.pbi	dd810f369ced623c
+1601	2010	7321998596268531	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_flash_ex.pbi	c2d683a3785afbd1
+1697	2100	7321998597166126	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_exti.pbi	b271858d9d8ecb85
+1901	2189	7321998598053745	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal.pbi	e2db4308237a00c4
+2013	2299	7321998599150800	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/CMSIS/system_stm32f1xx.pbi	41371d0c2b3317a1
+2102	2431	7321998600477240	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Application/User/usbd_conf.pbi	24759da7b7155e77
+2191	2481	7321998600975903	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_gpio.pbi	4deb378e6f7fb5e0
+2302	2599	7321998602152748	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_sram.pbi	d899ef4f11fd8123
+2433	2733	7321998603489158	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rtc_ex.pbi	a92460a7143daddc
+2485	2861	7321998604775705	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_tim.pbi	3870663c7148b35d
+2601	2891	7321998605074908	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pwr.pbi	cf4e0ce975a57539
+2736	3054	7321998606710521	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_uart.pbi	fb50d7eaeda4fe94
+2864	3148	7321998607638280	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rcc_ex.pbi	66e5c83ee388a0d1
+2894	3181	7321998607977122	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_ll_fsmc.pbi	d2b2c04d6b719db6
+3057	3439	7321998610560462	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pcd_ex.pbi	dfa880fc7229b452
+3152	3471	7321998610869359	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_tim_ex.pbi	e34b1c5cdeeb1ff8
+3184	3495	7321998611018962	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rcc.pbi	f87cba164d5a3503
+3443	3771	7321998613871302	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pcd.pbi	b5b21ee9f9ac27d0
+3474	3788	7321998614040849	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rtc.pbi	d75192d3703cb190
+3498	3878	7321998614948410	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_i2c.pbi	4e5e7241de214c4
+3881	3950	7321998615656513	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/list.pbi	3f7c69cc4d844d1c
+3790	3974	7321998615906121	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/heap_4.pbi	96bde8e5e9bef714
+3775	3985	7321998616015550	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/tasks.pbi	87059adf4d52309e
+3952	4030	7321998616465020	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/event_groups.pbi	7b66fbc42b51ddf9
+3989	4056	7321998616723899	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/port.pbi	20fce74df583cfd1
+3976	4072	7321998616893443	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/queue.pbi	c66450252f325ec1
+4033	4099	7321998617152757	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/croutine.pbi	a1c82e0219bf17f3
+4074	4152	7321998617691051	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/stream_buffer.pbi	1b4da1745af9d7d4
+4101	4316	7321998619316692	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/cmsis_os2.pbi	1e20f99b293c530a
+4155	4478	7321998620942329	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_core.pbi	d340a285d134a5cb
+4058	4507	7321998621042067	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_ll_usb.pbi	611e95bab28323fe
+4318	4521	7321998621371179	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/FreeRTOS/timers.pbi	35160a2fdf44e5e4
+9	323	7321998675815766	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_ctlreq.pbi	bd2ff1b64583212
+5	439	7321998676992608	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Pokazometr_part1.pbi	5c6a9c54b95446f5
+12	510	7321998677690735	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Pokazometr_part2.pbi	7cad24c5f0062422
+326	806	7321998680653053	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Pokazometr_part3.pbi	159fe0bd71d1ac74
+445	868	7321998681261406	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_ioreq.pbi	8a2939bfc4efb287
+516	985	7321998682438254	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Pokazometr_part4.pbi	245f764dbecbcea6
+990	1048	7321998683076766	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Pokazometr_part5.pbi	a97bbdf6f22635d0
+812	1130	7321998683884121	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Middlewares/USB_Device_Library/usbd_hid.pbi	ae1fad4de8aec23d
+871	1383	7321998686417322	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Pokazometr_part0.pbi	240f20a2ef336184
+1133	1459	7321998687185260	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Pokazometr_part6.pbi	92918f5e117df39d
+1465	1959	7321998692182096	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Pokazometr.pbd	b270978dfdae87e7
+1964	4818	7321998719986024	C:/MyProjects/Pokazometer/EWARM/Pokazometr/BrowseInfo/Pokazometr.pbw	ed7ecb51e010e521
