@@ -484,6 +484,9 @@ void StartMainTask(void *argument)
 			sprintf(MyMQTTAddress, "homebridge/from/TestClient\n"); // Переводим строку в массив символов
 			MQTTMessageQueueEdd(); // Ставим сообщение в очередь
 			osDelay(1000);
+			
+			
+				
 		}
 ////////////////////////////////////////////////////////////////////////////////////////////
 		osDelay(1);

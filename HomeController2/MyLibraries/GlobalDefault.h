@@ -10,6 +10,8 @@
 #define MQTT_MESSAGE_LENGTH	20
 #define MQTT_ADDRESS_LENGTH	50
 
+#define THERMOSENSORS_COUNT_MAX	10 // Максимальное количество дачикой DS18B20 подключаемое к шине
+
 typedef struct {
 	uint32_t NumOfMess;
 	uint8_t Length;
@@ -25,5 +27,6 @@ void Callback_IPAssigned(void); // Отклик при назначении ад
 void Callback_IPConflict(void); // Отклик при ошибке совпадения адресов
 void W5500Init(void); // Инициализация элемента связи
 void Initialization(void); // Инициализация
+void ErrorsReserch(void); // Обработка ошибок
 
 #endif

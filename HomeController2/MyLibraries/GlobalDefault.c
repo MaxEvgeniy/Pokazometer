@@ -5,6 +5,11 @@
 #include "dns.h"
 #include "MQTTClient.h"
 #include <stdbool.h>
+#include <cmsis_os2.h>
+
+#ifdef ThermoSensors
+#include "DS18B20.h"
+#endif // ThermoSensors
 
 extern SPI_HandleTypeDef hspi2;
 uint8_t rx_tx_buff_sizes[] = { 2, 2, 2, 2, 2, 2, 2, 2 };
@@ -17,6 +22,11 @@ uint8_t W5500InitFlag = 0b01111111; // Флажок прохождения оп�
 bool InitializationDone = false;
 uint8_t PubMessagePos = 0; // 
 MQTTMessage *PubMessageIndex[20]; // Массив указателей на сообщения
+
+#ifdef ThermoSensors
+//DS18B20 temperatureSensor[THERMOSENSORS_COUNT_MAX];
+extern UART_HandleTypeDef huart1;
+#endif // ThermoSensors
 
 void W5500_Select(void)
 {
@@ -72,7 +82,19 @@ void W5500Init(void)
 	reg_dhcp_cbfunc(Callback_IPAssigned, Callback_IPAssigned, Callback_IPConflict); // Registering DHCP callbacks...
 	W5500InitFlag = W5500InitFlag & 0b10111111; // Стираем бит (флажок) ошибки выполнения операции
 }
+void ErrorsReserch(void)
+{
+	osDelay(10);
+}
 void Initialization(void)
 {
-	W5500Init();
+	//W5500Init();
+	
+#ifdef ThermoSensors
+	//DS18B20Init();
+	get_ROMid();
+#endif // ThermoSensors
+
+	osDelay(100);
 }
+

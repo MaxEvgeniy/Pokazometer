@@ -51,3 +51,4 @@ VisualGDB/Debug/_3_/MyLibraries/GlobalDefault.o: C:\MyProjects\HomeController2\M
 VisualGDB/Debug/_3_/MyLibraries/GlobalDefault.o: C:\MyProjects\HomeController2\MyLibraries\MQTT\MQTTPacket\src\StackTrace.h
 VisualGDB/Debug/_3_/MyLibraries/GlobalDefault.o: C:\MyProjects\HomeController2\MyLibraries\MQTT\mqtt_interface.h
 VisualGDB/Debug/_3_/MyLibraries/GlobalDefault.o: C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\stdbool.h
+VisualGDB/Debug/_3_/MyLibraries/GlobalDefault.o: C:\MyProjects\HomeController2\W5500Project\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS_V2\cmsis_os2.h
