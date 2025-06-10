@@ -1,0 +1,166 @@
+﻿# --- Основной цикл ---
+for filename in os.listdir(folder_path):
+    if filename.lower().endswith(".pdf"):
+        file_path = os.path.join(folder_path, filename)
+
+        try:
+            doc_pdf = fitz.open(file_path)
+            page = doc_pdf.load_page(0)
+
+            # Определение формата листа
+            page_size = page.rect
+            width, height = page_size.width, page_size.height
+            is_large_sheet = width > 800 or height > 1000
+            regions = rects_A3 if is_large_sheet else rects_A4
+
+            print(f"[INFO] Формат листа: {'A3' if is_large_sheet else 'A4'}")
+
+            # Извлечение данных из регионов
+            try:
+                ОбозначениеДетали = extract_text_from_rect(page, regions[0])
+                НаименованиеДетали = extract_text_from_rect(page, regions[1])
+                МатериалДетали = extract_text_from_rect(page, regions[2])
+                РазработалДеталь = extract_text_from_rect(page, regions[3])
+                ДатаЧертежа = extract_text_from_rect(page, regions[4])
+            except Exception as e:
+                print(f"[!] Ошибка извлечения данных: {e}")
+                continue
+
+            doc_pdf.saveIncr()
+            doc_pdf.close()
+
+            # Нормализация строк
+            ОбозначениеДетали = normalize_dashes_and_spaces(ОбозначениеДетали)
+            НаименованиеДетали = clean_filename(НаименованиеДетали)
+            МатериалДетали = clean_filename(МатериалДетали)
+            РазработалДеталь = clean_filename(РазработалДеталь)
+            ДатаЧертежа = clean_filename(ДатаЧертежа)
+
+            print(f"[DEBUG] {filename}:")
+            print(f"Обозначение: {ОбозначениеДетали}")
+            print(f"Наименование: {НаименованиеДетали}")
+            print(f"Материал: {МатериалДетали}")
+            print(f"Разработал: {РазработалДеталь}")
+            print(f"Дата: {ДатаЧертежа}")
+
+            # 🖼 Показываем GUI
+            root = tk.Tk()
+            app = App(root, file_path, ОбозначениеДетали, НаименованиеДетали, МатериалДетали, РазработалДеталь, ДатаЧертежа)
+
+            try:
+                root.mainloop()
+            except Exception as e:
+                print(f"[!] Ошибка GUI: {e}")
+                continue
+
+            # Получаем результаты после закрытия окна
+            тип_заготовки = app.выбранный_тип
+            операции = app.выбранные_операции
+
+            print(f"[OK] Выбрано: {тип_заготовки}, Операции: {', '.join(операции)}")
+
+            # 📄 Создание .docx
+            template_docx_path = os.path.join(folder_path, "template.docx")
+            if not os.path.exists(template_docx_path):
+                print(f"[!] Шаблон '{template_docx_path}' не найден → пропуск файла")
+                continue
+
+            base_name = os.path.splitext(filename)[0]
+            docx_file = os.path.join(folder_path, f"{base_name}.docx")
+
+            try:
+                document = Document(template_docx_path)
+
+                # Замена базовых полей
+                replace_all(document, "#ОбозначениеДетали", ОбозначениеДетали)
+                replace_all(document, "#НаименованиеДетали", НаименованиеДетали)
+                replace_all(document, "#МатериалДетали", МатериалДетали)
+                replace_all(document, "#РазработалДеталь", РазработалДеталь)
+                replace_all(document, "#ДатаЧертежа", ДатаЧертежа)
+                replace_all(document, "#ТипЗаготовки", тип_заготовки)
+
+                # Первый лист — получение материала
+                replace_all(document, "#ОписаниеТехноОперации1",
+                            "Получение материала со склада в соответствии с сменным заданием и чертежом.")
+
+                # Последующие листы — операции
+                for idx, op in enumerate(операции, start=2):
+                    desc = app.operation_descriptions.get(op, f"Описание операции для {op} отсутствует.")
+                    replace_all(document, f"#ОписаниеТехноОперации{idx}", desc)
+
+                # Удаляем пустые страницы
+                document = remove_empty_pages(document)
+
+                # Сохраняем документ
+                document.save(docx_file)
+                print(f"[OK] Сохранён файл: {docx_file}")
+
+            except Exception as e:
+                print(f"[Ошибка при работе с Word]: {e}")
+                continue
+
+        except Exception as e:
+            print(f"[Ошибка] Не удалось обработать '{filename}': {e}")
+            try:
+                doc_pdf.close()
+            except:
+                pass
+            continue
+-------------------------------------------------------------------
+
+                # ❗ Убрали удаление всех хэшей, чтобы не сломать шаблон
+                # Это закомментировано:
+                # pattern = re.compile(r'#\S+')
+                # for para in document.paragraphs:
+                #     para.text = pattern.sub('', para.text).strip()
+                # for table in document.tables:
+                #     for row in table.rows:
+                #         for cell in row.cells:
+                #             for para in cell.paragraphs:
+                #                 para.text = pattern.sub('', para.text).strip()
+
+                # Сохранение документа
+                document.save(docx_file)
+                print(f"[OK] Сохранён файл: {docx_file}")
+
+            except Exception as e:
+                print(f"[Ошибка при работе с Word]: {e}")
+                continue
+
+        except Exception as e:
+            print(f"[Ошибка] Не удалось обработать '{filename}': {e}")
+            try:
+                doc_pdf.close()
+            except:
+                pass
+            continue
+            -------------------------------------------------------------------------------------
+
+
+
+
+                except Exception as e:
+                    print(f"[Ошибка при работе с Word]: {e}")
+                    continue
+
+            except Exception as e:
+                print(f"[Ошибка] Не удалось обработать '{filename}': {e}")
+                try:
+                    doc_pdf.close()
+                except:
+                    pass
+                continue
+----------------------------------------------------------------------------------------------------
+# Регионы A4
+rects_A4 = [
+    fitz.Rect(245, 676, 576, 709),   # Обозначение детали
+    fitz.Rect(245, 720, 434, 750),   # Наименование детали
+    fitz.Rect(245, 788, 434, 825),   # Материал детали
+    fitz.Rect(105, 744, 170, 757),   # Разработал
+    fitz.Rect(212, 744, 240, 757)     # Дата чертежа
+]
+
+# Смещения для A3
+offset_x = 585
+offset_y = 1
+rects_A3 = [fitz.Rect(r.x0 + offset_x, r.y0 + offset_y, r.x1 + offset_x, r.y1 + offset_y) for r in rects_A4]
