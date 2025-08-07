@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|VisualGDB">
+      <Configuration>Debug</Configuration>
+      <Platform>VisualGDB</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|VisualGDB">
+      <Configuration>Release</Configuration>
+      <Platform>VisualGDB</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{EC55C98C-1DAF-4B44-B247-2C73BDFCA495}</ProjectGuid>
+    <BSP_ID>IAR:arm/ST</BSP_ID>
+    <BSP_VERSION>9.0</BSP_VERSION>
+    <InPlaceBSPSubdir />
+    <RelativeBSPPath />
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|VisualGDB'">
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
+    <GNUConfigurationType>Debug</GNUConfigurationType>
+    <ToolchainID>com.sysprogs.toolchains.nongnu.iar.arm</ToolchainID>
+    <ToolchainVersion>8.x//r1</ToolchainVersion>
+    <MCUPropertyListFile>$(ProjectDir)mcu.props</MCUPropertyListFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|VisualGDB'">
+    <ToolchainID>com.sysprogs.toolchains.nongnu.iar.arm</ToolchainID>
+    <ToolchainVersion>8.x//r1</ToolchainVersion>
+    <MCUPropertyListFile>$(ProjectDir)mcu.props</MCUPropertyListFile>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files\IAR Systems\Embedded Workbench 9.0/arm/inc/c/aarch32;../../../w5500;../../../w5500/MQTT;../../..;../../../ds18b20;..\..\Inc;..\..\Drivers\STM32F1xx_HAL_Driver\Inc\Legacy;..\..\Drivers\STM32F1xx_HAL_Driver\Inc;..\..\Middlewares\Third_Party\FreeRTOS\Source\include;..\..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS_V2;..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\IAR\ARM_CM3;..\..\Drivers\CMSIS\Device\ST\STM32F1xx\Include;..\..\Drivers\CMSIS\Include;../../../MyLibraries/DHCP;../../../MyLibraries/DNS;../../../MyLibraries/MQTT;../../../MyLibraries;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>EmptyBoard;USE_HAL_DRIVER;STM32F103xB;MQTTFreeRTOS_H;%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions />
+    </ClCompile>
+    <Link>
+      <AdditionalLinkerInputs>;%(Link.AdditionalLinkerInputs)</AdditionalLinkerInputs>
+      <LinkerScript>../../EWARM/stm32f103xb_flash.icf</LinkerScript>
+      <AdditionalOptions />
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|VisualGDB'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\Inc;..\..\Drivers\STM32F1xx_HAL_Driver\Inc\Legacy;..\..\Drivers\STM32F1xx_HAL_Driver\Inc;..\..\Middlewares\Third_Party\FreeRTOS\Source\include;..\..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS_V2;..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\IAR\ARM_CM3;..\..\Drivers\CMSIS\Device\ST\STM32F1xx\Include;..\..\Drivers\CMSIS\Include;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG=1;RELEASE=1;USE_HAL_DRIVER;STM32F103xB;;%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions />
+    </ClCompile>
+    <Link>
+      <AdditionalLinkerInputs>%(Link.AdditionalLinkerInputs)</AdditionalLinkerInputs>
+      <LinkerScript>C:\MyProjects\HomeController\EmptyProject\EWARM/stm32f103xb_flash.icf</LinkerScript>
+      <AdditionalOptions />
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\BasicTasks.h" />
+    <ClInclude Include="..\..\..\Devices.h" />
+    <ClInclude Include="..\..\..\w5500\Commands.h" />
+    <ClInclude Include="..\..\..\w5500\cpu.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\misc.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\MQTT\MQTTClient.h" />
+    <ClInclude Include="..\..\..\w5500\MQTT\MQTTConnect.h" />
+    <ClInclude Include="..\..\..\w5500\MQTT\MQTTFormat.h" />
+    <ClInclude Include="..\..\..\w5500\MQTT\MQTTFreeRTOS.h" />
+    <ClInclude Include="..\..\..\w5500\MQTT\MQTTPacket.h" />
+    <ClInclude Include="..\..\..\w5500\MQTT\MQTTPublish.h" />
+    <ClInclude Include="..\..\..\w5500\MQTT\MQTTSubscribe.h" />
+    <ClInclude Include="..\..\..\w5500\MQTT\MQTTUnsubscribe.h" />
+    <ClInclude Include="..\..\..\w5500\socket.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\StackTrace.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\w5500.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\w5500_driver.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\wizchip_conf.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|VisualGDB'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClCompile Include="..\..\..\MyLibraries\DHCP\dhcp.c" />
+    <ClCompile Include="..\..\..\MyLibraries\DNS\dns.c" />
+    <ClCompile Include="..\..\..\MyLibraries\GlobalDefault.c" />
+    <ClCompile Include="..\..\..\MyLibraries\MQTTDrive.c" />
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTClient.c" />
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTConnectClient.c" />
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTConnectServer.c" />
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTDeserializePublish.c" />
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTFormat.c" />
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTPacket.c" />
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTSerializePublish.c" />
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTSubscribeClient.c" />
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTSubscribeServer.c" />
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTUnsubscribeClient.c" />
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTUnsubscribeServer.c" />
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\mqtt_interface.c" />
+    <ClCompile Include="..\..\..\MyLibraries\W5500\socket.c" />
+    <ClCompile Include="..\..\..\MyLibraries\W5500\w5500.c" />
+    <ClCompile Include="..\..\..\MyLibraries\W5500\wizchip_conf.c" />
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_spi.c" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\BasicTasks.c" />
+    <ClCompile Include="..\..\..\Devices.c" />
+    <ClCompile Include="..\..\Src\main.c" />
+    <ClCompile Include="..\..\Src\freertos.c" />
+    <ClCompile Include="..\..\Src\stm32f1xx_it.c" />
+    <ClCompile Include="..\..\Src\stm32f1xx_hal_msp.c" />
+    <ClCompile Include="..\..\Src\stm32f1xx_hal_timebase_tim.c" />
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_gpio_ex.c" />
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal.c" />
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_rcc.c" />
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_rcc_ex.c" />
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_gpio.c" />
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_dma.c" />
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_cortex.c" />
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_pwr.c" />
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_flash.c" />
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_flash_ex.c" />
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_exti.c" />
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_tim.c" />
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_tim_ex.c" />
+    <ClCompile Include="..\..\Src\system_stm32f1xx.c" />
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\croutine.c" />
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\event_groups.c" />
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\list.c" />
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\queue.c" />
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\stream_buffer.c" />
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\tasks.c" />
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\timers.c" />
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS_V2\cmsis_os2.c" />
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\MemMang\heap_4.c" />
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\IAR\ARM_CM3\port.c" />
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\IAR\ARM_CM3\portasm.S" />
+    <None Include="mcu.props" />
+    <None Include="EmptyProject-Debug.vgdbsettings" />
+    <None Include="EmptyProject-Release.vgdbsettings" />
+    <None Include="MCU.xml" />
+  </ItemGroup>
+</Project>

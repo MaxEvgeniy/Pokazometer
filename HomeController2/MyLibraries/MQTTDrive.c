@@ -9,6 +9,9 @@
 #include "dns.h"
 #include "socket.h"
 #include "MQTTClient.h"
+////////////////////////////////////////////////////////////////////////////////////
+#include "mqtt_interface.h"
+////////////////////////////////////////////////////////////////////////////////////
 
 #define BUFFER_SIZE	2048
 
@@ -100,10 +103,10 @@ void MQTTInit(void)
 		data.cleansession = 1;
 		InitializationMQTTDone = InitializationMQTTDone & 0b11111011;
 		
-		if (MQTTConnect(&c, &data) == SUCCESSS)
+		if (MQTTConnect(&c, &data) == MQTTSUCCESS)
 		{
 			InitializationMQTTDone = InitializationMQTTDone & 0b11110111;
-			if (MQTTSubscribe(&c, SubString, QOS0, messageArrived) == SUCCESSS)
+			if (MQTTSubscribe(&c, SubString, QOS0, messageArrived) == MQTTSUCCESS)
 			{
 				InitializationMQTTDone = InitializationMQTTDone & 0b11101111;
 			}
@@ -148,7 +151,7 @@ void MQTTDriver(void)
 			}
 			else
 			{
-				if (MQTTYield(&c, 1000) == SUCCESSS)
+				if (MQTTYield(&c, 1000) == MQTTSUCCESS)
 				{
 					// Приём топиков и поддержание соединения с брокером
 					msTick_Handler();

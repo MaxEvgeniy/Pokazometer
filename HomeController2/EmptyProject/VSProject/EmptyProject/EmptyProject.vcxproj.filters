@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source files">
+      <UniqueIdentifier>{da872a4d-3be7-44ff-98fe-6dce7a8fcf4b}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header files">
+      <UniqueIdentifier>{856b0d2c-20d8-4540-8958-82cbeecfe870}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource files">
+      <UniqueIdentifier>{30d4c10e-c82e-4a3a-9148-9dc42df7e8f3}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Source files\Application">
+      <UniqueIdentifier>{1fa4e4a4-a653-4f67-ba30-cbb00cb4edc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Application\EWARM">
+      <UniqueIdentifier>{854dbd32-6652-472a-8bef-2a3f30343ca8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Application\User">
+      <UniqueIdentifier>{a31f6b94-a708-455a-9a42-415d6955f33d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Drivers">
+      <UniqueIdentifier>{a5457ce1-6d11-46bb-a3df-79146b48c539}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Drivers\STM32F1xx_HAL_Driver">
+      <UniqueIdentifier>{5a500c9c-c5bd-435e-ab44-595602b1211b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Drivers\CMSIS">
+      <UniqueIdentifier>{efe0a237-1503-4e44-81a2-92f6d2431ac8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Middlewares">
+      <UniqueIdentifier>{0f233d03-63dd-494d-b8df-ff6385b40857}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Middlewares\FreeRTOS">
+      <UniqueIdentifier>{a98de805-5e75-49a0-a410-33cb608e8742}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Device-specific files">
+      <UniqueIdentifier>{74a73655-a336-4f62-b7af-cb96cfe913ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Application">
+      <UniqueIdentifier>{ecc83bd6-e7e3-4c21-b855-3986c0d53d00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Application\EWARM">
+      <UniqueIdentifier>{2d7dc9b4-70ee-42f0-8c94-dfdd293be2c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Application\User">
+      <UniqueIdentifier>{79245595-6add-4c00-b981-a7eb9628f978}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Drivers">
+      <UniqueIdentifier>{876c6d49-8f11-4d4d-8316-2de709751447}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Drivers\STM32F1xx_HAL_Driver">
+      <UniqueIdentifier>{e44bd8b5-19e6-470a-9b65-522a5439b723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Drivers\CMSIS">
+      <UniqueIdentifier>{0178c1aa-e4f0-4bc6-93e5-66f6f5366e93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Middlewares">
+      <UniqueIdentifier>{a20deb61-58aa-4567-a0e3-b669af073faa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Middlewares\FreeRTOS">
+      <UniqueIdentifier>{9418f843-ee4e-49f8-b7ee-11f4c341eefc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Device-specific files">
+      <UniqueIdentifier>{144d751e-97bb-442d-a0bc-68a321827289}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VisualGDB settings">
+      <UniqueIdentifier>{0066f97e-7e7d-4893-bbd1-c98f6c60772d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Drivers\W5500">
+      <UniqueIdentifier>{7170339d-e7c8-444e-a040-4e7477d6228a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Drivers\W5500">
+      <UniqueIdentifier>{31c06a40-1e05-4440-a7f9-0f41fa9bdf69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Application\User\MQTT">
+      <UniqueIdentifier>{3a97ad65-ae72-4f9f-81a4-15033000ac40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Application\User\MQTT">
+      <UniqueIdentifier>{d3f1744d-0760-4773-b50e-b5fa835f5dc5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Src\main.c">
+      <Filter>Source files\Application\User</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\freertos.c">
+      <Filter>Source files\Application\User</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\stm32f1xx_it.c">
+      <Filter>Source files\Application\User</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\stm32f1xx_hal_msp.c">
+      <Filter>Source files\Application\User</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\stm32f1xx_hal_timebase_tim.c">
+      <Filter>Source files\Application\User</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_gpio_ex.c">
+      <Filter>Source files\Drivers\STM32F1xx_HAL_Driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal.c">
+      <Filter>Source files\Drivers\STM32F1xx_HAL_Driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_rcc.c">
+      <Filter>Source files\Drivers\STM32F1xx_HAL_Driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_rcc_ex.c">
+      <Filter>Source files\Drivers\STM32F1xx_HAL_Driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_gpio.c">
+      <Filter>Source files\Drivers\STM32F1xx_HAL_Driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_dma.c">
+      <Filter>Source files\Drivers\STM32F1xx_HAL_Driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_cortex.c">
+      <Filter>Source files\Drivers\STM32F1xx_HAL_Driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_pwr.c">
+      <Filter>Source files\Drivers\STM32F1xx_HAL_Driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_flash.c">
+      <Filter>Source files\Drivers\STM32F1xx_HAL_Driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_flash_ex.c">
+      <Filter>Source files\Drivers\STM32F1xx_HAL_Driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_exti.c">
+      <Filter>Source files\Drivers\STM32F1xx_HAL_Driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_tim.c">
+      <Filter>Source files\Drivers\STM32F1xx_HAL_Driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_tim_ex.c">
+      <Filter>Source files\Drivers\STM32F1xx_HAL_Driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\system_stm32f1xx.c">
+      <Filter>Source files\Drivers\CMSIS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\croutine.c">
+      <Filter>Source files\Middlewares\FreeRTOS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\event_groups.c">
+      <Filter>Source files\Middlewares\FreeRTOS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\list.c">
+      <Filter>Source files\Middlewares\FreeRTOS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\queue.c">
+      <Filter>Source files\Middlewares\FreeRTOS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\stream_buffer.c">
+      <Filter>Source files\Middlewares\FreeRTOS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\tasks.c">
+      <Filter>Source files\Middlewares\FreeRTOS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\timers.c">
+      <Filter>Source files\Middlewares\FreeRTOS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS_V2\cmsis_os2.c">
+      <Filter>Source files\Middlewares\FreeRTOS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\MemMang\heap_4.c">
+      <Filter>Source files\Middlewares\FreeRTOS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\IAR\ARM_CM3\port.c">
+      <Filter>Source files\Middlewares\FreeRTOS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\IAR\ARM_CM3\portasm.S">
+      <Filter>Source files\Middlewares\FreeRTOS</Filter>
+    </ClCompile>
+    <None Include="mcu.props">
+      <Filter>Source files\Device-specific files</Filter>
+    </None>
+    <None Include="EmptyProject-Debug.vgdbsettings">
+      <Filter>VisualGDB settings</Filter>
+    </None>
+    <None Include="EmptyProject-Release.vgdbsettings">
+      <Filter>VisualGDB settings</Filter>
+    </None>
+    <None Include="MCU.xml">
+      <Filter>VisualGDB settings</Filter>
+    </None>
+    <ClCompile Include="..\..\..\BasicTasks.c">
+      <Filter>Source files\Application\User</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Devices.c">
+      <Filter>Source files\Application\User</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_spi.c">
+      <Filter>Source files\Drivers\STM32F1xx_HAL_Driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MyLibraries\MQTTDrive.c">
+      <Filter>Source files\Application\User\MQTT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MyLibraries\W5500\socket.c">
+      <Filter>Source files\Drivers\W5500</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MyLibraries\W5500\w5500.c">
+      <Filter>Source files\Drivers\W5500</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MyLibraries\W5500\wizchip_conf.c">
+      <Filter>Source files\Drivers\W5500</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MyLibraries\DHCP\dhcp.c">
+      <Filter>Source files\Application\User\MQTT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MyLibraries\DNS\dns.c">
+      <Filter>Source files\Application\User\MQTT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTConnectClient.c">
+      <Filter>Source files\Application\User\MQTT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTConnectServer.c">
+      <Filter>Source files\Application\User\MQTT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTDeserializePublish.c">
+      <Filter>Source files\Application\User\MQTT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTFormat.c">
+      <Filter>Source files\Application\User\MQTT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTPacket.c">
+      <Filter>Source files\Application\User\MQTT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTSerializePublish.c">
+      <Filter>Source files\Application\User\MQTT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTSubscribeClient.c">
+      <Filter>Source files\Application\User\MQTT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTSubscribeServer.c">
+      <Filter>Source files\Application\User\MQTT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTUnsubscribeClient.c">
+      <Filter>Source files\Application\User\MQTT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTPacket\src\MQTTUnsubscribeServer.c">
+      <Filter>Source files\Application\User\MQTT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\mqtt_interface.c">
+      <Filter>Source files\Application\User\MQTT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MyLibraries\MQTT\MQTTClient.c">
+      <Filter>Source files\Application\User\MQTT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\MyLibraries\GlobalDefault.c">
+      <Filter>Source files\Application\User</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\w5500\cpu.h">
+      <Filter>Header files\Drivers\W5500</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\misc.h">
+      <Filter>Header files\Drivers\W5500</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\socket.h">
+      <Filter>Header files\Drivers\W5500</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\StackTrace.h">
+      <Filter>Header files\Drivers\W5500</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\w5500.h">
+      <Filter>Header files\Drivers\W5500</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\w5500_driver.h">
+      <Filter>Header files\Drivers\W5500</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\wizchip_conf.h">
+      <Filter>Header files\Drivers\W5500</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\BasicTasks.h">
+      <Filter>Header files\Application\User</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Devices.h">
+      <Filter>Header files\Application\User</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\Commands.h">
+      <Filter>Header files\Application\User</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\MQTT\MQTTClient.h">
+      <Filter>Header files\Application\User\MQTT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\MQTT\MQTTConnect.h">
+      <Filter>Header files\Application\User\MQTT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\MQTT\MQTTFormat.h">
+      <Filter>Header files\Application\User\MQTT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\MQTT\MQTTFreeRTOS.h">
+      <Filter>Header files\Application\User\MQTT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\MQTT\MQTTPacket.h">
+      <Filter>Header files\Application\User\MQTT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\MQTT\MQTTPublish.h">
+      <Filter>Header files\Application\User\MQTT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\MQTT\MQTTSubscribe.h">
+      <Filter>Header files\Application\User\MQTT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\w5500\MQTT\MQTTUnsubscribe.h">
+      <Filter>Header files\Application\User\MQTT</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
