@@ -32,22 +32,29 @@ namespace DocumentMark
         private const float TextY_A4 = -506f;
         private const int FontSize_A4 = 16;
 
-        // Вторая дата (из textBox2) будет подставлена вместо этой константы
-        // private const string SecondTextToInsert_A4 = "08.08.2025"; 
-        private const float SecondTextX_A4 = -257f;
+        private const float SecondTextX_A4 = -257f; // Координаты для "УтвердилДата"
         private const float SecondTextY_A4 = -504f;
-        private const int SecondFontSize_A4 = 8;
+        private const int SecondFontSize_A4 = 8; // Размер шрифта для дат
 
-        private const string ThirdTextToInsert_A4 = "Нач.бюро"; // Исправлено на "Нач.бюро"
+        private const string ThirdTextToInsert_A4 = "Нач.бюро";
         private const float ThirdTextX_A4 = -361f;
         private const float ThirdTextY_A4 = -478f;
         private const int ThirdFontSize_A4 = 16;
 
-        // Четвертая дата (из textBox1) будет подставлена вместо этой константы
-        // private const string FourthTextToInsert_A4 = "05.08.2025";
-        private const float FourthTextX_A4 = -257f;
+        private const float FourthTextX_A4 = -257f; // Координаты для "Нач.БюроДата"
         private const float FourthTextY_A4 = -476f;
-        private const int FourthFontSize_A4 = 8;
+        private const int FourthFontSize_A4 = 8; // Размер шрифта для дат
+
+        // === Настройки для "РазработалДата" ===
+        private const string FifthTextToInsert_A4 = "Разработал"; // Если нужно добавить текст "Разработал"
+        private const float FifthTextX_A4 = -361f; // Координаты для текста "Разработал" (если нужен)
+        private const float FifthTextY_A4 = -450f; // (пример, нужно уточнить)
+        private const int FifthFontSize_A4 = 16; // Размер шрифта для "Разработал"
+
+        // === Настройки для даты "РазработалДата" ===
+        private const float SixthTextX_A4 = -257f; // Координаты для "РазработалДата"
+        private const float SixthTextY_A4 = -433f; // (пример, нужно уточнить)
+        private const int SixthFontSize_A4 = 8; // Размер шрифта для даты
 
         private const string ImagePath1_A4 = @"C:\PDF\1\Rename\Подп001.tif";
         private const float Image1X_A4 = -320f;
@@ -61,6 +68,13 @@ namespace DocumentMark
         private const float Image2TargetWidth_A4 = 80f;
         private const float Image2TargetHeight_A4 = 50f;
 
+        // === НОВОЕ: Настройки для третьей картинки "Подп003.tif" ===
+        private const string ImagePath3_A4 = @"C:\PDF\1\Rename\Подп003.tif";
+        private const float Image3X_A4 = -305f; // Примерные координаты, нужно уточнить
+        private const float Image3Y_A4 = -442f; // Примерные координаты, нужно уточнить
+        private const float Image3TargetWidth_A4 = 80f; // Примерные размеры, нужно уточнить
+        private const float Image3TargetHeight_A4 = 50f; // Примерные размеры, нужно уточнить
+
         public Form1()
         {
             InitializeComponent();
@@ -68,9 +82,8 @@ namespace DocumentMark
             textBoxPdfFolderPath.Text = DefaultInputPdfFolderPath;
             textBoxFontPath.Text = DefaultFontPath;
 
-            // Инициализируем textBox1 и textBox2 значениями по умолчанию
-            textBox1.Text = "08.08.2025"; // Дата Нач.Бюро
-            textBox2.Text = "05.08.2025"; // Дата Утвердил
+            // Инициализируем textBox1 значением по умолчанию
+            textBox1.Text = "01.07.2019";
 
             LogMessage("Приложение готово.");
         }
@@ -144,9 +157,16 @@ namespace DocumentMark
                 string pdfFolderPath = textBoxPdfFolderPath.Text.Trim();
                 string fontPath = textBoxFontPath.Text.Trim();
 
-                // === Получаем даты из новых текстовых полей ===
-                string dateForNachBuro = textBox1.Text.Trim(); // Дата Нач.Бюро
-                string dateForUtverdil = textBox2.Text.Trim(); // Дата Утвердил
+                // === Получаем дату передачи документов из textBox1 ===
+                string datePeredachiString = textBox1.Text.Trim();
+
+                // Проверка и парсинг даты передачи
+                DateTime datePeredachi;
+                if (string.IsNullOrEmpty(datePeredachiString) || !DateTime.TryParseExact(datePeredachiString, "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None, out datePeredachi))
+                {
+                    LogMessage("Ошибка: Неверный формат даты передачи документов в textBox1. Используется текущая дата.");
+                    datePeredachi = DateTime.Now;
+                }
 
                 // 1. Проверяем существование папки
                 if (string.IsNullOrEmpty(pdfFolderPath) || !Directory.Exists(pdfFolderPath))
@@ -175,9 +195,30 @@ namespace DocumentMark
                 {
                     try
                     {
+                        // === ГЕНЕРАЦИЯ ДАТ ДЛЯ КАЖДОГО ФАЙЛА ===
+                        // 1. "УтвердилДата" - случайная датa от (datePeredachi - 20 дней) до datePeredachi
+                        DateTime minUtverdilDate = datePeredachi.AddDays(-20);
+                        DateTime maxUtverdilDate = datePeredachi;
+                        string utverdilDateString = GetRandomWorkday(minUtverdilDate, maxUtverdilDate);
+                        LogMessage($"Сгенерирована 'УтвердилДата': {utverdilDateString}");
+
+                        // 2. "Нач.БюроДата" - случайная датa от (utverdilDate - 10 дней) до utverdilDate
+                        DateTime utverdilDate = DateTime.ParseExact(utverdilDateString, "dd.MM.yyyy", null);
+                        DateTime minNachBuroDate = utverdilDate.AddDays(-10);
+                        DateTime maxNachBuroDate = utverdilDate;
+                        string nachBuroDateString = GetRandomWorkday(minNachBuroDate, maxNachBuroDate);
+                        LogMessage($"Сгенерирована 'Нач.БюроДата': {nachBuroDateString}");
+
+                        // 3. "РазработалДата" - случайная датa от (nachBuroDate - 50 дней) до nachBuroDate
+                        DateTime nachBuroDate = DateTime.ParseExact(nachBuroDateString, "dd.MM.yyyy", null);
+                        DateTime minRazrabotalDate = nachBuroDate.AddDays(-50);
+                        DateTime maxRazrabotalDate = nachBuroDate;
+                        string razrabotalDateString = GetRandomWorkday(minRazrabotalDate, maxRazrabotalDate);
+                        LogMessage($"Сгенерирована 'РазработалДата': {razrabotalDateString}");
+
                         LogMessage($"Обработка файла: {System.IO.Path.GetFileName(inputPdfPath)}...");
-                        // Передаем даты в метод обработки
-                        if (ProcessSinglePdf(inputPdfPath, fontPath, dateForNachBuro, dateForUtverdil))
+                        // Передаем сгенерированные даты в метод обработки
+                        if (ProcessSinglePdf(inputPdfPath, fontPath, nachBuroDateString, utverdilDateString, razrabotalDateString))
                         {
                             successCount++;
                             LogMessage($"Файл {System.IO.Path.GetFileName(inputPdfPath)} успешно обработан.");
@@ -214,14 +255,48 @@ namespace DocumentMark
         }
 
         /// <summary>
+        /// Генерирует случайную рабочую дату (не суббота и не воскресенье) в заданном диапазоне
+        /// </summary>
+        /// <param name="startDate">Начальная дата диапазона (включительно)</param>
+        /// <param name="endDate">Конечная дата диапазона (включительно)</param>
+        /// <returns>Строка с датой в формате dd.MM.yyyy</returns>
+        private string GetRandomWorkday(DateTime startDate, DateTime endDate)
+        {
+            Random random = new Random();
+            List<DateTime> workdays = new List<DateTime>();
+
+            // Создаем список рабочих дней в диапазоне
+            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+            {
+                if (date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    workdays.Add(date);
+                }
+            }
+
+            // Если рабочих дней нет, возвращаем любую дату из диапазона
+            if (workdays.Count == 0)
+            {
+                TimeSpan diff = endDate - startDate;
+                DateTime randomDate = startDate.AddDays(random.Next((int)diff.TotalDays + 1));
+                return randomDate.ToString("dd.MM.yyyy");
+            }
+
+            // Выбираем случайную рабочую дату
+            int randomIndex = random.Next(workdays.Count);
+            return workdays[randomIndex].ToString("dd.MM.yyyy");
+        }
+
+        /// <summary>
         /// Обрабатывает один PDF файл
         /// </summary>
         /// <param name="inputPdfPath">Путь к входному PDF файлу</param>
         /// <param name="fontPath">Путь к файлу шрифта</param>
-        /// <param name="dateForNachBuro">Дата для "Нач.бюро" (из textBox1)</param>
-        /// <param name="dateForUtverdil">Дата для "Утвердил" (из textBox2)</param>
+        /// <param name="dateForNachBuro">Дата для "Нач.бюро" (Нач.БюроДата)</param>
+        /// <param name="dateForUtverdil">Дата для "Утвердил" (УтвердилДата)</param>
+        /// <param name="dateForRazrabotal">Дата для "Разработал" (РазработалДата)</param>
         /// <returns>True, если успешно, иначе False</returns>
-        private bool ProcessSinglePdf(string inputPdfPath, string fontPath, string dateForNachBuro, string dateForUtverdil)
+        private bool ProcessSinglePdf(string inputPdfPath, string fontPath, string dateForNachBuro, string dateForUtverdil, string dateForRazrabotal)
         {
             try
             {
@@ -256,8 +331,8 @@ namespace DocumentMark
                     // 4. === Рассчитываем координаты в зависимости от формата ===
 
                     // Фиксированные смещения для перехода от A4 к A3
-                    const float offsetX_A3 = 767.0f;
-                    const float offsetY_A3 = -267.0f;
+                    const float offsetX_A3 = 767.5f;
+                    const float offsetY_A3 = -266.0f;
 
                     // Определяем смещения в зависимости от формата
                     float offsetX = isA3 ? offsetX_A3 : 0.0f;
@@ -268,7 +343,7 @@ namespace DocumentMark
                     float textX_Pdf = TextX_A4 + offsetX;
                     float textY_Pdf = TextY_A4 + offsetY;
 
-                    // Для даты "Утвердил" (из textBox2)
+                    // Для даты "Утвердил" (УтвердилДата)
                     float secondTextX_Pdf = SecondTextX_A4 + offsetX;
                     float secondTextY_Pdf = SecondTextY_A4 + offsetY;
 
@@ -276,9 +351,17 @@ namespace DocumentMark
                     float thirdTextX_Pdf = ThirdTextX_A4 + offsetX;
                     float thirdTextY_Pdf = ThirdTextY_A4 + offsetY;
 
-                    // Для даты "Нач.бюро" (из textBox1)
+                    // Для даты "Нач.бюро" (Нач.БюроДата)
                     float fourthTextX_Pdf = FourthTextX_A4 + offsetX;
                     float fourthTextY_Pdf = FourthTextY_A4 + offsetY;
+
+                    // Для текста "Разработал" (если нужен)
+                    float fifthTextX_Pdf = FifthTextX_A4 + offsetX;
+                    float fifthTextY_Pdf = FifthTextY_A4 + offsetY;
+
+                    // Для даты "Разработал" (РазработалДата)
+                    float sixthTextX_Pdf = SixthTextX_A4 + offsetX;
+                    float sixthTextY_Pdf = SixthTextY_A4 + offsetY;
 
                     // Для изображения 1
                     float image1X_Pdf = Image1X_A4 + offsetX;
@@ -288,6 +371,10 @@ namespace DocumentMark
                     float image2X_Pdf = Image2X_A4 + offsetX;
                     float image2Y_Pdf = Image2Y_A4 + offsetY;
 
+                    // === НОВОЕ: Для изображения 3 ===
+                    float image3X_Pdf = Image3X_A4 + offsetX;
+                    float image3Y_Pdf = Image3Y_A4 + offsetY;
+
                     // Масштабируем размеры изображений
                     float imageScaleX = isA3 ? A4_TO_A3_SCALE_X : 1.0f;
                     float imageScaleY = isA3 ? A4_TO_A3_SCALE_Y : 1.0f;
@@ -296,11 +383,50 @@ namespace DocumentMark
                     float image1TargetHeight = Image1TargetHeight_A4 * imageScaleY;
                     float image2TargetWidth = Image2TargetWidth_A4 * imageScaleX;
                     float image2TargetHeight = Image2TargetHeight_A4 * imageScaleY;
+                    // === НОВОЕ: Масштабируем размеры третьего изображения ===
+                    float image3TargetWidth = Image3TargetWidth_A4 * imageScaleX;
+                    float image3TargetHeight = Image3TargetHeight_A4 * imageScaleY;
 
-                    // 5. Создаем PdfCanvas для рисования текста
+                    // 5. === Создаем PdfCanvas для рисования прямоугольников ===
+                    PdfCanvas canvas = new PdfCanvas(page.NewContentStreamAfter(), page.GetResources(), pdfDoc);
+
+                    // === НАЧАЛО: Отрисовка прямоугольников ===
+                    // Используем ваши точные координаты и размеры
+
+                    // Прямоугольник 1 
+                    float rect1X = -254f + offsetX;
+                    float rect1Y = -437f + offsetY;
+                    float rect1Width = 27f;
+                    float rect1Height = 13f;
+
+                    // Прямоугольник 2 
+                    float rect2X = -225.6f + offsetX;
+                    float rect2Y = -437f + offsetY;
+                    float rect2Width = 5f;
+                    float rect2Height = 13f;
+
+                    // Рисуем первый прямоугольник (белый, закрашенный)
+                    canvas.SaveState();
+                    canvas.SetFillColorRgb(1.0f, 1.0f, 1.0f); // RGB для белого цвета
+                    canvas.Rectangle(rect1X, rect1Y, rect1Width, rect1Height);
+                    canvas.Fill(); // Закрашиваем прямоугольник
+                    canvas.RestoreState();
+
+                    // Рисуем второй прямоугольник (белый, закрашенный)
+                    canvas.SaveState();
+                    canvas.SetFillColorRgb(1.0f, 1.0f, 1.0f); // RGB для белого цвета
+                    canvas.Rectangle(rect2X, rect2Y, rect2Width, rect2Height);
+                    canvas.Fill(); // Закрашиваем прямоугольник
+                    canvas.RestoreState();
+
+                    LogMessage("  Белые прямоугольники нарисованы.");
+                    // === КОНЕЦ: Отрисовка прямоугольников ===
+
+                    // 6. === Создаем новый PdfCanvas для рисования текста ===
+                    // Важно: используем новый content stream, чтобы текст рисовался поверх прямоугольников
                     PdfCanvas textCanvas = new PdfCanvas(page.NewContentStreamAfter(), page.GetResources(), pdfDoc);
 
-                    // 6. === Загружаем шрифт ===
+                    // 7. === Загружаем шрифт ===
                     PdfFont font;
                     try
                     {
@@ -322,7 +448,7 @@ namespace DocumentMark
                         LogMessage($"  Ошибка загрузки шрифта: {fontEx.Message}. Используется Helvetica-Oblique.");
                     }
 
-                    // 7. === Вставляем текстовые элементы ===
+                    // 8. === Вставляем текстовые элементы ===
                     // Утвердил
                     textCanvas.SaveState();
                     textCanvas.BeginText();
@@ -333,13 +459,13 @@ namespace DocumentMark
                     textCanvas.EndText();
                     textCanvas.RestoreState();
 
-                    // Дата Утвердил (из textBox2)
+                    // УтвердилДата
                     textCanvas.SaveState();
                     textCanvas.BeginText();
                     textCanvas.SetFontAndSize(font, SecondFontSize_A4);
                     textCanvas.SetFillColor(ColorConstants.BLACK);
                     textCanvas.MoveText(secondTextX_Pdf, secondTextY_Pdf);
-                    textCanvas.ShowText(dateForUtverdil); // Используем дату из параметра
+                    textCanvas.ShowText(dateForUtverdil);
                     textCanvas.EndText();
                     textCanvas.RestoreState();
 
@@ -353,19 +479,29 @@ namespace DocumentMark
                     textCanvas.EndText();
                     textCanvas.RestoreState();
 
-                    // Дата Нач.бюро (из textBox1)
+                    // Нач.БюроДата
                     textCanvas.SaveState();
                     textCanvas.BeginText();
                     textCanvas.SetFontAndSize(font, FourthFontSize_A4);
                     textCanvas.SetFillColor(ColorConstants.BLACK);
                     textCanvas.MoveText(fourthTextX_Pdf, fourthTextY_Pdf);
-                    textCanvas.ShowText(dateForNachBuro); // Используем дату из параметра
+                    textCanvas.ShowText(dateForNachBuro);
+                    textCanvas.EndText();
+                    textCanvas.RestoreState();
+
+                    // === РазработалДата ===
+                    textCanvas.SaveState();
+                    textCanvas.BeginText();
+                    textCanvas.SetFontAndSize(font, SixthFontSize_A4); // Используем размер для дат
+                    textCanvas.SetFillColor(ColorConstants.BLACK);
+                    textCanvas.MoveText(sixthTextX_Pdf, sixthTextY_Pdf);
+                    textCanvas.ShowText(dateForRazrabotal);
                     textCanvas.EndText();
                     textCanvas.RestoreState();
 
                     LogMessage("  Текстовые элементы вставлены.");
 
-                    // 8. === Вставляем изображения ===
+                    // 9. === Вставляем изображения ===
                     // Изображение 1
                     try
                     {
@@ -428,6 +564,38 @@ namespace DocumentMark
                     catch (Exception imgEx)
                     {
                         LogMessage($"  Ошибка вставки изображения 2: {imgEx.Message}");
+                    }
+
+                    // === НОВОЕ: Изображение 3 ===
+                    try
+                    {
+                        if (System.IO.File.Exists(ImagePath3_A4))
+                        {
+                            ImageData imageData3 = ImageDataFactory.Create(ImagePath3_A4);
+                            if (imageData3 != null)
+                            {
+                                Image imageElement3 = new Image(imageData3);
+                                imageElement3.SetFixedPosition(image3X_Pdf, image3Y_Pdf);
+                                imageElement3.SetWidth(image3TargetWidth);
+                                imageElement3.SetHeight(image3TargetHeight);
+
+                                Canvas layoutCanvas3 = new Canvas(page, page.GetPageSize());
+                                layoutCanvas3.Add(imageElement3);
+                                layoutCanvas3.Close();
+                            }
+                            else
+                            {
+                                LogMessage("  Ошибка: Не удалось загрузить данные изображения 3.");
+                            }
+                        }
+                        else
+                        {
+                            LogMessage($"  Файл изображения 3 не найден: {System.IO.Path.GetFileName(ImagePath3_A4)}");
+                        }
+                    }
+                    catch (Exception imgEx)
+                    {
+                        LogMessage($"  Ошибка вставки изображения 3: {imgEx.Message}");
                     }
 
                     LogMessage("  Изображения вставлены.");
