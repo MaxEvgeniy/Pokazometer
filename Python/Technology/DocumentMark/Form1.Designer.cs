@@ -41,17 +41,30 @@
             this.buttonBrowseFolder = new System.Windows.Forms.Button();
             this.textBoxPdfFolderPath = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.buttonNextFile = new System.Windows.Forms.Button();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.panelBottom = new System.Windows.Forms.Panel();
+            this.buttonProcessCurrent = new System.Windows.Forms.Button();
+            this.pdfViewerSource = new PdfiumViewer.PdfViewer();
+            this.pdfViewerResult = new PdfiumViewer.PdfViewer();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.panelBottom.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonProcessAll
             // 
             this.buttonProcessAll.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonProcessAll.Location = new System.Drawing.Point(306, 265);
+            this.buttonProcessAll.Location = new System.Drawing.Point(10, 265);
             this.buttonProcessAll.Name = "buttonProcessAll";
-            this.buttonProcessAll.Size = new System.Drawing.Size(105, 23);
+            this.buttonProcessAll.Size = new System.Drawing.Size(236, 23);
             this.buttonProcessAll.TabIndex = 0;
             this.buttonProcessAll.Text = "Обработать все PDF";
             this.buttonProcessAll.UseVisualStyleBackColor = true;
@@ -72,13 +85,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxFontPath.Location = new System.Drawing.Point(6, 93);
             this.textBoxFontPath.Name = "textBoxFontPath";
-            this.textBoxFontPath.Size = new System.Drawing.Size(632, 20);
+            this.textBoxFontPath.Size = new System.Drawing.Size(417, 20);
             this.textBoxFontPath.TabIndex = 2;
             this.textBoxFontPath.Text = "C:\\Users\\maksimov\\AppData\\Local\\Microsoft\\Windows\\Fonts\\GOST_2_304-81_TYPE.TTF";
             // 
             // buttonBrowseFont
             // 
-            this.buttonBrowseFont.Location = new System.Drawing.Point(644, 90);
+            this.buttonBrowseFont.Location = new System.Drawing.Point(444, 93);
             this.buttonBrowseFont.Name = "buttonBrowseFont";
             this.buttonBrowseFont.Size = new System.Drawing.Size(79, 23);
             this.buttonBrowseFont.TabIndex = 3;
@@ -92,7 +105,7 @@
             this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 447);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(780, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1381, 22);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 4;
             this.statusStrip1.Text = "statusStrip1";
@@ -114,7 +127,7 @@
             this.textBoxLog.Name = "textBoxLog";
             this.textBoxLog.ReadOnly = true;
             this.textBoxLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxLog.Size = new System.Drawing.Size(758, 247);
+            this.textBoxLog.Size = new System.Drawing.Size(541, 247);
             this.textBoxLog.TabIndex = 5;
             // 
             // groupBox1
@@ -129,7 +142,7 @@
             this.groupBox1.Controls.Add(this.textBoxFontPath);
             this.groupBox1.Location = new System.Drawing.Point(10, 323);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(758, 121);
+            this.groupBox1.Size = new System.Drawing.Size(543, 121);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Settings";
@@ -153,7 +166,7 @@
             // 
             // buttonBrowseFolder
             // 
-            this.buttonBrowseFolder.Location = new System.Drawing.Point(644, 51);
+            this.buttonBrowseFolder.Location = new System.Drawing.Point(444, 52);
             this.buttonBrowseFolder.Name = "buttonBrowseFolder";
             this.buttonBrowseFolder.Size = new System.Drawing.Size(79, 23);
             this.buttonBrowseFolder.TabIndex = 2;
@@ -167,7 +180,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxPdfFolderPath.Location = new System.Drawing.Point(6, 54);
             this.textBoxPdfFolderPath.Name = "textBoxPdfFolderPath";
-            this.textBoxPdfFolderPath.Size = new System.Drawing.Size(632, 20);
+            this.textBoxPdfFolderPath.Size = new System.Drawing.Size(417, 20);
             this.textBoxPdfFolderPath.TabIndex = 1;
             // 
             // label2
@@ -179,11 +192,91 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Путь к папке PDF:";
             // 
+            // buttonNextFile
+            // 
+            this.buttonNextFile.Location = new System.Drawing.Point(3, 0);
+            this.buttonNextFile.Name = "buttonNextFile";
+            this.buttonNextFile.Size = new System.Drawing.Size(106, 23);
+            this.buttonNextFile.TabIndex = 11;
+            this.buttonNextFile.Text = "Следующий файл";
+            this.buttonNextFile.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Location = new System.Drawing.Point(559, 12);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.pdfViewerSource);
+            this.splitContainer1.Panel1.Controls.Add(this.panelBottom);
+            this.splitContainer1.Panel1.Controls.Add(this.label4);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.pdfViewerResult);
+            this.splitContainer1.Panel2.Controls.Add(this.label5);
+            this.splitContainer1.Size = new System.Drawing.Size(810, 432);
+            this.splitContainer1.SplitterDistance = 269;
+            this.splitContainer1.TabIndex = 12;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(4, 4);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(85, 13);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Исходный PDF:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(4, 4);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(121, 13);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Результирующий PDF:";
+            // 
+            // panelBottom
+            // 
+            this.panelBottom.Controls.Add(this.buttonProcessCurrent);
+            this.panelBottom.Controls.Add(this.buttonNextFile);
+            this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelBottom.Location = new System.Drawing.Point(0, 410);
+            this.panelBottom.Name = "panelBottom";
+            this.panelBottom.Size = new System.Drawing.Size(269, 22);
+            this.panelBottom.TabIndex = 1;
+            // 
+            // buttonProcessCurrent
+            // 
+            this.buttonProcessCurrent.Location = new System.Drawing.Point(155, -1);
+            this.buttonProcessCurrent.Name = "buttonProcessCurrent";
+            this.buttonProcessCurrent.Size = new System.Drawing.Size(111, 23);
+            this.buttonProcessCurrent.TabIndex = 12;
+            this.buttonProcessCurrent.Text = "Обработать текущий файл";
+            this.buttonProcessCurrent.UseVisualStyleBackColor = true;
+            // 
+            // pdfViewerSource
+            // 
+            this.pdfViewerSource.Location = new System.Drawing.Point(7, 21);
+            this.pdfViewerSource.Name = "pdfViewerSource";
+            this.pdfViewerSource.Size = new System.Drawing.Size(259, 383);
+            this.pdfViewerSource.TabIndex = 2;
+            // 
+            // pdfViewerResult
+            // 
+            this.pdfViewerResult.Location = new System.Drawing.Point(7, 21);
+            this.pdfViewerResult.Name = "pdfViewerResult";
+            this.pdfViewerResult.Size = new System.Drawing.Size(527, 408);
+            this.pdfViewerResult.TabIndex = 1;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(780, 469);
+            this.ClientSize = new System.Drawing.Size(1381, 469);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.textBoxLog);
             this.Controls.Add(this.statusStrip1);
@@ -194,6 +287,13 @@
             this.statusStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.panelBottom.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -214,6 +314,14 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button buttonNextFile;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Panel panelBottom;
+        private System.Windows.Forms.Button buttonProcessCurrent;
+        private PdfiumViewer.PdfViewer pdfViewerSource;
+        private PdfiumViewer.PdfViewer pdfViewerResult;
     }
 }
 

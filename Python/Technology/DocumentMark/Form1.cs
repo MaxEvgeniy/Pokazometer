@@ -1,7 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 // === Проверенные using для iText 9 (с itext.kernel) ===
 using iText.Kernel.Pdf;
@@ -17,8 +22,16 @@ using iText.Kernel.Geom;
 // === Дополнительные using для парсинга текста ===
 using iText.Kernel.Pdf.Canvas.Parser;
 using iText.Kernel.Pdf.Canvas.Parser.Listener;
-// === Для фильтрации событий (если доступно) ===
-// using iText.Kernel.Pdf.Canvas.Parser.Filter;
+// === Для работы с базовыми элементами геометрии ===
+using iText.Kernel.Pdf.Canvas.Parser.Data;
+// === Разрешение конфликтов имен ===
+using SysPath = System.IO.Path;           // Псевдоним для System.IO.Path
+using SysRectangle = System.Drawing.Rectangle; // Псевдоним для System.Drawing.Rectangle
+using IT_Rectangle = iText.Kernel.Geom.Rectangle; // Псевдоним для iText.Kernel.Geom.Rectangle
+using IT_Image = iText.Layout.Element.Image;     // Псевдоним для iText.Layout.Element.Image
+using IT_PdfDocument = iText.Kernel.Pdf.PdfDocument; // Псевдоним для iText.Kernel.Pdf.PdfDocument
+using IT_ImageData = iText.IO.Image.ImageData;     // Псевдоним для iText.IO.Image.ImageData
+using IT_ImageDataFactory = iText.IO.Image.ImageDataFactory; // Псевдоним для iText.IO.Image.ImageDataFactory
 
 namespace DocumentMark
 {
@@ -28,58 +41,54 @@ namespace DocumentMark
         private const string DefaultInputPdfFolderPath = @"C:\PDF\1\Rename";
         private const string DefaultFontPath = @"C:\Users\maksimov\AppData\Local\Microsoft\Windows\Fonts\GOST type A Italic.ttf";
 
-        // === Коэффициенты масштабирования из A4 в A3 ===
-        private const float A4_TO_A3_SCALE_X = 1.414f;
-        private const float A4_TO_A3_SCALE_Y = 1.414f;
+        // === Настройки относительно опорной точки "Разраб." ===
+        private const float Text_OffsetFromReferenceX = 55f;
+        private const float Text_OffsetFromReferenceY = 0f;
+        private const int FontSize_Main = 16;
 
-        // === Настройки для A4 ===
-        private const string TextToInsert_A4 = "Утвердил";
-        private const float TextX_A4 = -361f;
-        private const float TextY_A4 = -506f;
-        private const int FontSize_A4 = 16;
+        private const float SecondText_OffsetFromReferenceX = 159f;
+        private const float SecondText_OffsetFromReferenceY = -2f;
+        private const int FontSize_Date = 8;
 
-        private const float SecondTextX_A4 = -257f; // Координаты для "УтвердилДата"
-        private const float SecondTextY_A4 = -504f;
-        private const int SecondFontSize_A4 = 8; // Размер шрифта для дат
+        private const float ThirdText_OffsetFromReferenceX = 55f;
+        private const float ThirdText_OffsetFromReferenceY = 28f;
+        private const int ThirdFontSize_Main = 16;
 
-        private const string ThirdTextToInsert_A4 = "Нач.бюро";
-        private const float ThirdTextX_A4 = -361f;
-        private const float ThirdTextY_A4 = -478f;
-        private const int ThirdFontSize_A4 = 16;
+        private const float FourthText_OffsetFromReferenceX = 159f;
+        private const float FourthText_OffsetFromReferenceY = 26f;
+        private const int FourthFontSize_Date = 8;
 
-        private const float FourthTextX_A4 = -257f; // Координаты для "Нач.БюроДата"
-        private const float FourthTextY_A4 = -476f;
-        private const int FourthFontSize_A4 = 8; // Размер шрифта для дат
+        private const float SixthText_OffsetFromReferenceX = 159f;
+        private const float SixthText_OffsetFromReferenceY = 73f;
+        private const int SixthFontSize_Date = 8;
 
-        // === Настройки для "РазработалДата" ===
-        private const float SixthTextX_A4 = -257f; // Координаты для "РазработалДата"
-        private const float SixthTextY_A4 = -433f;
-        private const int SixthFontSize_A4 = 8; // Размер шрифта для даты
+        private const float Image1_OffsetFromReferenceX = 90f;
+        private const float Image1_OffsetFromReferenceY = -15f;
+        private const float Image1_TargetWidth = 90f;
+        private const float Image1_TargetHeight = 40f;
+        private const string ImagePath1 = @"C:\PDF\1\Rename\Подп001.tif";
 
-        private const string ImagePath1_A4 = @"C:\PDF\1\Rename\Подп001.tif";
-        private const float Image1X_A4 = -320f;
-        private const float Image1Y_A4 = -515f;
-        private const float Image1TargetWidth_A4 = 90f;
-        private const float Image1TargetHeight_A4 = 40f;
+        private const float Image2_OffsetFromReferenceX = 105f;
+        private const float Image2_OffsetFromReferenceY = 15f;
+        private const float Image2_TargetWidth = 80f;
+        private const float Image2_TargetHeight = 50f;
+        private const string ImagePath2 = @"C:\PDF\1\Rename\Подп002.tif";
 
-        private const string ImagePath2_A4 = @"C:\PDF\1\Rename\Подп002.tif";
-        private const float Image2X_A4 = -305f;
-        private const float Image2Y_A4 = -485f;
-        private const float Image2TargetWidth_A4 = 80f;
-        private const float Image2TargetHeight_A4 = 50f;
-
-        // === Настройки для третьей картинки "Подп003.tif" и её альтернатив ===
+        private const float Image3_OffsetFromReferenceX = 105f; // Пример, подберите
+        private const float Image3_OffsetFromReferenceY = 62f;  // Пример, подберите
+        private const float Image3_TargetWidth = 80f;          // Пример, подберите
+        private const float Image3_TargetHeight = 50f;         // Пример, подберите
         private const string ImagePath3_Default = @"C:\PDF\1\Rename\Подп003.tif";
         private const string ImagePath3_Alt1 = @"C:\PDF\1\Rename\Подп002.tif";
         private const string ImagePath3_Alt2 = @"C:\PDF\1\Rename\Подп006.tif";
         private const string ImagePath3_Alt3 = @"C:\PDF\1\Rename\Подп005.tif";
         private const string ImagePath3_Alt4 = @"C:\PDF\1\Rename\Подп004.tif";
-        //private const float Image3X_A4 = -305f; // Примерные координаты, нужно уточнить
-        //private const float Image3Y_A4 = -442f; // Примерные координаты, нужно уточнить
-        private const float Image3X_A4 = -305f; // Примерные координаты, нужно уточнить
-        private const float Image3Y_A4 = -446f; // Примерные координаты, нужно уточнить
-        private const float Image3TargetWidth_A4 = 80f; // Примерные размеры, нужно уточнить
-        private const float Image3TargetHeight_A4 = 50f; // Примерные размеры, нужно уточнить
+
+        // === Настройки для зоны считывания текста ===
+        private const float ReadArea_OffsetFromReferenceX = 55f;    // Пример, подберите (относительно опорной точки "Разраб.")
+        private const float ReadArea_OffsetFromReferenceY = 73f;   // Пример, подберите (относительно опорной точки "Разраб.")
+        private const float ReadArea_Width = 100f;                 // Пример, подберите
+        private const float ReadArea_Height = 15f;                // Пример, подберите
 
         public Form1()
         {
@@ -87,11 +96,21 @@ namespace DocumentMark
             // Инициализируем поля ввода значениями по умолчанию
             textBoxPdfFolderPath.Text = DefaultInputPdfFolderPath;
             textBoxFontPath.Text = DefaultFontPath;
-
-            // Инициализируем textBox1 значением по умолчанию
             textBox1.Text = "01.07.2019";
+            UpdateStatus("Приложение готово.");
+        }
 
-            LogMessage("Приложение готово.");
+        /// <summary>
+        /// Обновляет текст в строке состояния
+        /// </summary>
+        /// <param name="message">Сообщение для добавления</param>
+        private void UpdateStatus(string message)
+        {
+            if (toolStripStatusLabel1 != null)
+            {
+                toolStripStatusLabel1.Text = message;
+                statusStrip1.Refresh();
+            }
         }
 
         /// <summary>
@@ -119,10 +138,12 @@ namespace DocumentMark
             if (fbd.ShowDialog() == DialogResult.OK)
             {
                 textBoxPdfFolderPath.Text = fbd.SelectedPath;
+                UpdateStatus($"Выбрана папка: {SysPath.GetFileName(fbd.SelectedPath)}");
                 LogMessage($"Выбрана папка: {fbd.SelectedPath}");
             }
             else
             {
+                UpdateStatus("Выбор папки отменен.");
                 LogMessage("Выбор папки отменен.");
             }
         }
@@ -137,14 +158,15 @@ namespace DocumentMark
             ofd.Title = "Выберите файл шрифта";
             ofd.FileName = textBoxFontPath.Text;
 
-            // === ИСПРАВЛЕНО: CS0103 - заменено fbd на ofd ===
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 textBoxFontPath.Text = ofd.FileName;
-                LogMessage($"Выбран шрифт: {System.IO.Path.GetFileName(ofd.FileName)}");
+                UpdateStatus($"Выбран шрифт: {SysPath.GetFileName(ofd.FileName)}");
+                LogMessage($"Выбран шрифт: {SysPath.GetFileName(ofd.FileName)}");
             }
             else
             {
+                UpdateStatus("Выбор шрифта отменен.");
                 LogMessage("Выбор шрифта отменен.");
             }
         }
@@ -154,108 +176,104 @@ namespace DocumentMark
         /// </summary>
         private void buttonProcessAll_Click(object sender, EventArgs e)
         {
-            // Отключаем кнопку на время обработки
             buttonProcessAll.Enabled = false;
+            UpdateStatus("Начало обработки...");
             LogMessage("Начало обработки всех PDF файлов...");
 
             try
             {
-                // Получаем пути из текстовых полей
                 string pdfFolderPath = textBoxPdfFolderPath.Text.Trim();
                 string fontPath = textBoxFontPath.Text.Trim();
-
-                // === Получаем дату передачи документов из textBox1 ===
                 string datePeredachiString = textBox1.Text.Trim();
 
-                // Проверка и парсинг даты передачи
                 DateTime datePeredachi;
                 if (string.IsNullOrEmpty(datePeredachiString) || !DateTime.TryParseExact(datePeredachiString, "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None, out datePeredachi))
                 {
+                    UpdateStatus("Ошибка даты. Используется текущая.");
                     LogMessage("Ошибка: Неверный формат даты передачи документов в textBox1. Используется текущая дата.");
                     datePeredachi = DateTime.Now;
                 }
 
-                // 1. Проверяем существование папки
                 if (string.IsNullOrEmpty(pdfFolderPath) || !Directory.Exists(pdfFolderPath))
                 {
+                    UpdateStatus("Ошибка: Папка не найдена.");
                     LogMessage($"Ошибка: Папка не найдена или путь пуст: '{pdfFolderPath}'");
                     MessageBox.Show($"Папка не найдена или путь пуст: '{pdfFolderPath}'", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                // 2. Ищем все PDF файлы в папке
                 string[] pdfFiles = Directory.GetFiles(pdfFolderPath, "*.pdf", SearchOption.TopDirectoryOnly);
                 if (pdfFiles.Length == 0)
                 {
+                    UpdateStatus("Ошибка: В папке нет PDF.");
                     LogMessage("Ошибка: В папке не найдено PDF файлов.");
                     MessageBox.Show($"В папке не найдено PDF файлов: {pdfFolderPath}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
+                UpdateStatus($"Найдено PDF файлов: {pdfFiles.Length}");
                 LogMessage($"Найдено PDF файлов для обработки: {pdfFiles.Length}");
 
                 int successCount = 0;
                 int errorCount = 0;
 
-                // 3. Обрабатываем каждый PDF файл
                 foreach (string inputPdfPath in pdfFiles)
                 {
                     try
                     {
-                        // === ГЕНЕРАЦИЯ ДАТ ДЛЯ КАЖДОГО ФАЙЛА ===
-                        // 1. "УтвердилДата" - случайная дата от (datePeredachi - 20 дней) до datePeredachi
                         DateTime minUtverdilDate = datePeredachi.AddDays(-20);
                         DateTime maxUtverdilDate = datePeredachi;
                         string utverdilDateString = GetRandomWorkday(minUtverdilDate, maxUtverdilDate);
                         LogMessage($"Сгенерирована 'УтвердилДата': {utverdilDateString}");
 
-                        // 2. "Нач.БюроДата" - случайная дата от (utverdilDate - 10 дней) до utverdilDate
                         DateTime utverdilDate = DateTime.ParseExact(utverdilDateString, "dd.MM.yyyy", null);
                         DateTime minNachBuroDate = utverdilDate.AddDays(-10);
                         DateTime maxNachBuroDate = utverdilDate;
                         string nachBuroDateString = GetRandomWorkday(minNachBuroDate, maxNachBuroDate);
                         LogMessage($"Сгенерирована 'Нач.БюроДата': {nachBuroDateString}");
 
-                        // 3. "РазработалДата" - случайная дата от (nachBuroDate - 50 дней) до nachBuroDate
                         DateTime nachBuroDate = DateTime.ParseExact(nachBuroDateString, "dd.MM.yyyy", null);
                         DateTime minRazrabotalDate = nachBuroDate.AddDays(-50);
                         DateTime maxRazrabotalDate = nachBuroDate;
                         string razrabotalDateString = GetRandomWorkday(minRazrabotalDate, maxRazrabotalDate);
                         LogMessage($"Сгенерирована 'РазработалДата': {razrabotalDateString}");
 
-                        LogMessage($"Обработка файла: {System.IO.Path.GetFileName(inputPdfPath)}...");
-                        // Передаем сгенерированные даты в метод обработки
+                        UpdateStatus($"Обработка: {SysPath.GetFileName(inputPdfPath)}...");
+                        LogMessage($"Обработка файла: {SysPath.GetFileName(inputPdfPath)}...");
                         if (ProcessSinglePdf(inputPdfPath, fontPath, nachBuroDateString, utverdilDateString, razrabotalDateString))
                         {
                             successCount++;
-                            LogMessage($"Файл {System.IO.Path.GetFileName(inputPdfPath)} успешно обработан.");
+                            UpdateStatus($"Успешно: {SysPath.GetFileName(inputPdfPath)}");
+                            LogMessage($"Файл {SysPath.GetFileName(inputPdfPath)} успешно обработан.");
                         }
                         else
                         {
                             errorCount++;
-                            LogMessage($"Ошибка при обработке файла {System.IO.Path.GetFileName(inputPdfPath)}.");
+                            UpdateStatus($"Ошибка: {SysPath.GetFileName(inputPdfPath)}");
+                            LogMessage($"Ошибка при обработке файла {SysPath.GetFileName(inputPdfPath)}.");
                         }
                     }
                     catch (Exception fileEx)
                     {
                         errorCount++;
-                        LogMessage($"Критическая ошибка при обработке файла {System.IO.Path.GetFileName(inputPdfPath)}: {fileEx.Message}");
+                        UpdateStatus($"Ошибка файла: {SysPath.GetFileName(inputPdfPath)}");
+                        LogMessage($"Критическая ошибка при обработке файла {SysPath.GetFileName(inputPdfPath)}: {fileEx.Message}");
                     }
                 }
 
-                // 4. Итоги
+                UpdateStatus($"Завершено. Успешно: {successCount}, Ошибок: {errorCount}.");
                 LogMessage($"Обработка завершена. Успешно: {successCount}, Ошибок: {errorCount}.");
                 MessageBox.Show($"Обработка завершена.\nУспешно обработано: {successCount}\nОшибок: {errorCount}", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
             catch (Exception ex)
             {
+                UpdateStatus($"Ошибка обработки: {ex.Message}");
                 LogMessage($"Ошибка в процессе обработки: {ex.Message}");
                 MessageBox.Show($"Произошла ошибка: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
-                // Всегда включаем кнопку обратно
                 buttonProcessAll.Enabled = true;
                 LogMessage("Обработка закончена.");
             }
@@ -264,15 +282,11 @@ namespace DocumentMark
         /// <summary>
         /// Генерирует случайную рабочую дату (не суббота и не воскресенье) в заданном диапазоне
         /// </summary>
-        /// <param name="startDate">Начальная дата диапазона (включительно)</param>
-        /// <param name="endDate">Конечная дата диапазона (включительно)</param>
-        /// <returns>Строка с датой в формате dd.MM.yyyy</returns>
         private string GetRandomWorkday(DateTime startDate, DateTime endDate)
         {
             Random random = new Random();
             List<DateTime> workdays = new List<DateTime>();
 
-            // Создаем список рабочих дней в диапазоне
             for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
             {
                 if (date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday)
@@ -281,7 +295,6 @@ namespace DocumentMark
                 }
             }
 
-            // Если рабочих дней нет, возвращаем любую дату из диапазона
             if (workdays.Count == 0)
             {
                 TimeSpan diff = endDate - startDate;
@@ -289,125 +302,156 @@ namespace DocumentMark
                 return randomDate.ToString("dd.MM.yyyy");
             }
 
-            // Выбираем случайную рабочую дату
             int randomIndex = random.Next(workdays.Count);
             return workdays[randomIndex].ToString("dd.MM.yyyy");
         }
 
         /// <summary>
-        /// Обрабатывает один PDF файл
+        /// Обрабатывает один PDF файл с логикой выбора изображений относительно считываемого слова
         /// </summary>
-        /// <param name="inputPdfPath">Путь к входному PDF файлу</param>
-        /// <param name="fontPath">Путь к файлу шрифта</param>
-        /// <param name="dateForNachBuro">Дата для "Нач.бюро" (Нач.БюроДата)</param>
-        /// <param name="dateForUtverdil">Дата для "Утвердил" (УтвердилДата)</param>
-        /// <param name="dateForRazrabotal">Дата для "Разработал" (РазработалДата)</param>
-        /// <returns>True, если успешно, иначе False</returns>
         private bool ProcessSinglePdf(string inputPdfPath, string fontPath, string dateForNachBuro, string dateForUtverdil, string dateForRazrabotal)
         {
             try
             {
-                // 1. Определяем путь для выходного файла
-                string outputPdfPath = System.IO.Path.Combine(
-                    System.IO.Path.GetDirectoryName(inputPdfPath),
-                    System.IO.Path.GetFileNameWithoutExtension(inputPdfPath) + "_edited.pdf"
+                string outputPdfPath = SysPath.Combine(
+                    SysPath.GetDirectoryName(inputPdfPath),
+                    SysPath.GetFileNameWithoutExtension(inputPdfPath) + "_edited.pdf"
                 );
 
-                // 2. Открываем PDF для редактирования
                 using (var reader = new PdfReader(inputPdfPath))
                 using (var writer = new PdfWriter(outputPdfPath))
-                using (var pdfDoc = new PdfDocument(reader, writer))
+                using (var pdfDoc = new IT_PdfDocument(reader, writer)) // Используем псевдоним
                 {
-                    // Работаем с первой страницей
                     var page = pdfDoc.GetFirstPage();
                     if (page == null)
                     {
-                        LogMessage($"  Ошибка: Не удалось получить первую страницу PDF '{System.IO.Path.GetFileName(inputPdfPath)}'.");
+                        LogMessage($"  Ошибка: Не удалось получить первую страницу PDF '{SysPath.GetFileName(inputPdfPath)}'.");
                         return false;
                     }
 
-                    // 3. === Определяем формат страницы (A4 или A3) ===
                     var pageSize = page.GetPageSize();
                     float pageWidth = pageSize.GetWidth();
                     float pageHeight = pageSize.GetHeight();
+                    LogMessage($"  Размер страницы: {pageWidth:F1} x {pageHeight:F1} точек");
 
-                    bool isA3 = pageWidth > 600;
-                    string format = isA3 ? "A3" : "A4";
-                    LogMessage($"  Формат страницы: {format} ({pageWidth:F1} x {pageHeight:F1} точек)");
+                    // === Поиск опорной точки "Разраб." ===
+                    float referenceX = 0;
+                    float referenceY = 0;
+                    bool referenceFound = false;
 
-                    // 4. === Рассчитываем координаты в зависимости от формата ===
+                    try
+                    {
+                        LogMessage("  Поиск опорной точки 'Разраб.'...");
 
-                    // Фиксированные смещения для перехода от A4 к A3
-                    const float offsetX_A3 = 767.5f;
-                    const float offsetY_A3 = -266.0f;
+                        var listener = new CustomTextEventListener();
+                        var parser = new PdfCanvasProcessor(listener);
+                        parser.ProcessContent(page.GetContentBytes(), page.GetResources());
 
-                    // Определяем смещения в зависимости от формата
-                    float offsetX = isA3 ? offsetX_A3 : 0.0f;
-                    float offsetY = isA3 ? offsetY_A3 : 0.0f;
+                        var foundTextItems = listener.FindAllText("Разраб.");
+                        if (foundTextItems != null && foundTextItems.Count > 0)
+                        {
+                            var foundText = foundTextItems[0];
+                            referenceX = foundText.Rect.GetX();
+                            referenceY = foundText.Rect.GetY();
+                            referenceFound = true;
+                            LogMessage($"  Опорная точка 'Разраб.' найдена: X={referenceX:F2}, Y={referenceY:F2}");
+                        }
+                        else
+                        {
+                            LogMessage("  Опорная точка 'Разраб.' НЕ НАЙДЕНА. Используются координаты (0, 0) по умолчанию.");
+                        }
+                    }
+                    catch (Exception refEx)
+                    {
+                        LogMessage($"  Ошибка поиска опорной точки 'Разраб.': {refEx.Message}. Используются координаты (0, 0) по умолчанию.");
+                    }
 
-                    // Рассчитываем координаты путем прибавления смещения
-                    // Для текста "Утвердил"
-                    float textX_Pdf = TextX_A4 + offsetX;
-                    float textY_Pdf = TextY_A4 + offsetY;
+                    // === Настройки относительно опорной точки "Разраб." ===
+                    const float Text_OffsetFromReferenceX = 55f;
+                    const float Text_OffsetFromReferenceY = 0f;
+                    const int FontSize_Main = 16;
 
-                    // Для даты "Утвердил" (УтвердилДата)
-                    float secondTextX_Pdf = SecondTextX_A4 + offsetX;
-                    float secondTextY_Pdf = SecondTextY_A4 + offsetY;
+                    const float SecondText_OffsetFromReferenceX = 159f;
+                    const float SecondText_OffsetFromReferenceY = -2f;
+                    const int FontSize_Date = 8;
 
-                    // Для текста "Нач.бюро"
-                    float thirdTextX_Pdf = ThirdTextX_A4 + offsetX;
-                    float thirdTextY_Pdf = ThirdTextY_A4 + offsetY;
+                    const float ThirdText_OffsetFromReferenceX = 55f;
+                    const float ThirdText_OffsetFromReferenceY = 28f;
+                    const int ThirdFontSize_Main = 16;
 
-                    // Для даты "Нач.бюро" (Нач.БюроДата)
-                    float fourthTextX_Pdf = FourthTextX_A4 + offsetX;
-                    float fourthTextY_Pdf = FourthTextY_A4 + offsetY;
+                    const float FourthText_OffsetFromReferenceX = 159f;
+                    const float FourthText_OffsetFromReferenceY = 26f;
+                    const int FourthFontSize_Date = 8;
 
-                    // Для текста "Разработал" (если нужен)
-                    // float fifthTextX_Pdf = FifthTextX_A4 + offsetX;
-                    // float fifthTextY_Pdf = FifthTextY_A4 + offsetY;
+                    const float SixthText_OffsetFromReferenceX = 159f;
+                    const float SixthText_OffsetFromReferenceY = 73f;
+                    const int SixthFontSize_Date = 8;
 
-                    // Для даты "Разработал" (РазработалДата)
-                    float sixthTextX_Pdf = SixthTextX_A4 + offsetX;
-                    float sixthTextY_Pdf = SixthTextY_A4 + offsetY;
+                    const float Image1_OffsetFromReferenceX = 90f;
+                    const float Image1_OffsetFromReferenceY = -15f;
+                    const float Image1_TargetWidth = 90f;
+                    const float Image1_TargetHeight = 40f;
+                    const string ImagePath1 = @"C:\PDF\1\Rename\Подп001.tif";
 
-                    // Для изображения 1
-                    float image1X_Pdf = Image1X_A4 + offsetX;
-                    float image1Y_Pdf = Image1Y_A4 + offsetY;
+                    const float Image2_OffsetFromReferenceX = 105f;
+                    const float Image2_OffsetFromReferenceY = 15f;
+                    const float Image2_TargetWidth = 80f;
+                    const float Image2_TargetHeight = 50f;
+                    const string ImagePath2 = @"C:\PDF\1\Rename\Подп002.tif";
 
-                    // Для изображения 2
-                    float image2X_Pdf = Image2X_A4 + offsetX;
-                    float image2Y_Pdf = Image2Y_A4 + offsetY;
+                    const float Image3_OffsetFromReferenceX = 105f; // Пример, подберите
+                    const float Image3_OffsetFromReferenceY = 62f;  // Пример, подберите
+                    const float Image3_TargetWidth = 80f;          // Пример, подберите
+                    const float Image3_TargetHeight = 50f;         // Пример, подберите
+                    const string ImagePath3_Default = @"C:\PDF\1\Rename\Подп003.tif";
+                    const string ImagePath3_Alt1 = @"C:\PDF\1\Rename\Подп002.tif";
+                    const string ImagePath3_Alt2 = @"C:\PDF\1\Rename\Подп006.tif";
+                    const string ImagePath3_Alt3 = @"C:\PDF\1\Rename\Подп005.tif";
+                    const string ImagePath3_Alt4 = @"C:\PDF\1\Rename\Подп004.tif";
 
-                    // Для изображения 3
-                    float image3X_Pdf = Image3X_A4 + offsetX;
-                    float image3Y_Pdf = Image3Y_A4 + offsetY;
+                    // === Настройки для зоны считывания текста ===
+                    const float ReadArea_OffsetFromReferenceX = 55f;    // Пример, подберите (относительно опорной точки "Разраб.")
+                    const float ReadArea_OffsetFromReferenceY = 73f;   // Пример, подберите (относительно опорной точки "Разраб.")
+                    const float ReadArea_Width = 100f;                 // Пример, подберите
+                    const float ReadArea_Height = 15f;                // Пример, подберите
 
-                    // Масштабируем размеры изображений
-                    float imageScaleX = isA3 ? A4_TO_A3_SCALE_X : 1.0f;
-                    float imageScaleY = isA3 ? A4_TO_A3_SCALE_Y : 1.0f;
+                    // === Расчет АБСОЛЮТНЫХ координат относительно опорной точки ===
+                    float textX_Pdf = referenceX + Text_OffsetFromReferenceX;
+                    float textY_Pdf = referenceY + Text_OffsetFromReferenceY;
+                    float secondTextX_Pdf = referenceX + SecondText_OffsetFromReferenceX;
+                    float secondTextY_Pdf = referenceY + SecondText_OffsetFromReferenceY;
+                    float thirdTextX_Pdf = referenceX + ThirdText_OffsetFromReferenceX;
+                    float thirdTextY_Pdf = referenceY + ThirdText_OffsetFromReferenceY;
+                    float fourthTextX_Pdf = referenceX + FourthText_OffsetFromReferenceX;
+                    float fourthTextY_Pdf = referenceY + FourthText_OffsetFromReferenceY;
+                    float sixthTextX_Pdf = referenceX + SixthText_OffsetFromReferenceX;
+                    float sixthTextY_Pdf = referenceY + SixthText_OffsetFromReferenceY;
 
-                    float image1TargetWidth = Image1TargetWidth_A4 * imageScaleX;
-                    float image1TargetHeight = Image1TargetHeight_A4 * imageScaleY;
-                    float image2TargetWidth = Image2TargetWidth_A4 * imageScaleX;
-                    float image2TargetHeight = Image2TargetHeight_A4 * imageScaleY;
-                    float image3TargetWidth = Image3TargetWidth_A4 * imageScaleX;
-                    float image3TargetHeight = Image3TargetHeight_A4 * imageScaleY;
+                    float image1X_Pdf = referenceX + Image1_OffsetFromReferenceX;
+                    float image1Y_Pdf = referenceY + Image1_OffsetFromReferenceY;
+                    float image2X_Pdf = referenceX + Image2_OffsetFromReferenceX;
+                    float image2Y_Pdf = referenceY + Image2_OffsetFromReferenceY;
+                    float image3X_Pdf = referenceX + Image3_OffsetFromReferenceX;
+                    float image3Y_Pdf = referenceY + Image3_OffsetFromReferenceY;
+
+                    float readAreaX_Pdf = referenceX + ReadArea_OffsetFromReferenceX;
+                    float readAreaY_Pdf = referenceY + ReadArea_OffsetFromReferenceY;
+                    float readAreaWidth_Pdf = ReadArea_Width;
+                    float readAreaHeight_Pdf = ReadArea_Height;
 
                     // 5. === Создаем PdfCanvas для рисования прямоугольников ===
                     PdfCanvas canvas = new PdfCanvas(page.NewContentStreamAfter(), page.GetResources(), pdfDoc);
 
                     // === НАЧАЛО: Отрисовка прямоугольников ===
-                    // Используем ваши точные координаты и размеры
-
                     // Прямоугольник 1 
-                    float rect1X = -254f + offsetX;
-                    float rect1Y = -437f + offsetY;
+                    float rect1X = referenceX + 106f;
+                    float rect1Y = referenceY + 13f;
                     float rect1Width = 27f;
                     float rect1Height = 13f;
 
                     // Прямоугольник 2 
-                    float rect2X = -225.6f + offsetX;
-                    float rect2Y = -437f + offsetY;
+                    float rect2X = referenceX + 135.4f;
+                    float rect2Y = referenceY + 13f;
                     float rect2Width = 5f;
                     float rect2Height = 13f;
 
@@ -425,63 +469,51 @@ namespace DocumentMark
                     canvas.Fill(); // Закрашиваем прямоугольник
                     canvas.RestoreState();
 
-                    LogMessage("  Белые прямоугольники нарисованы.");
+                    // === НОВОЕ: Красный прямоугольник для зоны считывания ===
+                    canvas.SaveState();
+                    canvas.SetStrokeColorRgb(1.0f, 0.0f, 0.0f); // RGB для красного цвета (обводка)
+                    canvas.SetFillColorRgb(1.0f, 1.0f, 1.0f);   // RGB для белого цвета (заливка)
+                    canvas.SetLineWidth(1); // Толщина линии
+                    // Используем рассчитанные абсолютные координаты
+                    canvas.Rectangle(readAreaX_Pdf, readAreaY_Pdf, readAreaWidth_Pdf, readAreaHeight_Pdf);
+                    canvas.FillStroke(); // Закрашиваем и рисуем обводку
+                    canvas.RestoreState();
+
+                    LogMessage("  Прямоугольники нарисованы (включая красный для зоны считывания).");
                     // === КОНЕЦ: Отрисовка прямоугольников ===
 
                     // === НОВОЕ: Считывание текста из области ===
                     string readText = "";
                     try
                     {
-                        // Определяем координаты области считывания
-                        float readAreaX = -360f + offsetX;
-                        float readAreaY = -436f + offsetY;
-                        float readAreaWidth = 60f;
-                        float readAreaHeight = 11f;
-
-                        LogMessage($"  Попытка считывания текста из области: X={readAreaX:F1}, Y={readAreaY:F1}, W={readAreaWidth:F1}, H={readAreaHeight:F1}");
+                        LogMessage($"  Попытка считывания текста из области: X={readAreaX_Pdf:F1}, Y={readAreaY_Pdf:F1}, W={readAreaWidth_Pdf:F1}, H={readAreaHeight_Pdf:F1}");
 
                         // Создаем прямоугольник для области интереса
-                        Rectangle region = new Rectangle(readAreaX, readAreaY, readAreaWidth, readAreaHeight);
+                        IT_Rectangle region = new IT_Rectangle(readAreaX_Pdf, readAreaY_Pdf, readAreaWidth_Pdf, readAreaHeight_Pdf); // Используем псевдоним
 
-                        // === ИСПРАВЛЕНО: CS1503 - используем LocationTextExtractionStrategy без FilteredEventListener ===
                         // Используем LocationTextExtractionStrategy для извлечения текста
                         LocationTextExtractionStrategy strategy = new LocationTextExtractionStrategy();
 
                         // Извлекаем текст из страницы
                         string allText = PdfTextExtractor.GetTextFromPage(page, strategy);
 
-                        // Теперь нужно вручную отфильтровать текст, который попадает в нашу область
-                        // LocationTextExtractionStrategy возвращает весь текст, но мы можем попробовать 
-                        // получить текст, который находится в определенной области, проанализировав результат.
-                        // Однако, более точный способ - это использовать RegionTextRenderInfo, если он доступен.
-                        // Для простоты, попробуем получить текст, который начинается с определенных координат.
-                        // Но это может быть неточно. Лучше использовать стратегию, которая поддерживает регионы.
-
-                        // Альтернативный подход: попробуем использовать простую стратегию и вручную проверить координаты
-                        // Но это сложно без доступа к координатам каждого символа.
-
-                        // Попробуем использовать RegionTextRenderInfo, если он доступен в вашей версии.
-                        // Если нет, используем LocationTextExtractionStrategy и примитивную фильтрацию.
-
-                        // Пока что просто извлекаем весь текст и пытаемся найти нужное слово.
-                        // Это не идеально, но может сработать для вашего случая.
+                        // Простой поиск ключевых слов в извлеченном тексте
                         if (!string.IsNullOrEmpty(allText))
                         {
-                            // Разбиваем текст на строки и ищем нужное слово
                             string[] lines = allText.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
                             foreach (string line in lines)
                             {
-                                // Простая проверка наличия слов
-                                if (line.Contains("Старцев") || line.Contains("Максимов") ||
-                                    line.Contains("Тихомиров") || line.Contains("Седюк") ||
-                                    line.Contains("Русских"))
+                                if (line.IndexOf("Старцев", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                    line.IndexOf("Максимов", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                    line.IndexOf("Тихомиров", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                    line.IndexOf("Седюк", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                    line.IndexOf("Русских", StringComparison.OrdinalIgnoreCase) >= 0)
                                 {
-                                    // Берем первое найденное слово
-                                    if (line.Contains("Старцев")) readText = "Старцев";
-                                    else if (line.Contains("Максимов")) readText = "Максимов";
-                                    else if (line.Contains("Тихомиров")) readText = "Тихомиров";
-                                    else if (line.Contains("Седюк")) readText = "Седюк";
-                                    else if (line.Contains("Русских")) readText = "Русских";
+                                    if (line.IndexOf("Старцев", StringComparison.OrdinalIgnoreCase) >= 0) readText = "Старцев";
+                                    else if (line.IndexOf("Максимов", StringComparison.OrdinalIgnoreCase) >= 0) readText = "Максимов";
+                                    else if (line.IndexOf("Тихомиров", StringComparison.OrdinalIgnoreCase) >= 0) readText = "Тихомиров";
+                                    else if (line.IndexOf("Седюк", StringComparison.OrdinalIgnoreCase) >= 0) readText = "Седюк";
+                                    else if (line.IndexOf("Русских", StringComparison.OrdinalIgnoreCase) >= 0) readText = "Русских";
                                     break;
                                 }
                             }
@@ -489,28 +521,11 @@ namespace DocumentMark
 
                         readText = readText.Trim();
                         LogMessage($"  Считанный текст (примитивный поиск): '{readText}'");
-
-                        // Более точный способ (если RegionTextRenderInfo доступен):
-                        // Попробуем его использовать, обернув в try-catch
-                        /*
-                        try 
-                        {
-                            // Это может не скомпилироваться, если RegionTextRenderInfo недоступен
-                            // RegionTextRenderInfo regionInfo = new RegionTextRenderInfo(region);
-                            // string regionText = PdfTextExtractor.GetTextFromPage(page, regionInfo);
-                            // readText = regionText?.Trim() ?? "";
-                        }
-                        catch (Exception regionEx)
-                        {
-                            LogMessage($"  Не удалось использовать RegionTextRenderInfo: {regionEx.Message}");
-                            // Продолжаем с примитивным поиском
-                        }
-                        */
                     }
                     catch (Exception readEx)
                     {
                         LogMessage($"  Ошибка считывания текста: {readEx.Message}");
-                        readText = ""; // В случае ошибки считываем пустую строку
+                        readText = "";
                     }
                     // === КОНЕЦ: Считывание текста из области ===
 
@@ -545,7 +560,7 @@ namespace DocumentMark
                         }
                         else
                         {
-                            imagePath3_Selected = ""; // Не вставляем изображение
+                            imagePath3_Selected = "";
                             if (string.IsNullOrEmpty(readText))
                             {
                                 LogMessage($"  Текст не считан или пуст. Изображение 3 вставлено не будет.");
@@ -564,7 +579,6 @@ namespace DocumentMark
                     // === КОНЕЦ: Определение пути к изображению 3 ===
 
                     // 6. === Создаем новый PdfCanvas для рисования текста ===
-                    // Важно: используем новый content stream, чтобы текст рисовался поверх прямоугольников
                     PdfCanvas textCanvas = new PdfCanvas(page.NewContentStreamAfter(), page.GetResources(), pdfDoc);
 
                     // 7. === Загружаем шрифт ===
@@ -575,7 +589,7 @@ namespace DocumentMark
                         {
                             byte[] fontBytes = System.IO.File.ReadAllBytes(fontPath);
                             font = PdfFontFactory.CreateFont(fontBytes, "Identity-H");
-                            LogMessage($"  Шрифт загружен: {System.IO.Path.GetFileName(fontPath)}");
+                            LogMessage($"  Шрифт загружен: {SysPath.GetFileName(fontPath)}");
                         }
                         else
                         {
@@ -593,50 +607,50 @@ namespace DocumentMark
                     // Утвердил
                     textCanvas.SaveState();
                     textCanvas.BeginText();
-                    textCanvas.SetFontAndSize(font, FontSize_A4);
+                    textCanvas.SetFontAndSize(font, FontSize_Main);
                     textCanvas.SetFillColor(ColorConstants.BLACK);
                     textCanvas.MoveText(textX_Pdf, textY_Pdf);
-                    textCanvas.ShowText(TextToInsert_A4);
+                    textCanvas.ShowText("Утвердил");
                     textCanvas.EndText();
                     textCanvas.RestoreState();
 
                     // УтвердилДата
                     textCanvas.SaveState();
                     textCanvas.BeginText();
-                    textCanvas.SetFontAndSize(font, SecondFontSize_A4); // Используем размер для дат
+                    textCanvas.SetFontAndSize(font, FontSize_Date);
                     textCanvas.SetFillColor(ColorConstants.BLACK);
                     textCanvas.MoveText(secondTextX_Pdf, secondTextY_Pdf);
-                    textCanvas.ShowText(dateForUtverdil); // Используем сгенерированную дату
+                    textCanvas.ShowText(dateForUtverdil);
                     textCanvas.EndText();
                     textCanvas.RestoreState();
 
                     // Нач.бюро
                     textCanvas.SaveState();
                     textCanvas.BeginText();
-                    textCanvas.SetFontAndSize(font, ThirdFontSize_A4);
+                    textCanvas.SetFontAndSize(font, ThirdFontSize_Main);
                     textCanvas.SetFillColor(ColorConstants.BLACK);
                     textCanvas.MoveText(thirdTextX_Pdf, thirdTextY_Pdf);
-                    textCanvas.ShowText(ThirdTextToInsert_A4);
+                    textCanvas.ShowText("Нач.бюро");
                     textCanvas.EndText();
                     textCanvas.RestoreState();
 
                     // Нач.БюроДата
                     textCanvas.SaveState();
                     textCanvas.BeginText();
-                    textCanvas.SetFontAndSize(font, FourthFontSize_A4); // Используем размер для дат
+                    textCanvas.SetFontAndSize(font, FourthFontSize_Date);
                     textCanvas.SetFillColor(ColorConstants.BLACK);
                     textCanvas.MoveText(fourthTextX_Pdf, fourthTextY_Pdf);
-                    textCanvas.ShowText(dateForNachBuro); // Используем сгенерированную дату
+                    textCanvas.ShowText(dateForNachBuro);
                     textCanvas.EndText();
                     textCanvas.RestoreState();
 
                     // === НОВОЕ: РазработалДата ===
                     textCanvas.SaveState();
                     textCanvas.BeginText();
-                    textCanvas.SetFontAndSize(font, SixthFontSize_A4); // Используем размер для дат
+                    textCanvas.SetFontAndSize(font, SixthFontSize_Date);
                     textCanvas.SetFillColor(ColorConstants.BLACK);
                     textCanvas.MoveText(sixthTextX_Pdf, sixthTextY_Pdf);
-                    textCanvas.ShowText(dateForRazrabotal); // Используем сгенерированную дату
+                    textCanvas.ShowText(dateForRazrabotal);
                     textCanvas.EndText();
                     textCanvas.RestoreState();
 
@@ -646,15 +660,15 @@ namespace DocumentMark
                     // Изображение 1
                     try
                     {
-                        if (System.IO.File.Exists(ImagePath1_A4))
+                        if (System.IO.File.Exists(ImagePath1))
                         {
-                            ImageData imageData1 = ImageDataFactory.Create(ImagePath1_A4);
+                            IT_ImageData imageData1 = IT_ImageDataFactory.Create(ImagePath1); // Используем псевдонимы
                             if (imageData1 != null)
                             {
-                                Image imageElement1 = new Image(imageData1);
+                                IT_Image imageElement1 = new IT_Image(imageData1); // Используем псевдоним
                                 imageElement1.SetFixedPosition(image1X_Pdf, image1Y_Pdf);
-                                imageElement1.SetWidth(image1TargetWidth);
-                                imageElement1.SetHeight(image1TargetHeight);
+                                imageElement1.SetWidth(Image1_TargetWidth);
+                                imageElement1.SetHeight(Image1_TargetHeight);
 
                                 Canvas layoutCanvas1 = new Canvas(page, page.GetPageSize());
                                 layoutCanvas1.Add(imageElement1);
@@ -667,7 +681,7 @@ namespace DocumentMark
                         }
                         else
                         {
-                            LogMessage($"  Файл изображения 1 не найден: {System.IO.Path.GetFileName(ImagePath1_A4)}");
+                            LogMessage($"  Файл изображения 1 не найден: {SysPath.GetFileName(ImagePath1)}");
                         }
                     }
                     catch (Exception imgEx)
@@ -678,15 +692,15 @@ namespace DocumentMark
                     // Изображение 2
                     try
                     {
-                        if (System.IO.File.Exists(ImagePath2_A4))
+                        if (System.IO.File.Exists(ImagePath2))
                         {
-                            ImageData imageData2 = ImageDataFactory.Create(ImagePath2_A4);
+                            IT_ImageData imageData2 = IT_ImageDataFactory.Create(ImagePath2); // Используем псевдонимы
                             if (imageData2 != null)
                             {
-                                Image imageElement2 = new Image(imageData2);
+                                IT_Image imageElement2 = new IT_Image(imageData2); // Используем псевдоним
                                 imageElement2.SetFixedPosition(image2X_Pdf, image2Y_Pdf);
-                                imageElement2.SetWidth(image2TargetWidth);
-                                imageElement2.SetHeight(image2TargetHeight);
+                                imageElement2.SetWidth(Image2_TargetWidth);
+                                imageElement2.SetHeight(Image2_TargetHeight);
 
                                 Canvas layoutCanvas2 = new Canvas(page, page.GetPageSize());
                                 layoutCanvas2.Add(imageElement2);
@@ -699,7 +713,7 @@ namespace DocumentMark
                         }
                         else
                         {
-                            LogMessage($"  Файл изображения 2 не найден: {System.IO.Path.GetFileName(ImagePath2_A4)}");
+                            LogMessage($"  Файл изображения 2 не найден: {SysPath.GetFileName(ImagePath2)}");
                         }
                     }
                     catch (Exception imgEx)
@@ -712,19 +726,19 @@ namespace DocumentMark
                     {
                         try
                         {
-                            ImageData imageData3 = ImageDataFactory.Create(imagePath3_Selected);
+                            IT_ImageData imageData3 = IT_ImageDataFactory.Create(imagePath3_Selected); // Используем псевдонимы
                             if (imageData3 != null)
                             {
-                                Image imageElement3 = new Image(imageData3);
+                                IT_Image imageElement3 = new IT_Image(imageData3); // Используем псевдоним
                                 imageElement3.SetFixedPosition(image3X_Pdf, image3Y_Pdf);
-                                imageElement3.SetWidth(image3TargetWidth);
-                                imageElement3.SetHeight(image3TargetHeight);
+                                imageElement3.SetWidth(Image3_TargetWidth);
+                                imageElement3.SetHeight(Image3_TargetHeight);
 
                                 Canvas layoutCanvas3 = new Canvas(page, page.GetPageSize());
                                 layoutCanvas3.Add(imageElement3);
                                 layoutCanvas3.Close();
 
-                                LogMessage($"  Изображение 3 вставлено: {System.IO.Path.GetFileName(imagePath3_Selected)}");
+                                LogMessage($"  Изображение 3 вставлено: {SysPath.GetFileName(imagePath3_Selected)}");
                             }
                             else
                             {
@@ -738,22 +752,207 @@ namespace DocumentMark
                     }
                     else if (!string.IsNullOrEmpty(imagePath3_Selected))
                     {
-                        LogMessage($"  Файл изображения 3 не найден: {System.IO.Path.GetFileName(imagePath3_Selected)}");
+                        LogMessage($"  Файл изображения 3 не найден: {SysPath.GetFileName(imagePath3_Selected)}");
                     }
                     // Если imagePath3_Selected пустая строка, ничего не делаем - изображение не вставляется
 
                     LogMessage("  Обработка изображений завершена.");
                 }
 
-                LogMessage($"  Файл сохранен как: {System.IO.Path.GetFileName(outputPdfPath)}");
+                LogMessage($"  Файл сохранен как: {SysPath.GetFileName(outputPdfPath)}");
                 return true;
 
             }
             catch (Exception ex)
             {
-                LogMessage($"  Ошибка обработки файла '{System.IO.Path.GetFileName(inputPdfPath)}': {ex.Message}");
+                LogMessage($"  Ошибка обработки файла '{SysPath.GetFileName(inputPdfPath)}': {ex.Message}");
                 return false;
             }
+            finally
+            {
+                // Всегда включаем кнопку обратно
+                button1.Enabled = true;
+                UpdateStatus("Обработка закончена.");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Пользовательский слушатель событий для извлечения текста с координатами
+    /// ИСПРАВЛЕНО: Для работы с iText 9 и LineSegment
+    /// </summary>
+    public class CustomTextEventListener : IEventListener
+    {
+        private readonly List<TextItem> _textItems = new List<TextItem>();
+
+        public virtual void EventOccurred(IEventData data, EventType type)
+        {
+            if (type == EventType.RENDER_TEXT)
+            {
+                TextRenderInfo renderInfo = (TextRenderInfo)data;
+                string text = renderInfo.GetText();
+                if (!string.IsNullOrWhiteSpace(text))
+                {
+                    try
+                    {
+                        IT_Rectangle textRect = null; // Используем псевдоним
+
+                        try
+                        {
+                            // === ИСПРАВЛЕНО: CS1061 - правильный способ получения ограничивающего прямоугольника в iText 9 ===
+                            // Способ 1: Используем GetDescentLine().GetBoundingRectangle()
+                            // Это стандартный способ в iText 7/9
+                            var descentLine = renderInfo.GetDescentLine();
+                            if (descentLine != null)
+                            {
+                                textRect = descentLine.GetBoundingRectangle(); // <-- ПРАВИЛЬНЫЙ МЕТОД
+                            }
+                        }
+                        catch (MissingMethodException)
+                        {
+                            // Если GetBoundingRectangle() недоступен, попробуем другие методы
+                            try
+                            {
+                                // Способ 2: Попробуем получить координаты из StartPoint и EndPoint
+                                var descentLine = renderInfo.GetDescentLine();
+                                if (descentLine != null)
+                                {
+                                    var startPoint = descentLine.GetStartPoint();
+                                    var endPoint = descentLine.GetEndPoint();
+
+                                    if (startPoint != null && endPoint != null)
+                                    {
+                                        // Получаем координаты точек
+                                        float x1 = startPoint.Get(0);
+                                        float y1 = startPoint.Get(1);
+                                        float x2 = endPoint.Get(0);
+                                        float y2 = endPoint.Get(1);
+
+                                        // Вычисляем bounding box
+                                        float minX = Math.Min(x1, x2);
+                                        float maxX = Math.Max(x1, x2);
+                                        float minY = Math.Min(y1, y2);
+                                        float maxY = Math.Max(y1, y2);
+
+                                        // Простая оценка ширины и высоты
+                                        float width = maxX - minX;
+                                        float height = maxY - minY;
+
+                                        // Если высота слишком маленькая, используем эвристическое значение
+                                        if (height <= 0)
+                                        {
+                                            // Примерная высота символа (очень грубая оценка)
+                                            height = 10f;
+                                            minY = y1 - height / 2;
+                                            maxY = y1 + height / 2;
+                                        }
+
+                                        textRect = new IT_Rectangle(minX, minY, width, height); // Используем псевдоним
+                                    }
+                                }
+                            }
+                            catch
+                            {
+                                // Игнорируем ошибки второго способа
+                            }
+                        }
+                        catch
+                        {
+                            // Игнорируем ошибки первого способа
+                        }
+
+                        // Если все еще не получили валидный прямоугольник, создаем минимальный для отладки
+                        if (textRect == null || (textRect.GetWidth() <= 0 && textRect.GetHeight() <= 0))
+                        {
+                            // Последний резорт: очень грубая оценка
+                            var descentLine = renderInfo.GetDescentLine();
+                            if (descentLine != null)
+                            {
+                                var startPoint = descentLine.GetStartPoint();
+                                if (startPoint != null)
+                                {
+                                    float x = startPoint.Get(0);
+                                    float y = startPoint.Get(1);
+                                    // Примерная ширина и высота (очень грубая оценка)
+                                    float estimatedWidth = text.Length * 6f; // ~6 точек на символ
+                                    float estimatedHeight = 10f; // Примерная высота символа
+                                    textRect = new IT_Rectangle(x, y - estimatedHeight / 2, estimatedWidth, estimatedHeight); // Используем псевдоним
+                                }
+                            }
+                        }
+
+                        if (textRect != null && (textRect.GetWidth() > 0 || textRect.GetHeight() > 0))
+                        {
+                            _textItems.Add(new TextItem(text, textRect));
+                        }
+                        else
+                        {
+                            // Даже если прямоугольник не валиден, добавляем текст без координат для отладки
+                            // _textItems.Add(new TextItem(text, new IT_Rectangle(0, 0, 0, 0))); // Используем псевдоним
+                            // Или просто игнорируем
+                        }
+                    }
+                    catch (Exception /*ex*/) // Переменная ex убрана, так как не используется напрямую
+                    {
+                        // Игнорируем ошибки для отдельных элементов текста
+                        // LogMessage($"Предупреждение при обработке текста '{text}': {ex.Message}");
+                    }
+                }
+            }
+        }
+
+        public virtual ICollection<EventType> GetSupportedEvents()
+        {
+            return new HashSet<EventType> { EventType.RENDER_TEXT };
+        }
+
+        /// <summary>
+        /// Находит ВСЕ вхождения указанного текста
+        /// </summary>
+        public List<TextItem> FindAllText(string searchText)
+        {
+            List<TextItem> results = new List<TextItem>();
+            foreach (var item in _textItems)
+            {
+                // ИСПРАВЛЕНО: CS1501 - правильное использование IndexOf с StringComparison
+                if (item.Text.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    results.Add(item);
+                }
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Находит первое вхождение указанного текста
+        /// </summary>
+        public TextItem FindText(string searchText)
+        {
+            var allMatches = FindAllText(searchText);
+            return allMatches.Count > 0 ? allMatches[0] : null;
+        }
+
+        /// <summary>
+        /// Возвращает все найденные текстовые элементы
+        /// </summary>
+        public List<TextItem> GetAllTextItems()
+        {
+            return new List<TextItem>(_textItems);
+        }
+    }
+
+    /// <summary>
+    /// Представляет текстовый элемент с его координатами
+    /// </summary>
+    public class TextItem
+    {
+        public string Text { get; }
+        public IT_Rectangle Rect { get; } // Используем псевдоним
+
+        public TextItem(string text, IT_Rectangle rect) // Используем псевдоним
+        {
+            Text = text ?? throw new ArgumentNullException(nameof(text));
+            Rect = rect ?? throw new ArgumentNullException(nameof(rect));
         }
     }
 }
