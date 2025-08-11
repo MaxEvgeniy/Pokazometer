@@ -28,3 +28,13 @@
 /Python/Technology/DocumentMark2/packages/BouncyCastle.Cryptography.2.4.0
 /Python/Technology/DocumentMark2/packages/iTextSharp.5.5.13.4
 /Python/Technology/DocumentMark2/.vs/DocumentMark2/FileContentIndex/8ec0b04a-3816-41b7-899e-b882e755601c.vsidx
+*.vsidx
+/Python/Technology/DocumentMark/bin/Debug
+/Python/Technology/DocumentMark/obj/Debug
+/Python/Technology/DocumentMark/packages/itext7.commons.9.2.0
+/Python/Technology/DocumentMark/packages/itext7.pdfhtml.6.2.0
+/Python/Technology/DocumentMark/packages/itext.pdfhtml.6.2.0
+/Python/Technology/DocumentMark/packages/Microsoft.Bcl.Cryptography.9.0.8
+/Python/Technology/DocumentMark/packages/PDFsharp.6.2.1
+/Python/Technology/DocumentMark/packages/System.Formats.Asn1.9.0.8
+/Python/Technology/DocumentMark/packages/System.Security.Cryptography.Pkcs.9.0.8
