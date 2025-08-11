@@ -2,9 +2,11 @@
 using System.Drawing;
 using System.Drawing.Text;
 using System.IO;
+using System.util;
 using System.Windows.Forms;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.parser;
 
 namespace PDFSquareDrawer
 {
@@ -14,6 +16,7 @@ namespace PDFSquareDrawer
         private Label statusLabel;
         private ComboBox fontComboBox;
         private bool isRussian = true; // true - русский, false - английский
+        private const float A3_CORRECTION_X = -11.3f; // Постоянная поправка для формата А3
 
         // Константы для изображений (от правого нижнего края)
         private const float IMAGE1_OFFSET_X = 425f; // отступ от правого края влево
@@ -22,13 +25,14 @@ namespace PDFSquareDrawer
         private const float IMAGE2_OFFSET_Y = 40f;
         private const float IMAGE3_OFFSET_X = 425f;
         private const float IMAGE3_OFFSET_Y = 8f;
-
-        private const float IMAGE_WIDTH = 90f;
-        private const float IMAGE_HEIGHT = 40f;
+        private const float IMAGE_WIDTH = 80f;
+        private const float IMAGE_HEIGHT = 30f;
 
         // Константы для текста (от правого нижнего края)
-        private const float TEXT_OFFSET_X = 490f; // отступ от правого края влево
-        private const float TEXT_OFFSET_Y = 87f;  // отступ от нижнего края вверх
+        private const float CHIEF_TEXT_OFFSET_X = 490f;
+        private const float CHIEF_TEXT_OFFSET_Y = 45f;
+        private const float APPROVED_TEXT_OFFSET_X = 490f;
+        private const float APPROVED_TEXT_OFFSET_Y = 17f;
 
         // Константы для дат (от правого нижнего края)
         private const float DATE_DEVELOPED_OFFSET_X = 385f;
@@ -53,7 +57,18 @@ namespace PDFSquareDrawer
         private const float RECT2_WIDTH = 5f;
         private const float RECT2_HEIGHT = 13f;
 
-        private string[] imageFiles = { "Подп001.tif", "Подп002.tif", "Подп003.tif" };
+        // Константы для зоны распознавания (где раньше было поле "Разработал")
+        private const float RECOGNITION_ZONE_OFFSET_X = 490f; // отступ от правого края влево
+        private const float RECOGNITION_ZONE_OFFSET_Y = 86f;  // отступ от нижнего края вверх
+        private const float RECOGNITION_ZONE_WIDTH = 63f;    // ширина зоны
+        private const float RECOGNITION_ZONE_HEIGHT = 13f;    // высота зоны
+
+        // Список возможных файлов изображений
+        private string[] possibleImageFiles = {
+            "Подп001.tif", "Подп002.tif", "Подп003.tif",
+            "Подп004.tif", "Подп005.tif", "Подп006.tif",
+            "Подп_Не_Распознано.tif"
+        };
 
         public Form1()
         {
@@ -170,10 +185,11 @@ namespace PDFSquareDrawer
             // Проверяем, существуют ли файлы изображений
             bool imagesExist = true;
             string missingImages = "";
-            foreach (string imageFile in imageFiles)
+            foreach (string imageFile in possibleImageFiles)
             {
                 string imagePath = Path.Combine(folderPath, imageFile);
-                if (!File.Exists(imagePath))
+                // Не проверяем "Подп_Не_Распознано.tif" как обязательный
+                if (!imageFile.Equals("Подп_Не_Распознано.tif") && !File.Exists(imagePath))
                 {
                     imagesExist = false;
                     missingImages += imageFile + ", ";
@@ -272,28 +288,53 @@ namespace PDFSquareDrawer
                         PdfContentByte canvas = stamper.GetOverContent(1);
                         iTextSharp.text.Rectangle pageSize = reader.GetPageSize(1);
 
+                        // Применяем поправку для формата А3
+                        float correctionX = 0f;
+                        if (IsA3Format(pageSize))
+                        {
+                            correctionX = A3_CORRECTION_X;
+                        }
+
+                        // Извлекаем текст из зоны распознавания
+                        string recognizedText = "";
+                        try
+                        {
+                            recognizedText = ExtractTextFromRecognitionZone(reader, 1, pageSize, correctionX);
+                            statusLabel.Text = $"Извлечен текст: '{recognizedText}'";
+                            this.Refresh();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Ошибка извлечения текста: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+
                         // Рисуем прямоугольники
-                        DrawRectangles(canvas, pageSize);
+                        DrawRectangles(canvas, pageSize, correctionX);
 
                         // Выбираем текст в зависимости от языка
-                        string mainText = isRussian ? "Разработал" : "Developed by";
                         string chiefText = isRussian ? "Нач.Бюро" : "Chief";
                         string approvedText = isRussian ? "Утвердил" : "Approved";
 
-                        AddMainText(canvas, pageSize, mainText, TEXT_OFFSET_X, TEXT_OFFSET_Y);
-                        AddChiefText(canvas, pageSize, chiefText, 200f, TEXT_OFFSET_Y);
-                        AddApprovedText(canvas, pageSize, approvedText, 100f, TEXT_OFFSET_Y);
+                        AddChiefText(canvas, pageSize, chiefText, CHIEF_TEXT_OFFSET_X - correctionX, CHIEF_TEXT_OFFSET_Y);
+                        AddApprovedText(canvas, pageSize, approvedText, APPROVED_TEXT_OFFSET_X - correctionX, APPROVED_TEXT_OFFSET_Y);
 
                         // Добавляем даты
-                        AddDateText(canvas, pageSize, DATE_DEVELOPED_VALUE, DATE_DEVELOPED_OFFSET_X, DATE_DEVELOPED_OFFSET_Y);
-                        AddDateText(canvas, pageSize, DATE_CHIEF_VALUE, DATE_CHIEF_OFFSET_X, DATE_CHIEF_OFFSET_Y);
-                        AddDateText(canvas, pageSize, DATE_APPROVED_VALUE, DATE_APPROVED_OFFSET_X, DATE_APPROVED_OFFSET_Y);
+                        AddDateText(canvas, pageSize, DATE_DEVELOPED_VALUE, DATE_DEVELOPED_OFFSET_X - correctionX, DATE_DEVELOPED_OFFSET_Y);
+                        AddDateText(canvas, pageSize, DATE_CHIEF_VALUE, DATE_CHIEF_OFFSET_X - correctionX, DATE_CHIEF_OFFSET_Y);
+                        AddDateText(canvas, pageSize, DATE_APPROVED_VALUE, DATE_APPROVED_OFFSET_X - correctionX, DATE_APPROVED_OFFSET_Y);
 
                         // Добавляем изображения
                         string folderPath = Path.GetDirectoryName(filePath);
-                        AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, imageFiles[0]), IMAGE1_OFFSET_X, IMAGE1_OFFSET_Y);
-                        AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, imageFiles[1]), IMAGE2_OFFSET_X, IMAGE2_OFFSET_Y);
-                        AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, imageFiles[2]), IMAGE3_OFFSET_X, IMAGE3_OFFSET_Y);
+
+                        // Выбираем изображение подписи на основе распознанного текста
+                        string imagePath1 = GetSignatureImagePath(folderPath, recognizedText);
+
+                        AddImageToPdf(canvas, pageSize, imagePath1, IMAGE1_OFFSET_X - correctionX, IMAGE1_OFFSET_Y);
+                        AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп002.tif"), IMAGE2_OFFSET_X - correctionX, IMAGE2_OFFSET_Y);
+                        AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп003.tif"), IMAGE3_OFFSET_X - correctionX, IMAGE3_OFFSET_Y);
+
+                        // Рисуем временную красную рамку для зоны распознавания
+                        DrawRecognitionZone(canvas, pageSize, correctionX);
                     }
 
                     stamper.Close();
@@ -310,28 +351,48 @@ namespace PDFSquareDrawer
             }
         }
 
-        private void DrawRectangles(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize)
+        private bool IsA3Format(iTextSharp.text.Rectangle pageSize)
+        {
+            // A3 размер: 297 x 420 мм или 842 x 1191 точек
+            // Проверяем размеры страницы (с небольшим допуском)
+            float width = pageSize.Width;
+            float height = pageSize.Height;
+
+            // A3 в точках (72 DPI): 841.89 x 1190.55
+            return (Math.Abs(width - 842) < 10 && Math.Abs(height - 1191) < 10) ||
+                   (Math.Abs(width - 1191) < 10 && Math.Abs(height - 842) < 10);
+        }
+
+        private void DrawRectangles(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, float correctionX)
         {
             // Устанавливаем красный цвет для прямоугольников
             canvas.SetColorFill(BaseColor.RED);
             canvas.SetColorStroke(BaseColor.RED);
 
             // Рисуем первый прямоугольник
-            float rect1X = pageSize.Right - RECT1_OFFSET_X;
+            float rect1X = pageSize.Right - RECT1_OFFSET_X + correctionX;
             float rect1Y = pageSize.Bottom + RECT1_OFFSET_Y;
             canvas.Rectangle(rect1X, rect1Y, RECT1_WIDTH, RECT1_HEIGHT);
             canvas.Fill();
 
             // Рисуем второй прямоугольник
-            float rect2X = pageSize.Right - RECT2_OFFSET_X;
+            float rect2X = pageSize.Right - RECT2_OFFSET_X + correctionX;
             float rect2Y = pageSize.Bottom + RECT2_OFFSET_Y;
             canvas.Rectangle(rect2X, rect2Y, RECT2_WIDTH, RECT2_HEIGHT);
             canvas.Fill();
         }
 
-        private void AddMainText(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, string text, float offsetX, float offsetY)
+        private void DrawRecognitionZone(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, float correctionX)
         {
-            AddTextWithFontFromBottomRight(canvas, pageSize, text, offsetX, offsetY, 14);
+            // Рисуем временную красную рамку для зоны распознавания
+            canvas.SetColorStroke(BaseColor.RED);
+            canvas.SetLineWidth(1.0f);
+
+            float zoneX = pageSize.Right - RECOGNITION_ZONE_OFFSET_X + correctionX;
+            float zoneY = pageSize.Bottom + RECOGNITION_ZONE_OFFSET_Y;
+
+            canvas.Rectangle(zoneX, zoneY, RECOGNITION_ZONE_WIDTH, RECOGNITION_ZONE_HEIGHT);
+            canvas.Stroke();
         }
 
         private void AddChiefText(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, string text, float offsetX, float offsetY)
@@ -447,6 +508,109 @@ namespace PDFSquareDrawer
                 // Просто игнорируем ошибки с изображениями, чтобы не прерывать обработку PDF
                 Console.WriteLine($"Ошибка при добавлении изображения {imagePath}: {ex.Message}");
             }
+        }
+
+        /// <summary>
+        /// Извлекает текст из заданной области на странице PDF.
+        /// </summary>
+        private string ExtractTextFromRecognitionZone(PdfReader reader, int pageNumber, iTextSharp.text.Rectangle pageSize, float correctionX)
+        {
+            string extractedText = "";
+
+            try
+            {
+                // 1. Определяем координаты зоны распознавания
+                float zoneX = pageSize.Right - RECOGNITION_ZONE_OFFSET_X + correctionX;
+                float zoneY = pageSize.Bottom + RECOGNITION_ZONE_OFFSET_Y;
+                // Создаем прямоугольник для зоны
+                iTextSharp.text.Rectangle recognitionRect = new iTextSharp.text.Rectangle(
+                    zoneX, zoneY, zoneX + RECOGNITION_ZONE_WIDTH, zoneY + RECOGNITION_ZONE_HEIGHT
+                );
+
+                // 2. Используем RegionTextRenderFilter и FilteredTextRenderListener для извлечения текста с позициями
+                RegionTextRenderFilter filter = new RegionTextRenderFilter(recognitionRect);
+                FilteredTextRenderListener listener = new FilteredTextRenderListener(new LocationTextExtractionStrategy(), filter);
+
+                // 3. Извлекаем текст с применением фильтра
+                extractedText = PdfTextExtractor.GetTextFromPage(reader, pageNumber, listener);
+
+                // 4. Очищаем текст от лишних пробелов и символов новой строки
+                extractedText = extractedText.Trim();
+
+            }
+            catch (Exception ex)
+            {
+                // Просто логируем ошибку и возвращаем пустую строку
+                Console.WriteLine($"Ошибка при извлечении текста из зоны: {ex.Message}");
+                extractedText = "";
+            }
+
+            return extractedText;
+        }
+
+        /// <summary>
+        /// Определяет путь к изображению подписи на основе извлеченного текста.
+        /// </summary>
+        private string GetSignatureImagePath(string folderPath, string recognizedText)
+        {
+            // Приводим текст к нижнему регистру для нечувствительного сравнения и убираем пробелы
+            string normalizedText = recognizedText.ToLower().Trim();
+
+            // Логика выбора изображения
+            switch (normalizedText)
+            {
+                case "максимов":
+                    return Path.Combine(folderPath, "Подп003.tif");
+                case "старцев":
+                    return Path.Combine(folderPath, "Подп002.tif");
+                case "русских":
+                    return Path.Combine(folderPath, "Подп004.tif");
+                case "седюк":
+                    return Path.Combine(folderPath, "Подп005.tif");
+                case "тихомиров":
+                    return Path.Combine(folderPath, "Подп006.tif");
+                default:
+                    // Если текст не распознан или не соответствует ключевым словам
+                    // Возвращаем изображение "Не распознано" если оно существует
+                    string unknownPath = Path.Combine(folderPath, "Подп_Не_Распознано.tif");
+                    if (File.Exists(unknownPath))
+                    {
+                        return unknownPath;
+                    }
+                    else
+                    {
+                        // Возвращаем первое изображение из списка по умолчанию как запасной вариант
+                        string defaultPath = Path.Combine(folderPath, "Подп001.tif");
+                        return defaultPath;
+                    }
+            }
+        }
+    }
+
+    // Дополнительный класс для фильтрации текста по области
+    public class RegionTextRenderFilter : RenderFilter
+    {
+        private RectangleJ region;
+
+        public RegionTextRenderFilter(iTextSharp.text.Rectangle filterRect)
+        {
+            this.region = new RectangleJ(filterRect.Left, filterRect.Bottom, filterRect.Width, filterRect.Height);
+        }
+
+        public override bool AllowText(TextRenderInfo renderInfo)
+        {
+            LineSegment segment = renderInfo.GetDescentLine();
+            Vector startPoint = segment.GetStartPoint();
+            Vector endPoint = segment.GetEndPoint();
+
+            RectangleJ textRect = new RectangleJ(
+                Math.Min(startPoint[Vector.I1], endPoint[Vector.I1]),
+                Math.Min(startPoint[Vector.I2], endPoint[Vector.I2]),
+                Math.Abs(endPoint[Vector.I1] - startPoint[Vector.I1]),
+                Math.Abs(endPoint[Vector.I2] - startPoint[Vector.I2])
+            );
+
+            return region.Intersects(textRect);
         }
     }
 
