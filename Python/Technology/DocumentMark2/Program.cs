@@ -2,11 +2,13 @@
 using System.Drawing;
 using System.Drawing.Text;
 using System.IO;
-using System.util;
 using System.Windows.Forms;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+// Импортируем пространство имен для парсера
 using iTextSharp.text.pdf.parser;
+// Для устранения конфликта имен Path
+using Path = System.IO.Path;
 
 namespace PDFSquareDrawer
 {
@@ -15,6 +17,7 @@ namespace PDFSquareDrawer
         private Button drawButton;
         private Label statusLabel;
         private ComboBox fontComboBox;
+        private TextBox logTextBox; // Новое поле для лога
         private bool isRussian = true; // true - русский, false - английский
         private const float A3_CORRECTION_X = -11.3f; // Постоянная поправка для формата А3
 
@@ -58,9 +61,9 @@ namespace PDFSquareDrawer
         private const float RECT2_HEIGHT = 13f;
 
         // Константы для зоны распознавания (где раньше было поле "Разработал")
-        private const float RECOGNITION_ZONE_OFFSET_X = 490f; // отступ от правого края влево
+        private const float RECOGNITION_ZONE_OFFSET_X = 487f; // отступ от правого края влево
         private const float RECOGNITION_ZONE_OFFSET_Y = 86f;  // отступ от нижнего края вверх
-        private const float RECOGNITION_ZONE_WIDTH = 63f;    // ширина зоны
+        private const float RECOGNITION_ZONE_WIDTH = 61f;    // ширина зоны
         private const float RECOGNITION_ZONE_HEIGHT = 13f;    // высота зоны
 
         // Список возможных файлов изображений
@@ -78,7 +81,7 @@ namespace PDFSquareDrawer
         private void InitializeComponent()
         {
             this.Text = "PDF Square Drawer";
-            this.Size = new Size(500, 400);
+            this.Size = new Size(600, 500); // Увеличиваем размер окна
             this.StartPosition = FormStartPosition.CenterScreen;
 
             int currentY = 20;
@@ -116,15 +119,32 @@ namespace PDFSquareDrawer
             currentY += 40;
 
             statusLabel = new Label();
-            statusLabel.Size = new Size(400, 60);
+            statusLabel.Size = new Size(400, 30);
             statusLabel.Location = new Point(50, currentY);
             statusLabel.Text = "Готово к работе";
+            currentY += 35;
+
+            // Добавляем текстовое поле для лога
+            Label logLabel = new Label();
+            logLabel.Text = "Лог:";
+            logLabel.Size = new Size(100, 20);
+            logLabel.Location = new Point(50, currentY);
+            currentY += 20;
+
+            logTextBox = new TextBox();
+            logTextBox.Size = new Size(450, 100);
+            logTextBox.Location = new Point(50, currentY);
+            logTextBox.Multiline = true;
+            logTextBox.ScrollBars = ScrollBars.Vertical;
+            logTextBox.ReadOnly = true;
 
             this.Controls.Add(drawButton);
             this.Controls.Add(toggleLanguageButton);
             this.Controls.Add(fontLabel);
             this.Controls.Add(fontComboBox);
             this.Controls.Add(statusLabel);
+            this.Controls.Add(logLabel);
+            this.Controls.Add(logTextBox);
         }
 
         private void PopulateFontList()
@@ -181,6 +201,9 @@ namespace PDFSquareDrawer
         private void DrawButton_Click(object sender, EventArgs e)
         {
             string folderPath = @"C:\PDF\1\Rename";
+
+            // Очищаем лог перед началом обработки
+            logTextBox.Text = "Начало обработки...\r\n";
 
             // Проверяем, существуют ли файлы изображений
             bool imagesExist = true;
@@ -241,6 +264,7 @@ namespace PDFSquareDrawer
                 {
                     try
                     {
+                        logTextBox.AppendText($"Обработка файла: {Path.GetFileName(filePath)}\r\n");
                         ProcessPdfFile(filePath);
                         processedCount++;
                         statusLabel.Text = $"Обработано: {processedCount}/{pdfFiles.Length}";
@@ -248,18 +272,21 @@ namespace PDFSquareDrawer
                     }
                     catch (Exception ex)
                     {
+                        logTextBox.AppendText($"Ошибка обработки файла {Path.GetFileName(filePath)}: {ex.Message}\r\n");
                         MessageBox.Show($"Ошибка обработки файла {Path.GetFileName(filePath)}: {ex.Message}",
                             "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
 
                 statusLabel.Text = $"Готово! Обработано: {processedCount}";
+                logTextBox.AppendText($"Обработка завершена! Обработано файлов: {processedCount}\r\n");
                 MessageBox.Show($"Обработка завершена!\nОбработано файлов: {processedCount}",
                     "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
                 statusLabel.Text = "Ошибка!";
+                logTextBox.AppendText($"Ошибка: {ex.Message}\r\n");
                 MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -300,15 +327,17 @@ namespace PDFSquareDrawer
                         try
                         {
                             recognizedText = ExtractTextFromRecognitionZone(reader, 1, pageSize, correctionX);
+                            logTextBox.AppendText($"  Извлеченный текст: '{recognizedText}'\r\n");
                             statusLabel.Text = $"Извлечен текст: '{recognizedText}'";
                             this.Refresh();
                         }
                         catch (Exception ex)
                         {
+                            logTextBox.AppendText($"  Ошибка извлечения текста: {ex.Message}\r\n");
                             MessageBox.Show($"Ошибка извлечения текста: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
 
-                        // Рисуем прямоугольники
+                        // Рисуем прямоугольники (теперь белые)
                         DrawRectangles(canvas, pageSize, correctionX);
 
                         // Выбираем текст в зависимости от языка
@@ -328,13 +357,14 @@ namespace PDFSquareDrawer
 
                         // Выбираем изображение подписи на основе распознанного текста
                         string imagePath1 = GetSignatureImagePath(folderPath, recognizedText);
+                        logTextBox.AppendText($"  Выбрано изображение: {Path.GetFileName(imagePath1)}\r\n");
 
                         AddImageToPdf(canvas, pageSize, imagePath1, IMAGE1_OFFSET_X - correctionX, IMAGE1_OFFSET_Y);
                         AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп002.tif"), IMAGE2_OFFSET_X - correctionX, IMAGE2_OFFSET_Y);
                         AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп003.tif"), IMAGE3_OFFSET_X - correctionX, IMAGE3_OFFSET_Y);
 
-                        // Рисуем временную красную рамку для зоны распознавания
-                        DrawRecognitionZone(canvas, pageSize, correctionX);
+                        // Рисование рамки закомментировано
+                        // DrawRecognitionZone(canvas, pageSize, correctionX);
                     }
 
                     stamper.Close();
@@ -365,9 +395,9 @@ namespace PDFSquareDrawer
 
         private void DrawRectangles(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, float correctionX)
         {
-            // Устанавливаем красный цвет для прямоугольников
-            canvas.SetColorFill(BaseColor.RED);
-            canvas.SetColorStroke(BaseColor.RED);
+            // Устанавливаем БЕЛЫЙ цвет для прямоугольников
+            canvas.SetColorFill(BaseColor.WHITE);
+            canvas.SetColorStroke(BaseColor.WHITE);
 
             // Рисуем первый прямоугольник
             float rect1X = pageSize.Right - RECT1_OFFSET_X + correctionX;
@@ -382,6 +412,8 @@ namespace PDFSquareDrawer
             canvas.Fill();
         }
 
+        // Метод рисования рамки закомментирован
+        /*
         private void DrawRecognitionZone(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, float correctionX)
         {
             // Рисуем временную красную рамку для зоны распознавания
@@ -394,6 +426,7 @@ namespace PDFSquareDrawer
             canvas.Rectangle(zoneX, zoneY, RECOGNITION_ZONE_WIDTH, RECOGNITION_ZONE_HEIGHT);
             canvas.Stroke();
         }
+        */
 
         private void AddChiefText(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, string text, float offsetX, float offsetY)
         {
@@ -477,6 +510,7 @@ namespace PDFSquareDrawer
             catch (Exception ex)
             {
                 // Если не удалось добавить текст, просто игнорируем ошибку
+                logTextBox.AppendText($"  Ошибка при добавлении текста '{text}': {ex.Message}\r\n");
                 Console.WriteLine($"Ошибка при добавлении текста: {ex.Message}");
             }
         }
@@ -502,10 +536,15 @@ namespace PDFSquareDrawer
 
                     canvas.AddImage(image);
                 }
+                else
+                {
+                    logTextBox.AppendText($"  Предупреждение: файл изображения не найден: {imagePath}\r\n");
+                }
             }
             catch (Exception ex)
             {
                 // Просто игнорируем ошибки с изображениями, чтобы не прерывать обработку PDF
+                logTextBox.AppendText($"  Ошибка при добавлении изображения {imagePath}: {ex.Message}\r\n");
                 Console.WriteLine($"Ошибка при добавлении изображения {imagePath}: {ex.Message}");
             }
         }
@@ -541,6 +580,7 @@ namespace PDFSquareDrawer
             catch (Exception ex)
             {
                 // Просто логируем ошибку и возвращаем пустую строку
+                logTextBox.AppendText($"  Ошибка при извлечении текста из зоны: {ex.Message}\r\n");
                 Console.WriteLine($"Ошибка при извлечении текста из зоны: {ex.Message}");
                 extractedText = "";
             }
@@ -551,38 +591,59 @@ namespace PDFSquareDrawer
         /// <summary>
         /// Определяет путь к изображению подписи на основе извлеченного текста.
         /// </summary>
+        /// <summary>
+        /// Определяет путь к изображению подписи на основе извлеченного текста.
+        /// </summary>
         private string GetSignatureImagePath(string folderPath, string recognizedText)
         {
-            // Приводим текст к нижнему регистру для нечувствительного сравнения и убираем пробелы
+            // Приводим текст к нижнему регистру для нечувствительного сравнения
             string normalizedText = recognizedText.ToLower().Trim();
+            logTextBox.AppendText($"  Анализ текста: '{normalizedText}'\r\n");
 
-            // Логика выбора изображения
-            switch (normalizedText)
+            // Логика выбора изображения - ищем вхождение ключевых слов
+            if (normalizedText.Contains("максимов"))
             {
-                case "максимов":
-                    return Path.Combine(folderPath, "Подп003.tif");
-                case "старцев":
-                    return Path.Combine(folderPath, "Подп002.tif");
-                case "русских":
-                    return Path.Combine(folderPath, "Подп004.tif");
-                case "седюк":
-                    return Path.Combine(folderPath, "Подп005.tif");
-                case "тихомиров":
-                    return Path.Combine(folderPath, "Подп006.tif");
-                default:
-                    // Если текст не распознан или не соответствует ключевым словам
-                    // Возвращаем изображение "Не распознано" если оно существует
-                    string unknownPath = Path.Combine(folderPath, "Подп_Не_Распознано.tif");
-                    if (File.Exists(unknownPath))
-                    {
-                        return unknownPath;
-                    }
-                    else
-                    {
-                        // Возвращаем первое изображение из списка по умолчанию как запасной вариант
-                        string defaultPath = Path.Combine(folderPath, "Подп001.tif");
-                        return defaultPath;
-                    }
+                logTextBox.AppendText($"  Найдено совпадение: Максимов -> Подп003.tif\r\n");
+                return Path.Combine(folderPath, "Подп003.tif");
+            }
+            else if (normalizedText.Contains("старцев"))
+            {
+                logTextBox.AppendText($"  Найдено совпадение: Старцев -> Подп002.tif\r\n");
+                return Path.Combine(folderPath, "Подп002.tif");
+            }
+            else if (normalizedText.Contains("русских"))
+            {
+                logTextBox.AppendText($"  Найдено совпадение: Русских -> Подп004.tif\r\n");
+                return Path.Combine(folderPath, "Подп004.tif");
+            }
+            else if (normalizedText.Contains("седюк"))
+            {
+                logTextBox.AppendText($"  Найдено совпадение: Седюк -> Подп005.tif\r\n");
+                return Path.Combine(folderPath, "Подп005.tif");
+            }
+            else if (normalizedText.Contains("тихомиров"))
+            {
+                logTextBox.AppendText($"  Найдено совпадение: Тихомиров -> Подп006.tif\r\n");
+                return Path.Combine(folderPath, "Подп006.tif");
+            }
+            else
+            {
+                logTextBox.AppendText($"  Совпадений не найдено, используем изображение по умолчанию\r\n");
+                // Если текст не распознан или не соответствует ключевым словам
+                // Возвращаем изображение "Не распознано" если оно существует
+                string unknownPath = Path.Combine(folderPath, "Подп_Не_Распознано.tif");
+                if (File.Exists(unknownPath))
+                {
+                    logTextBox.AppendText($"  Используется изображение: Подп_Не_Распознано.tif\r\n");
+                    return unknownPath;
+                }
+                else
+                {
+                    // Возвращаем первое изображение из списка по умолчанию как запасной вариант
+                    string defaultPath = Path.Combine(folderPath, "Подп001.tif");
+                    logTextBox.AppendText($"  Используется изображение по умолчанию: Подп001.tif\r\n");
+                    return defaultPath;
+                }
             }
         }
     }
@@ -590,27 +651,44 @@ namespace PDFSquareDrawer
     // Дополнительный класс для фильтрации текста по области
     public class RegionTextRenderFilter : RenderFilter
     {
-        private RectangleJ region;
+        private iTextSharp.text.Rectangle filterRect;
 
         public RegionTextRenderFilter(iTextSharp.text.Rectangle filterRect)
         {
-            this.region = new RectangleJ(filterRect.Left, filterRect.Bottom, filterRect.Width, filterRect.Height);
+            this.filterRect = filterRect;
         }
 
         public override bool AllowText(TextRenderInfo renderInfo)
         {
-            LineSegment segment = renderInfo.GetDescentLine();
-            Vector startPoint = segment.GetStartPoint();
-            Vector endPoint = segment.GetEndPoint();
+            // Получаем границы текста как LineSegment
+            LineSegment descentLine = renderInfo.GetDescentLine();
+            LineSegment ascentLine = renderInfo.GetAscentLine();
 
-            RectangleJ textRect = new RectangleJ(
-                Math.Min(startPoint[Vector.I1], endPoint[Vector.I1]),
-                Math.Min(startPoint[Vector.I2], endPoint[Vector.I2]),
-                Math.Abs(endPoint[Vector.I1] - startPoint[Vector.I1]),
-                Math.Abs(endPoint[Vector.I2] - startPoint[Vector.I2])
-            );
+            // Получаем координаты углов текста
+            Vector startPoint = descentLine.GetStartPoint();
+            Vector endPoint = descentLine.GetEndPoint();
+            Vector startPointAscent = ascentLine.GetStartPoint();
+            Vector endPointAscent = ascentLine.GetEndPoint();
 
-            return region.Intersects(textRect);
+            // Создаем прямоугольник, описывающий текст
+            float x1 = Math.Min(startPoint[Vector.I1], Math.Min(endPoint[Vector.I1], Math.Min(startPointAscent[Vector.I1], endPointAscent[Vector.I1])));
+            float x2 = Math.Max(startPoint[Vector.I1], Math.Max(endPoint[Vector.I1], Math.Max(startPointAscent[Vector.I1], endPointAscent[Vector.I1])));
+            float y1 = Math.Min(startPoint[Vector.I2], Math.Min(endPoint[Vector.I2], Math.Min(startPointAscent[Vector.I2], endPointAscent[Vector.I2])));
+            float y2 = Math.Max(startPoint[Vector.I2], Math.Max(endPoint[Vector.I2], Math.Max(startPointAscent[Vector.I2], endPointAscent[Vector.I2])));
+
+            iTextSharp.text.Rectangle textRect = new iTextSharp.text.Rectangle(x1, y1, x2, y2);
+
+            // Проверяем пересечение прямоугольников вручную
+            return DoRectanglesIntersect(textRect, filterRect);
+        }
+
+        // Метод для проверки пересечения двух прямоугольников
+        private bool DoRectanglesIntersect(iTextSharp.text.Rectangle rect1, iTextSharp.text.Rectangle rect2)
+        {
+            return !(rect1.Right < rect2.Left ||
+                     rect2.Right < rect1.Left ||
+                     rect1.Top < rect2.Bottom ||
+                     rect2.Top < rect1.Bottom);
         }
     }
 
