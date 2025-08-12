@@ -407,7 +407,7 @@ namespace PDFSquareDrawer
 
                         AddImageToPdf(canvas, pageSize, imagePath1, IMAGE1_OFFSET_X - correctionX, IMAGE1_OFFSET_Y);
                         AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп002.tif"), IMAGE2_OFFSET_X - correctionX, IMAGE2_OFFSET_Y);
-                        AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп003.tif"), IMAGE3_OFFSET_X - correctionX, IMAGE3_OFFSET_Y);
+                        AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп001.tif"), IMAGE3_OFFSET_X - correctionX, IMAGE3_OFFSET_Y);
 
                         // Рисование рамки закомментировано
                         // DrawRecognitionZone(canvas, pageSize, correctionX);
@@ -693,14 +693,25 @@ namespace PDFSquareDrawer
         /// <summary>
         /// Определяет путь к изображению подписи на основе извлеченного текста.
         /// </summary>
+        // ... (предыдущий код без изменений) ...
+
+        /// <summary>
+        /// Определяет путь к изображению подписи на основе извлеченного текста.
+        /// </summary>
         private string GetSignatureImagePath(string folderPath, string recognizedText)
         {
             // Приводим текст к нижнему регистру для нечувствительного сравнения и убираем пробелы
             string normalizedText = recognizedText.ToLower().Trim();
             logTextBox.AppendText($"  Анализ текста: '{normalizedText}'\r\n");
 
+            // Проверяем специальное условие для "Самылов"
+            if (normalizedText.Contains("самылов"))
+            {
+                logTextBox.AppendText($"  Найдено совпадение: Самылов -> Подп007.tif\r\n");
+                return Path.Combine(folderPath, "Подп007.tif");
+            }
             // Логика выбора изображения - ищем вхождение ключевых слов
-            if (normalizedText.Contains("максимов"))
+            else if (normalizedText.Contains("максимов"))
             {
                 logTextBox.AppendText($"  Найдено совпадение: Максимов -> Подп003.tif\r\n");
                 return Path.Combine(folderPath, "Подп003.tif");
@@ -745,6 +756,8 @@ namespace PDFSquareDrawer
                 }
             }
         }
+
+        // ... (остальной код без изменений) ...
 
         /// <summary>
         /// Генерирует рабочий день в заданном диапазоне дат, исключая выходные
