@@ -24,6 +24,7 @@ namespace PDFSquareDrawer
         private int selectedProfile = 0; // Выбранный профиль (0-3)
         private bool isRussian = true; // true - русский, false - английский
         private const float A3_CORRECTION_X = -11.3f; // Постоянная поправка для формата А3
+        private const float ROTATED_PAGE_CORRECTION_X = 348.3f; // Дополнительная коррекция для перевернутых страниц А3
 
         // Класс для хранения координат профиля
         public class ProfileCoordinates
@@ -227,15 +228,15 @@ namespace PDFSquareDrawer
                 DATE_APPROVED_OFFSET_Y = 19f,
 
                 RECT1_OFFSET_X = 382.1f,
-                RECT1_OFFSET_Y = 85.7f,
+                RECT1_OFFSET_Y = 86.8f,  // Обновлено
                 RECT1_WIDTH = 27f,
-                RECT1_HEIGHT = 13f,
+                RECT1_HEIGHT = 12f,      // Обновлено
                 RECT2_OFFSET_X = 353.8f,
-                RECT2_OFFSET_Y = 85.7f,
+                RECT2_OFFSET_Y = 86.8f,  // Обновлено
                 RECT2_WIDTH = 5f,
-                RECT2_HEIGHT = 13f,
+                RECT2_HEIGHT = 12f,      // Обновлено
 
-                RECOGNITION_ZONE_OFFSET_X = 487f,
+                RECOGNITION_ZONE_OFFSET_X = 488f,
                 RECOGNITION_ZONE_OFFSET_Y = 86f,
                 RECOGNITION_ZONE_WIDTH = 63f,
                 RECOGNITION_ZONE_HEIGHT = 13f
@@ -266,13 +267,13 @@ namespace PDFSquareDrawer
                 DATE_APPROVED_OFFSET_Y = 19f,
 
                 RECT1_OFFSET_X = 382.1f,
-                RECT1_OFFSET_Y = 85.7f,
+                RECT1_OFFSET_Y = 86.8f,  // Обновлено
                 RECT1_WIDTH = 27f,
-                RECT1_HEIGHT = 13f,
+                RECT1_HEIGHT = 12f,      // Обновлено
                 RECT2_OFFSET_X = 353.8f,
-                RECT2_OFFSET_Y = 85.7f,
+                RECT2_OFFSET_Y = 86.8f,  // Обновлено
                 RECT2_WIDTH = 5f,
-                RECT2_HEIGHT = 13f,
+                RECT2_HEIGHT = 12f,      // Обновлено
 
                 RECOGNITION_ZONE_OFFSET_X = 487f,
                 RECOGNITION_ZONE_OFFSET_Y = 86f,
@@ -305,13 +306,13 @@ namespace PDFSquareDrawer
                 DATE_APPROVED_OFFSET_Y = 19f,
 
                 RECT1_OFFSET_X = 382.1f,
-                RECT1_OFFSET_Y = 85.7f,
+                RECT1_OFFSET_Y = 86.8f,  // Обновлено
                 RECT1_WIDTH = 27f,
-                RECT1_HEIGHT = 13f,
+                RECT1_HEIGHT = 12f,      // Обновлено
                 RECT2_OFFSET_X = 353.8f,
-                RECT2_OFFSET_Y = 85.7f,
+                RECT2_OFFSET_Y = 86.8f,  // Обновлено
                 RECT2_WIDTH = 5f,
-                RECT2_HEIGHT = 13f,
+                RECT2_HEIGHT = 12f,      // Обновлено
 
                 RECOGNITION_ZONE_OFFSET_X = 487f,
                 RECOGNITION_ZONE_OFFSET_Y = 86f,
@@ -344,13 +345,13 @@ namespace PDFSquareDrawer
                 DATE_APPROVED_OFFSET_Y = 19f,
 
                 RECT1_OFFSET_X = 382.1f,
-                RECT1_OFFSET_Y = 85.7f,
+                RECT1_OFFSET_Y = 86.8f,  // Обновлено
                 RECT1_WIDTH = 27f,
-                RECT1_HEIGHT = 13f,
+                RECT1_HEIGHT = 12f,      // Обновлено
                 RECT2_OFFSET_X = 353.8f,
-                RECT2_OFFSET_Y = 85.7f,
+                RECT2_OFFSET_Y = 86.8f,  // Обновлено
                 RECT2_WIDTH = 5f,
-                RECT2_HEIGHT = 13f,
+                RECT2_HEIGHT = 12f,      // Обновлено
 
                 RECOGNITION_ZONE_OFFSET_X = 487f,
                 RECOGNITION_ZONE_OFFSET_Y = 86f,
@@ -365,7 +366,6 @@ namespace PDFSquareDrawer
             if (radioButton != null && radioButton.Checked)
             {
                 selectedProfile = (int)radioButton.Tag;
-                // Добавляем проверку на null для избежания NullReferenceException
                 if (logTextBox != null)
                 {
                     logTextBox.AppendText($"Выбран профиль: {selectedProfile + 1}\r\n");
@@ -582,18 +582,51 @@ namespace PDFSquareDrawer
                         PdfContentByte canvas = stamper.GetOverContent(1);
                         iTextSharp.text.Rectangle pageSize = reader.GetPageSize(1);
 
+                        // Определяем, является ли страница форматом А3
+                        bool isA3Format = IsA3Format(pageSize);
+
+                        // Определяем, является ли страница А3 И перевернутой
+                        // ВАЖНО: Проверка на "перевернутость" применяется только к А3!
+                        bool isPageRotated = false; // По умолчанию считаем, что не перевернута
+                        if (isA3Format) // Проверяем перевернутость ТОЛЬКО для А3
+                        {
+                            isPageRotated = pageSize.Height > pageSize.Width;
+                            // Для А4 и других форматов isPageRotated останется false
+                        }
+
                         // Применяем поправку для формата А3
                         float correctionX = 0f;
-                        if (IsA3Format(pageSize))
+                        if (isA3Format)
                         {
                             correctionX = A3_CORRECTION_X;
+                            // Применяем дополнительную коррекцию только для А3
+                            if (isPageRotated)
+                            {
+                                correctionX += ROTATED_PAGE_CORRECTION_X;
+                            }
+                        }
+                        // Для А4 и других форматов дополнительная коррекция не применяется
+
+                        // Логируем информацию для отладки
+                        if (logTextBox != null)
+                        {
+                            logTextBox.AppendText($"  Формат страницы: {(isA3Format ? "A3" : "не A3")}\r\n");
+                            if (isA3Format) // Логируем перевернутость только для А3
+                            {
+                                logTextBox.AppendText($"  A3 перевернут: {isPageRotated}\r\n");
+                            }
+                            else
+                            {
+                                logTextBox.AppendText($"  Страница перевернута (проверяется только для A3): {pageSize.Height > pageSize.Width}\r\n");
+                            }
+                            logTextBox.AppendText($"  CorrectionX: {correctionX:F2}\r\n");
                         }
 
                         // Извлекаем текст из зоны распознавания
                         string recognizedText = "";
                         try
                         {
-                            recognizedText = ExtractTextFromRecognitionZone(reader, 1, pageSize, correctionX);
+                            recognizedText = ExtractTextFromRecognitionZoneWithSameCoords(reader, 1, pageSize, correctionX);
                             if (logTextBox != null)
                             {
                                 logTextBox.AppendText($"  Извлеченный текст: '{recognizedText}'\r\n");
@@ -666,7 +699,7 @@ namespace PDFSquareDrawer
                         AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп002.tif"), currentProfile.IMAGE2_OFFSET_X - correctionX, currentProfile.IMAGE2_OFFSET_Y, currentProfile.IMAGE_WIDTH, currentProfile.IMAGE_HEIGHT);
                         AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп001.tif"), currentProfile.IMAGE3_OFFSET_X - correctionX, currentProfile.IMAGE3_OFFSET_Y, currentProfile.IMAGE_WIDTH, currentProfile.IMAGE_HEIGHT);
 
-                        // Рисование рамки закомментировано
+                        // Рисуем временную красную рамку для зоны распознавания (для отладки)
                         // DrawRecognitionZone(canvas, pageSize, correctionX);
                     }
 
@@ -686,14 +719,23 @@ namespace PDFSquareDrawer
 
         private bool IsA3Format(iTextSharp.text.Rectangle pageSize)
         {
-            // A3 размер: 297 x 420 мм или 842 x 1191 точек
-            // Проверяем размеры страницы (с небольшим допуском)
+            // Нормализуем размеры: ширина должна быть больше высоты
             float width = pageSize.Width;
             float height = pageSize.Height;
 
+            // Если высота больше ширины, меняем их местами
+            if (height > width)
+            {
+                float temp = width;
+                width = height;
+                height = temp;
+            }
+
+            // A3 размер: 297 x 420 мм или 842 x 1191 точек
+            // Проверяем размеры страницы (с небольшим допуском)
             // A3 в точках (72 DPI): 841.89 x 1190.55
-            return (Math.Abs(width - 842) < 10 && Math.Abs(height - 1191) < 10) ||
-                   (Math.Abs(width - 1191) < 10 && Math.Abs(height - 842) < 10);
+            return (Math.Abs(width - 842) < 15 && Math.Abs(height - 1191) < 15) ||
+                   (Math.Abs(width - 1191) < 15 && Math.Abs(height - 842) < 15);
         }
 
         private void DrawRectangles(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, float correctionX)
@@ -717,9 +759,7 @@ namespace PDFSquareDrawer
             canvas.Rectangle(rect2X, rect2Y, currentProfile.RECT2_WIDTH, currentProfile.RECT2_HEIGHT);
             canvas.Fill();
         }
-
-        // Метод рисования рамки закомментирован
-        /*
+/*
         private void DrawRecognitionZone(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, float correctionX)
         {
             // Получаем текущий профиль координат
@@ -732,11 +772,16 @@ namespace PDFSquareDrawer
             float zoneX = pageSize.Right - currentProfile.RECOGNITION_ZONE_OFFSET_X + correctionX;
             float zoneY = pageSize.Bottom + currentProfile.RECOGNITION_ZONE_OFFSET_Y;
 
+            // Логируем координаты для отладки
+            if (logTextBox != null)
+            {
+                bool isPageRotated = pageSize.Height > pageSize.Width;
+                logTextBox.AppendText($"    Рисование рамки: X={zoneX:F2}, Y={zoneY:F2}, W={currentProfile.RECOGNITION_ZONE_WIDTH:F2}, H={currentProfile.RECOGNITION_ZONE_HEIGHT:F2} (перевернута: {isPageRotated})\r\n");
+            }
             canvas.Rectangle(zoneX, zoneY, currentProfile.RECOGNITION_ZONE_WIDTH, currentProfile.RECOGNITION_ZONE_HEIGHT);
             canvas.Stroke();
         }
-        */
-
+*/
         private void AddChiefText(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, string text, float offsetX, float offsetY)
         {
             AddTextWithFontFromBottomRight(canvas, pageSize, text, offsetX, offsetY, MAIN_TEXT_FONT_SIZE, true); // курсив
@@ -924,9 +969,12 @@ namespace PDFSquareDrawer
         }
 
         /// <summary>
-        /// Извлекает текст из заданной области на странице PDF.
+        /// Извлекает текст из заданной области на странице PDF, используя те же координаты, что и для рисования рамки.
         /// </summary>
-        private string ExtractTextFromRecognitionZone(PdfReader reader, int pageNumber, iTextSharp.text.Rectangle pageSize, float correctionX)
+        /// <summary>
+        /// Извлекает текст из заданной области на странице PDF, используя те же координаты, что и для рисования рамки.
+        /// </summary>
+        private string ExtractTextFromRecognitionZoneWithSameCoords(PdfReader reader, int pageNumber, iTextSharp.text.Rectangle pageSize, float correctionX)
         {
             string extractedText = "";
 
@@ -935,23 +983,73 @@ namespace PDFSquareDrawer
                 // Получаем текущий профиль координат
                 ProfileCoordinates currentProfile = profiles[selectedProfile];
 
-                // 1. Определяем координаты зоны распознавания
+                // Определяем, является ли страница форматом А3
+                bool isA3Format = IsA3Format(pageSize);
+
+                // Определяем, является ли страница А3 И перевернутой одновременно
+                // ВАЖНО: Проверка на "перевернутость" применяется только к А3!
+                bool isPageRotated = isA3Format && (pageSize.Height > pageSize.Width);
+
+                // Используем точно такие же координаты, как в DrawRecognitionZone
                 float zoneX = pageSize.Right - currentProfile.RECOGNITION_ZONE_OFFSET_X + correctionX;
                 float zoneY = pageSize.Bottom + currentProfile.RECOGNITION_ZONE_OFFSET_Y;
-                // Создаем прямоугольник для зоны
+                float zoneWidth = currentProfile.RECOGNITION_ZONE_WIDTH;
+                float zoneHeight = currentProfile.RECOGNITION_ZONE_HEIGHT;
+
+                // Создаем прямоугольник для зоны распознавания
                 iTextSharp.text.Rectangle recognitionRect = new iTextSharp.text.Rectangle(
-                    zoneX, zoneY, zoneX + currentProfile.RECOGNITION_ZONE_WIDTH, zoneY + currentProfile.RECOGNITION_ZONE_HEIGHT
+                    zoneX, zoneY, zoneX + zoneWidth, zoneY + zoneHeight
                 );
 
-                // 2. Используем RegionTextRenderFilter и FilteredTextRenderListener для извлечения текста с позициями
+                // Логируем координаты для отладки
+                if (logTextBox != null)
+                {
+                    logTextBox.AppendText($"    PageSize: W={pageSize.Width:F2}, H={pageSize.Height:F2}\r\n");
+                    logTextBox.AppendText($"    Формат A3: {isA3Format}\r\n");
+                    logTextBox.AppendText($"    Страница перевернута (только для A3): {isPageRotated}\r\n");
+                    logTextBox.AppendText($"    Оригинальные координаты зоны распознавания: X={zoneX:F2}, Y={zoneY:F2}, W={zoneWidth:F2}, H={zoneHeight:F2}\r\n");
+                }
+
+                // Для инверсных страниц (А3 и перевернутых) корректируем координаты и размеры
+                if (isPageRotated)
+                {
+                    // Попробуем поменять местами ширину и высоту зоны распознавания
+                    float correctedWidth = zoneHeight;
+                    float correctedHeight = zoneWidth;
+
+                    // Пересчитываем координаты для инверсной страницы
+                    // Возможно, потребуется смещение
+                    float correctedZoneX = zoneX + 50; // Коррекция
+                    float correctedZoneY = zoneY + 610; // Коррекция
+
+                    // Создаем скорректированный прямоугольник
+                    recognitionRect = new iTextSharp.text.Rectangle(
+                        correctedZoneX, correctedZoneY, correctedZoneX + correctedWidth, correctedZoneY + correctedHeight
+                    );
+
+                    // Логируем коррекцию для отладки
+                    if (logTextBox != null)
+                    {
+                        logTextBox.AppendText($"    Инверсная страница A3: скорректированы координаты зоны распознавания\r\n");
+                        logTextBox.AppendText($"    Скорректировано: X={correctedZoneX:F2}, Y={correctedZoneY:F2}, W={correctedWidth:F2}, H={correctedHeight:F2}\r\n");
+                    }
+                }
+
+                // Используем RegionTextRenderFilter и FilteredTextRenderListener для извлечения текста с позициями
                 RegionTextRenderFilter filter = new RegionTextRenderFilter(recognitionRect);
                 FilteredTextRenderListener listener = new FilteredTextRenderListener(new LocationTextExtractionStrategy(), filter);
 
-                // 3. Извлекаем текст с применением фильтра
+                // Извлекаем текст с применением фильтра
                 extractedText = PdfTextExtractor.GetTextFromPage(reader, pageNumber, listener);
 
-                // 4. Очищаем текст от лишних пробелов и символов новой строки
+                // Очищаем текст от лишних пробелов и символов новой строки
                 extractedText = extractedText.Trim();
+
+                // Логируем результат для отладки
+                if (logTextBox != null)
+                {
+                    logTextBox.AppendText($"    Распознанный текст: '{extractedText}'\r\n");
+                }
 
             }
             catch (Exception ex)
