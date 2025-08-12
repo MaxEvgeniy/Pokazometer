@@ -19,72 +19,83 @@ namespace PDFSquareDrawer
         private ComboBox fontComboBox;
         private TextBox logTextBox; // Новое поле для лога
         private TextBox transferDateTextBox; // Текстовое поле для даты приема-передачи
+        private GroupBox profileGroupBox; // Группа для радиокнопок профилей
+        private RadioButton[] profileRadioButtons; // Массив радиокнопок профилей
+        private int selectedProfile = 0; // Выбранный профиль (0-3)
         private bool isRussian = true; // true - русский, false - английский
         private const float A3_CORRECTION_X = -11.3f; // Постоянная поправка для формата А3
 
+        // Класс для хранения координат профиля
+        public class ProfileCoordinates
+        {
+            // Константы для изображений (от правого нижнего края)
+            public float IMAGE1_OFFSET_X { get; set; }
+            public float IMAGE1_OFFSET_Y { get; set; }
+            public float IMAGE2_OFFSET_X { get; set; }
+            public float IMAGE2_OFFSET_Y { get; set; }
+            public float IMAGE3_OFFSET_X { get; set; }
+            public float IMAGE3_OFFSET_Y { get; set; }
+            public float IMAGE_WIDTH { get; set; }
+            public float IMAGE_HEIGHT { get; set; }
+
+            // Константы для текста (от правого нижнего края)
+            public float CHIEF_TEXT_OFFSET_X { get; set; }
+            public float CHIEF_TEXT_OFFSET_Y { get; set; }
+            public float APPROVED_TEXT_OFFSET_X { get; set; }
+            public float APPROVED_TEXT_OFFSET_Y { get; set; }
+
+            // Константы для дат (от правого нижнего края)
+            public float DATE_DEVELOPED_OFFSET_X { get; set; }
+            public float DATE_DEVELOPED_OFFSET_Y { get; set; }
+            public float DATE_CHIEF_OFFSET_X { get; set; }
+            public float DATE_CHIEF_OFFSET_Y { get; set; }
+            public float DATE_APPROVED_OFFSET_X { get; set; }
+            public float DATE_APPROVED_OFFSET_Y { get; set; }
+
+            // Константы для прямоугольников (от правого нижнего края)
+            public float RECT1_OFFSET_X { get; set; }
+            public float RECT1_OFFSET_Y { get; set; }
+            public float RECT1_WIDTH { get; set; }
+            public float RECT1_HEIGHT { get; set; }
+            public float RECT2_OFFSET_X { get; set; }
+            public float RECT2_OFFSET_Y { get; set; }
+            public float RECT2_WIDTH { get; set; }
+            public float RECT2_HEIGHT { get; set; }
+
+            // Константы для зоны распознавания (где раньше было поле "Разработал")
+            public float RECOGNITION_ZONE_OFFSET_X { get; set; }
+            public float RECOGNITION_ZONE_OFFSET_Y { get; set; }
+            public float RECOGNITION_ZONE_WIDTH { get; set; }
+            public float RECOGNITION_ZONE_HEIGHT { get; set; }
+        }
+
+        // Массив профилей координат
+        private ProfileCoordinates[] profiles = new ProfileCoordinates[4];
+
         // Константы для размеров шрифтов
-        private const float MAIN_TEXT_FONT_SIZE = 16f; // Размер шрифта для основных надписей
+        private const float MAIN_TEXT_FONT_SIZE = 14f; // Размер шрифта для основных надписей
         private const float DATE_FONT_SIZE = 8f; // Размер шрифта для дат
-
-        // Константы для изображений (от правого нижнего края)
-        private const float IMAGE1_OFFSET_X = 425f; // отступ от правого края влево
-        private const float IMAGE1_OFFSET_Y = 80f; // отступ от нижнего края вверх
-        private const float IMAGE2_OFFSET_X = 425f;
-        private const float IMAGE2_OFFSET_Y = 40f;
-        private const float IMAGE3_OFFSET_X = 425f;
-        private const float IMAGE3_OFFSET_Y = 8f;
-        private const float IMAGE_WIDTH = 80f;
-        private const float IMAGE_HEIGHT = 30f;
-
-        // Константы для текста (от правого нижнего края)
-        private const float CHIEF_TEXT_OFFSET_X = 490f;
-        private const float CHIEF_TEXT_OFFSET_Y = 45f;
-        private const float APPROVED_TEXT_OFFSET_X = 490f;
-        private const float APPROVED_TEXT_OFFSET_Y = 17f;
-
-        // Константы для дат (от правого нижнего края) - теперь это координаты для самих дат
-        private const float DATE_DEVELOPED_OFFSET_X = 385f;
-        private const float DATE_DEVELOPED_OFFSET_Y = 90f;
-        private const float DATE_CHIEF_OFFSET_X = 385f;
-        private const float DATE_CHIEF_OFFSET_Y = 47f;
-        private const float DATE_APPROVED_OFFSET_X = 385f;
-        private const float DATE_APPROVED_OFFSET_Y = 19f;
 
         // Значения дат по умолчанию
         private const string DEFAULT_TRANSFER_DATE = "01.07.2019";
 
-        // Константы для прямоугольников (координаты от правого нижнего края)
-        private const float RECT1_OFFSET_X = 382.1f; // отступ от правого края влево
-        private const float RECT1_OFFSET_Y = 85.7f;  // отступ от нижнего края вверх
-        private const float RECT1_WIDTH = 27f;
-        private const float RECT1_HEIGHT = 13f;
-        private const float RECT2_OFFSET_X = 353.8f;
-        private const float RECT2_OFFSET_Y = 85.7f;
-        private const float RECT2_WIDTH = 5f;
-        private const float RECT2_HEIGHT = 13f;
-
-        // Константы для зоны распознавания (где раньше было поле "Разработал")
-        private const float RECOGNITION_ZONE_OFFSET_X = 487f; // отступ от правого края влево
-        private const float RECOGNITION_ZONE_OFFSET_Y = 86f;  // отступ от нижнего края вверх
-        private const float RECOGNITION_ZONE_WIDTH = 63f;    // ширина зоны
-        private const float RECOGNITION_ZONE_HEIGHT = 13f;    // высота зоны
-
         // Список возможных файлов изображений
         private string[] possibleImageFiles = {
             "Подп001.tif", "Подп002.tif", "Подп003.tif",
-            "Подп004.tif", "Подп005.tif", "Подп006.tif",
+            "Подп004.tif", "Подп005.tif", "Подп006.tif", "Подп007.tif",
             "Подп_Не_Распознано.tif"
         };
 
         public Form1()
         {
             InitializeComponent();
+            InitializeProfiles();
         }
 
         private void InitializeComponent()
         {
             this.Text = "PDF Square Drawer";
-            this.Size = new Size(600, 550); // Увеличиваем размер окна
+            this.Size = new Size(650, 600); // Увеличиваем размер окна
             this.StartPosition = FormStartPosition.CenterScreen;
 
             int currentY = 20;
@@ -133,6 +144,29 @@ namespace PDFSquareDrawer
             transferDateTextBox.Text = DEFAULT_TRANSFER_DATE;
             currentY += 40;
 
+            // Группа радиокнопок для выбора профиля
+            profileGroupBox = new GroupBox();
+            profileGroupBox.Text = "Выбор профиля координат";
+            profileGroupBox.Size = new Size(300, 120);
+            profileGroupBox.Location = new Point(50, currentY);
+
+            profileRadioButtons = new RadioButton[4];
+            for (int i = 0; i < 4; i++)
+            {
+                profileRadioButtons[i] = new RadioButton();
+                profileRadioButtons[i].Text = $"Профиль {i + 1}";
+                profileRadioButtons[i].Location = new Point(20, 25 + i * 25);
+                profileRadioButtons[i].Size = new Size(100, 20);
+                profileRadioButtons[i].Tag = i;
+                profileRadioButtons[i].CheckedChanged += ProfileRadioButton_CheckedChanged;
+                profileGroupBox.Controls.Add(profileRadioButtons[i]);
+            }
+
+            // По умолчанию выбираем первый профиль
+            profileRadioButtons[0].Checked = true;
+
+            currentY += 130;
+
             statusLabel = new Label();
             statusLabel.Size = new Size(400, 30);
             statusLabel.Location = new Point(50, currentY);
@@ -147,7 +181,7 @@ namespace PDFSquareDrawer
             currentY += 20;
 
             logTextBox = new TextBox();
-            logTextBox.Size = new Size(450, 100);
+            logTextBox.Size = new Size(500, 100);
             logTextBox.Location = new Point(50, currentY);
             logTextBox.Multiline = true;
             logTextBox.ScrollBars = ScrollBars.Vertical;
@@ -159,9 +193,184 @@ namespace PDFSquareDrawer
             this.Controls.Add(fontComboBox);
             this.Controls.Add(transferDateLabel);
             this.Controls.Add(transferDateTextBox);
+            this.Controls.Add(profileGroupBox);
             this.Controls.Add(statusLabel);
             this.Controls.Add(logLabel);
             this.Controls.Add(logTextBox);
+        }
+
+        // Инициализация профилей координат
+        private void InitializeProfiles()
+        {
+            // Профиль 1 (по умолчанию) - текущие значения
+            profiles[0] = new ProfileCoordinates
+            {
+                IMAGE1_OFFSET_X = 425f,
+                IMAGE1_OFFSET_Y = 80f,
+                IMAGE2_OFFSET_X = 425f,
+                IMAGE2_OFFSET_Y = 40f,
+                IMAGE3_OFFSET_X = 425f,
+                IMAGE3_OFFSET_Y = 8f,
+                IMAGE_WIDTH = 80f,
+                IMAGE_HEIGHT = 30f,
+
+                CHIEF_TEXT_OFFSET_X = 490f,
+                CHIEF_TEXT_OFFSET_Y = 45f,
+                APPROVED_TEXT_OFFSET_X = 490f,
+                APPROVED_TEXT_OFFSET_Y = 17f,
+
+                DATE_DEVELOPED_OFFSET_X = 385f,
+                DATE_DEVELOPED_OFFSET_Y = 90f,
+                DATE_CHIEF_OFFSET_X = 385f,
+                DATE_CHIEF_OFFSET_Y = 47f,
+                DATE_APPROVED_OFFSET_X = 385f,
+                DATE_APPROVED_OFFSET_Y = 19f,
+
+                RECT1_OFFSET_X = 382.1f,
+                RECT1_OFFSET_Y = 85.7f,
+                RECT1_WIDTH = 27f,
+                RECT1_HEIGHT = 13f,
+                RECT2_OFFSET_X = 353.8f,
+                RECT2_OFFSET_Y = 85.7f,
+                RECT2_WIDTH = 5f,
+                RECT2_HEIGHT = 13f,
+
+                RECOGNITION_ZONE_OFFSET_X = 487f,
+                RECOGNITION_ZONE_OFFSET_Y = 86f,
+                RECOGNITION_ZONE_WIDTH = 63f,
+                RECOGNITION_ZONE_HEIGHT = 13f
+            };
+
+            // Профиль 2 - значения по умолчанию (вы можете изменить их)
+            profiles[1] = new ProfileCoordinates
+            {
+                IMAGE1_OFFSET_X = 425f,
+                IMAGE1_OFFSET_Y = 80f,
+                IMAGE2_OFFSET_X = 425f,
+                IMAGE2_OFFSET_Y = 40f,
+                IMAGE3_OFFSET_X = 425f,
+                IMAGE3_OFFSET_Y = 8f,
+                IMAGE_WIDTH = 80f,
+                IMAGE_HEIGHT = 30f,
+
+                CHIEF_TEXT_OFFSET_X = 490f,
+                CHIEF_TEXT_OFFSET_Y = 45f,
+                APPROVED_TEXT_OFFSET_X = 490f,
+                APPROVED_TEXT_OFFSET_Y = 17f,
+
+                DATE_DEVELOPED_OFFSET_X = 385f,
+                DATE_DEVELOPED_OFFSET_Y = 90f,
+                DATE_CHIEF_OFFSET_X = 385f,
+                DATE_CHIEF_OFFSET_Y = 47f,
+                DATE_APPROVED_OFFSET_X = 385f,
+                DATE_APPROVED_OFFSET_Y = 19f,
+
+                RECT1_OFFSET_X = 382.1f,
+                RECT1_OFFSET_Y = 85.7f,
+                RECT1_WIDTH = 27f,
+                RECT1_HEIGHT = 13f,
+                RECT2_OFFSET_X = 353.8f,
+                RECT2_OFFSET_Y = 85.7f,
+                RECT2_WIDTH = 5f,
+                RECT2_HEIGHT = 13f,
+
+                RECOGNITION_ZONE_OFFSET_X = 487f,
+                RECOGNITION_ZONE_OFFSET_Y = 86f,
+                RECOGNITION_ZONE_WIDTH = 63f,
+                RECOGNITION_ZONE_HEIGHT = 13f
+            };
+
+            // Профиль 3 - значения по умолчанию (вы можете изменить их)
+            profiles[2] = new ProfileCoordinates
+            {
+                IMAGE1_OFFSET_X = 425f,
+                IMAGE1_OFFSET_Y = 80f,
+                IMAGE2_OFFSET_X = 425f,
+                IMAGE2_OFFSET_Y = 40f,
+                IMAGE3_OFFSET_X = 425f,
+                IMAGE3_OFFSET_Y = 8f,
+                IMAGE_WIDTH = 80f,
+                IMAGE_HEIGHT = 30f,
+
+                CHIEF_TEXT_OFFSET_X = 490f,
+                CHIEF_TEXT_OFFSET_Y = 45f,
+                APPROVED_TEXT_OFFSET_X = 490f,
+                APPROVED_TEXT_OFFSET_Y = 17f,
+
+                DATE_DEVELOPED_OFFSET_X = 385f,
+                DATE_DEVELOPED_OFFSET_Y = 90f,
+                DATE_CHIEF_OFFSET_X = 385f,
+                DATE_CHIEF_OFFSET_Y = 47f,
+                DATE_APPROVED_OFFSET_X = 385f,
+                DATE_APPROVED_OFFSET_Y = 19f,
+
+                RECT1_OFFSET_X = 382.1f,
+                RECT1_OFFSET_Y = 85.7f,
+                RECT1_WIDTH = 27f,
+                RECT1_HEIGHT = 13f,
+                RECT2_OFFSET_X = 353.8f,
+                RECT2_OFFSET_Y = 85.7f,
+                RECT2_WIDTH = 5f,
+                RECT2_HEIGHT = 13f,
+
+                RECOGNITION_ZONE_OFFSET_X = 487f,
+                RECOGNITION_ZONE_OFFSET_Y = 86f,
+                RECOGNITION_ZONE_WIDTH = 63f,
+                RECOGNITION_ZONE_HEIGHT = 13f
+            };
+
+            // Профиль 4 - значения по умолчанию (вы можете изменить их)
+            profiles[3] = new ProfileCoordinates
+            {
+                IMAGE1_OFFSET_X = 425f,
+                IMAGE1_OFFSET_Y = 80f,
+                IMAGE2_OFFSET_X = 425f,
+                IMAGE2_OFFSET_Y = 40f,
+                IMAGE3_OFFSET_X = 425f,
+                IMAGE3_OFFSET_Y = 8f,
+                IMAGE_WIDTH = 80f,
+                IMAGE_HEIGHT = 30f,
+
+                CHIEF_TEXT_OFFSET_X = 490f,
+                CHIEF_TEXT_OFFSET_Y = 45f,
+                APPROVED_TEXT_OFFSET_X = 490f,
+                APPROVED_TEXT_OFFSET_Y = 17f,
+
+                DATE_DEVELOPED_OFFSET_X = 385f,
+                DATE_DEVELOPED_OFFSET_Y = 90f,
+                DATE_CHIEF_OFFSET_X = 385f,
+                DATE_CHIEF_OFFSET_Y = 47f,
+                DATE_APPROVED_OFFSET_X = 385f,
+                DATE_APPROVED_OFFSET_Y = 19f,
+
+                RECT1_OFFSET_X = 382.1f,
+                RECT1_OFFSET_Y = 85.7f,
+                RECT1_WIDTH = 27f,
+                RECT1_HEIGHT = 13f,
+                RECT2_OFFSET_X = 353.8f,
+                RECT2_OFFSET_Y = 85.7f,
+                RECT2_WIDTH = 5f,
+                RECT2_HEIGHT = 13f,
+
+                RECOGNITION_ZONE_OFFSET_X = 487f,
+                RECOGNITION_ZONE_OFFSET_Y = 86f,
+                RECOGNITION_ZONE_WIDTH = 63f,
+                RECOGNITION_ZONE_HEIGHT = 13f
+            };
+        }
+
+        private void ProfileRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton radioButton = sender as RadioButton;
+            if (radioButton != null && radioButton.Checked)
+            {
+                selectedProfile = (int)radioButton.Tag;
+                // Добавляем проверку на null для избежания NullReferenceException
+                if (logTextBox != null)
+                {
+                    logTextBox.AppendText($"Выбран профиль: {selectedProfile + 1}\r\n");
+                }
+            }
         }
 
         private void PopulateFontList()
@@ -234,7 +443,10 @@ namespace PDFSquareDrawer
             string folderPath = @"C:\PDF\1\Rename";
 
             // Очищаем лог перед началом обработки
-            logTextBox.Text = "Начало обработки...\r\n";
+            if (logTextBox != null)
+            {
+                logTextBox.Text = $"Начало обработки... (Профиль: {selectedProfile + 1})\r\n";
+            }
 
             // Проверяем, существуют ли файлы изображений
             bool imagesExist = true;
@@ -266,7 +478,10 @@ namespace PDFSquareDrawer
             }
 
             drawButton.Enabled = false;
-            statusLabel.Text = "Обработка...";
+            if (statusLabel != null)
+            {
+                statusLabel.Text = "Обработка...";
+            }
             this.Refresh();
 
             try
@@ -295,29 +510,50 @@ namespace PDFSquareDrawer
                 {
                     try
                     {
-                        logTextBox.AppendText($"Обработка файла: {Path.GetFileName(filePath)}\r\n");
+                        if (logTextBox != null)
+                        {
+                            logTextBox.AppendText($"Обработка файла: {Path.GetFileName(filePath)}\r\n");
+                        }
                         ProcessPdfFile(filePath);
                         processedCount++;
-                        statusLabel.Text = $"Обработано: {processedCount}/{pdfFiles.Length}";
+                        if (statusLabel != null)
+                        {
+                            statusLabel.Text = $"Обработано: {processedCount}/{pdfFiles.Length}";
+                        }
                         this.Refresh();
                     }
                     catch (Exception ex)
                     {
-                        logTextBox.AppendText($"Ошибка обработки файла {Path.GetFileName(filePath)}: {ex.Message}\r\n");
+                        if (logTextBox != null)
+                        {
+                            logTextBox.AppendText($"Ошибка обработки файла {Path.GetFileName(filePath)}: {ex.Message}\r\n");
+                        }
                         MessageBox.Show($"Ошибка обработки файла {Path.GetFileName(filePath)}: {ex.Message}",
                             "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
 
-                statusLabel.Text = $"Готово! Обработано: {processedCount}";
-                logTextBox.AppendText($"Обработка завершена! Обработано файлов: {processedCount}\r\n");
+                if (statusLabel != null)
+                {
+                    statusLabel.Text = $"Готово! Обработано: {processedCount}";
+                }
+                if (logTextBox != null)
+                {
+                    logTextBox.AppendText($"Обработка завершена! Обработано файлов: {processedCount}\r\n");
+                }
                 MessageBox.Show($"Обработка завершена!\nОбработано файлов: {processedCount}",
                     "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                statusLabel.Text = "Ошибка!";
-                logTextBox.AppendText($"Ошибка: {ex.Message}\r\n");
+                if (statusLabel != null)
+                {
+                    statusLabel.Text = "Ошибка!";
+                }
+                if (logTextBox != null)
+                {
+                    logTextBox.AppendText($"Ошибка: {ex.Message}\r\n");
+                }
                 MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -358,13 +594,22 @@ namespace PDFSquareDrawer
                         try
                         {
                             recognizedText = ExtractTextFromRecognitionZone(reader, 1, pageSize, correctionX);
-                            logTextBox.AppendText($"  Извлеченный текст: '{recognizedText}'\r\n");
-                            statusLabel.Text = $"Извлечен текст: '{recognizedText}'";
+                            if (logTextBox != null)
+                            {
+                                logTextBox.AppendText($"  Извлеченный текст: '{recognizedText}'\r\n");
+                            }
+                            if (statusLabel != null)
+                            {
+                                statusLabel.Text = $"Извлечен текст: '{recognizedText}'";
+                            }
                             this.Refresh();
                         }
                         catch (Exception ex)
                         {
-                            logTextBox.AppendText($"  Ошибка извлечения текста: {ex.Message}\r\n");
+                            if (logTextBox != null)
+                            {
+                                logTextBox.AppendText($"  Ошибка извлечения текста: {ex.Message}\r\n");
+                            }
                             MessageBox.Show($"Ошибка извлечения текста: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
 
@@ -376,7 +621,10 @@ namespace PDFSquareDrawer
                         if (!DateTime.TryParseExact(transferDateTextBox.Text, "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None, out transferDate))
                         {
                             transferDate = DateTime.ParseExact(DEFAULT_TRANSFER_DATE, "dd.MM.yyyy", null);
-                            logTextBox.AppendText($"  Неверный формат даты, используется значение по умолчанию: {DEFAULT_TRANSFER_DATE}\r\n");
+                            if (logTextBox != null)
+                            {
+                                logTextBox.AppendText($"  Неверный формат даты, используется значение по умолчанию: {DEFAULT_TRANSFER_DATE}\r\n");
+                            }
                         }
 
                         // Генерируем даты с учетом выходных дней
@@ -384,30 +632,39 @@ namespace PDFSquareDrawer
                         string chiefDate = GenerateWorkingDay(DateTime.ParseExact(approvedDate, "dd.MM.yyyy", null).AddMonths(-3), DateTime.ParseExact(approvedDate, "dd.MM.yyyy", null));
                         string developedDate = GenerateWorkingDay(DateTime.ParseExact(chiefDate, "dd.MM.yyyy", null).AddMonths(-2), DateTime.ParseExact(chiefDate, "dd.MM.yyyy", null));
 
-                        logTextBox.AppendText($"  Дата приема-передачи: {transferDateTextBox.Text}\r\n");
-                        logTextBox.AppendText($"  УтвердилДата: {approvedDate}\r\n");
-                        logTextBox.AppendText($"  Нач.БюроДата: {chiefDate}\r\n");
-                        logTextBox.AppendText($"  РазработалДата: {developedDate}\r\n");
+                        if (logTextBox != null)
+                        {
+                            logTextBox.AppendText($"  Дата приема-передачи: {transferDateTextBox.Text}\r\n");
+                            logTextBox.AppendText($"  УтвердилДата: {approvedDate}\r\n");
+                            logTextBox.AppendText($"  Нач.БюроДата: {chiefDate}\r\n");
+                            logTextBox.AppendText($"  РазработалДата: {developedDate}\r\n");
+                        }
+
+                        // Получаем текущий профиль координат
+                        ProfileCoordinates currentProfile = profiles[selectedProfile];
 
                         // Добавляем текстовые поля в кодировке UTF-8, курсивом
-                        AddChiefText(canvas, pageSize, "Старцев", CHIEF_TEXT_OFFSET_X - correctionX, CHIEF_TEXT_OFFSET_Y);
-                        AddApprovedText(canvas, pageSize, "Афанасьев", APPROVED_TEXT_OFFSET_X - correctionX, APPROVED_TEXT_OFFSET_Y);
+                        AddChiefText(canvas, pageSize, "Старцев", currentProfile.CHIEF_TEXT_OFFSET_X - correctionX, currentProfile.CHIEF_TEXT_OFFSET_Y);
+                        AddApprovedText(canvas, pageSize, "Афанасьев", currentProfile.APPROVED_TEXT_OFFSET_X - correctionX, currentProfile.APPROVED_TEXT_OFFSET_Y);
 
                         // Добавляем даты в кодировке UTF-8, курсивом (вместо надписей "РазработалДата" и т.д.)
-                        AddDateValueText(canvas, pageSize, developedDate, DATE_DEVELOPED_OFFSET_X - correctionX, DATE_DEVELOPED_OFFSET_Y);
-                        AddDateValueText(canvas, pageSize, chiefDate, DATE_CHIEF_OFFSET_X - correctionX, DATE_CHIEF_OFFSET_Y);
-                        AddDateValueText(canvas, pageSize, approvedDate, DATE_APPROVED_OFFSET_X - correctionX, DATE_APPROVED_OFFSET_Y);
+                        AddDateValueText(canvas, pageSize, developedDate, currentProfile.DATE_DEVELOPED_OFFSET_X - correctionX, currentProfile.DATE_DEVELOPED_OFFSET_Y);
+                        AddDateValueText(canvas, pageSize, chiefDate, currentProfile.DATE_CHIEF_OFFSET_X - correctionX, currentProfile.DATE_CHIEF_OFFSET_Y);
+                        AddDateValueText(canvas, pageSize, approvedDate, currentProfile.DATE_APPROVED_OFFSET_X - correctionX, currentProfile.DATE_APPROVED_OFFSET_Y);
 
                         // Добавляем изображения
                         string folderPath = Path.GetDirectoryName(filePath);
 
                         // Выбираем изображение подписи на основе распознанного текста
                         string imagePath1 = GetSignatureImagePath(folderPath, recognizedText);
-                        logTextBox.AppendText($"  Выбрано изображение: {Path.GetFileName(imagePath1)}\r\n");
+                        if (logTextBox != null)
+                        {
+                            logTextBox.AppendText($"  Выбрано изображение: {Path.GetFileName(imagePath1)}\r\n");
+                        }
 
-                        AddImageToPdf(canvas, pageSize, imagePath1, IMAGE1_OFFSET_X - correctionX, IMAGE1_OFFSET_Y);
-                        AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп002.tif"), IMAGE2_OFFSET_X - correctionX, IMAGE2_OFFSET_Y);
-                        AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп001.tif"), IMAGE3_OFFSET_X - correctionX, IMAGE3_OFFSET_Y);
+                        AddImageToPdf(canvas, pageSize, imagePath1, currentProfile.IMAGE1_OFFSET_X - correctionX, currentProfile.IMAGE1_OFFSET_Y, currentProfile.IMAGE_WIDTH, currentProfile.IMAGE_HEIGHT);
+                        AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп002.tif"), currentProfile.IMAGE2_OFFSET_X - correctionX, currentProfile.IMAGE2_OFFSET_Y, currentProfile.IMAGE_WIDTH, currentProfile.IMAGE_HEIGHT);
+                        AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп001.tif"), currentProfile.IMAGE3_OFFSET_X - correctionX, currentProfile.IMAGE3_OFFSET_Y, currentProfile.IMAGE_WIDTH, currentProfile.IMAGE_HEIGHT);
 
                         // Рисование рамки закомментировано
                         // DrawRecognitionZone(canvas, pageSize, correctionX);
@@ -441,20 +698,23 @@ namespace PDFSquareDrawer
 
         private void DrawRectangles(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, float correctionX)
         {
+            // Получаем текущий профиль координат
+            ProfileCoordinates currentProfile = profiles[selectedProfile];
+
             // Устанавливаем БЕЛЫЙ цвет для прямоугольников
             canvas.SetColorFill(BaseColor.WHITE);
             canvas.SetColorStroke(BaseColor.WHITE);
 
             // Рисуем первый прямоугольник
-            float rect1X = pageSize.Right - RECT1_OFFSET_X + correctionX;
-            float rect1Y = pageSize.Bottom + RECT1_OFFSET_Y;
-            canvas.Rectangle(rect1X, rect1Y, RECT1_WIDTH, RECT1_HEIGHT);
+            float rect1X = pageSize.Right - currentProfile.RECT1_OFFSET_X + correctionX;
+            float rect1Y = pageSize.Bottom + currentProfile.RECT1_OFFSET_Y;
+            canvas.Rectangle(rect1X, rect1Y, currentProfile.RECT1_WIDTH, currentProfile.RECT1_HEIGHT);
             canvas.Fill();
 
             // Рисуем второй прямоугольник
-            float rect2X = pageSize.Right - RECT2_OFFSET_X + correctionX;
-            float rect2Y = pageSize.Bottom + RECT2_OFFSET_Y;
-            canvas.Rectangle(rect2X, rect2Y, RECT2_WIDTH, RECT2_HEIGHT);
+            float rect2X = pageSize.Right - currentProfile.RECT2_OFFSET_X + correctionX;
+            float rect2Y = pageSize.Bottom + currentProfile.RECT2_OFFSET_Y;
+            canvas.Rectangle(rect2X, rect2Y, currentProfile.RECT2_WIDTH, currentProfile.RECT2_HEIGHT);
             canvas.Fill();
         }
 
@@ -462,14 +722,17 @@ namespace PDFSquareDrawer
         /*
         private void DrawRecognitionZone(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, float correctionX)
         {
+            // Получаем текущий профиль координат
+            ProfileCoordinates currentProfile = profiles[selectedProfile];
+
             // Рисуем временную красную рамку для зоны распознавания
             canvas.SetColorStroke(BaseColor.RED);
             canvas.SetLineWidth(1.0f);
 
-            float zoneX = pageSize.Right - RECOGNITION_ZONE_OFFSET_X + correctionX;
-            float zoneY = pageSize.Bottom + RECOGNITION_ZONE_OFFSET_Y;
+            float zoneX = pageSize.Right - currentProfile.RECOGNITION_ZONE_OFFSET_X + correctionX;
+            float zoneY = pageSize.Bottom + currentProfile.RECOGNITION_ZONE_OFFSET_Y;
 
-            canvas.Rectangle(zoneX, zoneY, RECOGNITION_ZONE_WIDTH, RECOGNITION_ZONE_HEIGHT);
+            canvas.Rectangle(zoneX, zoneY, currentProfile.RECOGNITION_ZONE_WIDTH, currentProfile.RECOGNITION_ZONE_HEIGHT);
             canvas.Stroke();
         }
         */
@@ -612,12 +875,15 @@ namespace PDFSquareDrawer
             catch (Exception ex)
             {
                 // Если не удалось добавить текст, просто игнорируем ошибку
-                logTextBox.AppendText($"  Ошибка при добавлении текста '{text}': {ex.Message}\r\n");
+                if (logTextBox != null)
+                {
+                    logTextBox.AppendText($"  Ошибка при добавлении текста '{text}': {ex.Message}\r\n");
+                }
                 Console.WriteLine($"Ошибка при добавлении текста: {ex.Message}");
             }
         }
 
-        private void AddImageToPdf(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, string imagePath, float offsetX, float offsetY)
+        private void AddImageToPdf(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, string imagePath, float offsetX, float offsetY, float width, float height)
         {
             try
             {
@@ -634,19 +900,25 @@ namespace PDFSquareDrawer
                     image.SetAbsolutePosition(x, y);
 
                     // Масштабируем изображение до заданных размеров
-                    image.ScaleToFit(IMAGE_WIDTH, IMAGE_HEIGHT);
+                    image.ScaleToFit(width, height);
 
                     canvas.AddImage(image);
                 }
                 else
                 {
-                    logTextBox.AppendText($"  Предупреждение: файл изображения не найден: {imagePath}\r\n");
+                    if (logTextBox != null)
+                    {
+                        logTextBox.AppendText($"  Предупреждение: файл изображения не найден: {imagePath}\r\n");
+                    }
                 }
             }
             catch (Exception ex)
             {
                 // Просто игнорируем ошибки с изображениями, чтобы не прерывать обработку PDF
-                logTextBox.AppendText($"  Ошибка при добавлении изображения {imagePath}: {ex.Message}\r\n");
+                if (logTextBox != null)
+                {
+                    logTextBox.AppendText($"  Ошибка при добавлении изображения {imagePath}: {ex.Message}\r\n");
+                }
                 Console.WriteLine($"Ошибка при добавлении изображения {imagePath}: {ex.Message}");
             }
         }
@@ -660,12 +932,15 @@ namespace PDFSquareDrawer
 
             try
             {
+                // Получаем текущий профиль координат
+                ProfileCoordinates currentProfile = profiles[selectedProfile];
+
                 // 1. Определяем координаты зоны распознавания
-                float zoneX = pageSize.Right - RECOGNITION_ZONE_OFFSET_X + correctionX;
-                float zoneY = pageSize.Bottom + RECOGNITION_ZONE_OFFSET_Y;
+                float zoneX = pageSize.Right - currentProfile.RECOGNITION_ZONE_OFFSET_X + correctionX;
+                float zoneY = pageSize.Bottom + currentProfile.RECOGNITION_ZONE_OFFSET_Y;
                 // Создаем прямоугольник для зоны
                 iTextSharp.text.Rectangle recognitionRect = new iTextSharp.text.Rectangle(
-                    zoneX, zoneY, zoneX + RECOGNITION_ZONE_WIDTH, zoneY + RECOGNITION_ZONE_HEIGHT
+                    zoneX, zoneY, zoneX + currentProfile.RECOGNITION_ZONE_WIDTH, zoneY + currentProfile.RECOGNITION_ZONE_HEIGHT
                 );
 
                 // 2. Используем RegionTextRenderFilter и FilteredTextRenderListener для извлечения текста с позициями
@@ -682,7 +957,10 @@ namespace PDFSquareDrawer
             catch (Exception ex)
             {
                 // Просто логируем ошибку и возвращаем пустую строку
-                logTextBox.AppendText($"  Ошибка при извлечении текста из зоны: {ex.Message}\r\n");
+                if (logTextBox != null)
+                {
+                    logTextBox.AppendText($"  Ошибка при извлечении текста из зоны: {ex.Message}\r\n");
+                }
                 Console.WriteLine($"Ошибка при извлечении текста из зоны: {ex.Message}");
                 extractedText = "";
             }
@@ -693,71 +971,94 @@ namespace PDFSquareDrawer
         /// <summary>
         /// Определяет путь к изображению подписи на основе извлеченного текста.
         /// </summary>
-        // ... (предыдущий код без изменений) ...
-
-        /// <summary>
-        /// Определяет путь к изображению подписи на основе извлеченного текста.
-        /// </summary>
         private string GetSignatureImagePath(string folderPath, string recognizedText)
         {
             // Приводим текст к нижнему регистру для нечувствительного сравнения и убираем пробелы
             string normalizedText = recognizedText.ToLower().Trim();
-            logTextBox.AppendText($"  Анализ текста: '{normalizedText}'\r\n");
+            if (logTextBox != null)
+            {
+                logTextBox.AppendText($"  Анализ текста: '{normalizedText}'\r\n");
+            }
 
             // Проверяем специальное условие для "Самылов"
             if (normalizedText.Contains("самылов"))
             {
-                logTextBox.AppendText($"  Найдено совпадение: Самылов -> Подп007.tif\r\n");
+                if (logTextBox != null)
+                {
+                    logTextBox.AppendText($"  Найдено совпадение: Самылов -> Подп007.tif\r\n");
+                }
                 return Path.Combine(folderPath, "Подп007.tif");
             }
             // Логика выбора изображения - ищем вхождение ключевых слов
             else if (normalizedText.Contains("максимов"))
             {
-                logTextBox.AppendText($"  Найдено совпадение: Максимов -> Подп003.tif\r\n");
+                if (logTextBox != null)
+                {
+                    logTextBox.AppendText($"  Найдено совпадение: Максимов -> Подп003.tif\r\n");
+                }
                 return Path.Combine(folderPath, "Подп003.tif");
             }
             else if (normalizedText.Contains("старцев"))
             {
-                logTextBox.AppendText($"  Найдено совпадение: Старцев -> Подп002.tif\r\n");
+                if (logTextBox != null)
+                {
+                    logTextBox.AppendText($"  Найдено совпадение: Старцев -> Подп002.tif\r\n");
+                }
                 return Path.Combine(folderPath, "Подп002.tif");
             }
             else if (normalizedText.Contains("русских"))
             {
-                logTextBox.AppendText($"  Найдено совпадение: Русских -> Подп004.tif\r\n");
+                if (logTextBox != null)
+                {
+                    logTextBox.AppendText($"  Найдено совпадение: Русских -> Подп004.tif\r\n");
+                }
                 return Path.Combine(folderPath, "Подп004.tif");
             }
             else if (normalizedText.Contains("седюк"))
             {
-                logTextBox.AppendText($"  Найдено совпадение: Седюк -> Подп005.tif\r\n");
+                if (logTextBox != null)
+                {
+                    logTextBox.AppendText($"  Найдено совпадение: Седюк -> Подп005.tif\r\n");
+                }
                 return Path.Combine(folderPath, "Подп005.tif");
             }
             else if (normalizedText.Contains("тихомиров"))
             {
-                logTextBox.AppendText($"  Найдено совпадение: Тихомиров -> Подп006.tif\r\n");
+                if (logTextBox != null)
+                {
+                    logTextBox.AppendText($"  Найдено совпадение: Тихомиров -> Подп006.tif\r\n");
+                }
                 return Path.Combine(folderPath, "Подп006.tif");
             }
             else
             {
-                logTextBox.AppendText($"  Совпадений не найдено, используем изображение по умолчанию\r\n");
+                if (logTextBox != null)
+                {
+                    logTextBox.AppendText($"  Совпадений не найдено, используем изображение по умолчанию\r\n");
+                }
                 // Если текст не распознан или не соответствует ключевым словам
                 // Возвращаем изображение "Не распознано" если оно существует
                 string unknownPath = Path.Combine(folderPath, "Подп_Не_Распознано.tif");
                 if (File.Exists(unknownPath))
                 {
-                    logTextBox.AppendText($"  Используется изображение: Подп_Не_Распознано.tif\r\n");
+                    if (logTextBox != null)
+                    {
+                        logTextBox.AppendText($"  Используется изображение: Подп_Не_Распознано.tif\r\n");
+                    }
                     return unknownPath;
                 }
                 else
                 {
                     // Возвращаем первое изображение из списка по умолчанию как запасной вариант
                     string defaultPath = Path.Combine(folderPath, "Подп001.tif");
-                    logTextBox.AppendText($"  Используется изображение по умолчанию: Подп001.tif\r\n");
+                    if (logTextBox != null)
+                    {
+                        logTextBox.AppendText($"  Используется изображение по умолчанию: Подп001.tif\r\n");
+                    }
                     return defaultPath;
                 }
             }
         }
-
-        // ... (остальной код без изменений) ...
 
         /// <summary>
         /// Генерирует рабочий день в заданном диапазоне дат, исключая выходные
