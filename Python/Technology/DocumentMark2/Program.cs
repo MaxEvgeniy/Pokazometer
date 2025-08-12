@@ -18,8 +18,13 @@ namespace PDFSquareDrawer
         private Label statusLabel;
         private ComboBox fontComboBox;
         private TextBox logTextBox; // Новое поле для лога
+        private TextBox transferDateTextBox; // Текстовое поле для даты приема-передачи
         private bool isRussian = true; // true - русский, false - английский
         private const float A3_CORRECTION_X = -11.3f; // Постоянная поправка для формата А3
+
+        // Константы для размеров шрифтов
+        private const float MAIN_TEXT_FONT_SIZE = 16f; // Размер шрифта для основных надписей
+        private const float DATE_FONT_SIZE = 8f; // Размер шрифта для дат
 
         // Константы для изображений (от правого нижнего края)
         private const float IMAGE1_OFFSET_X = 425f; // отступ от правого края влево
@@ -37,7 +42,7 @@ namespace PDFSquareDrawer
         private const float APPROVED_TEXT_OFFSET_X = 490f;
         private const float APPROVED_TEXT_OFFSET_Y = 17f;
 
-        // Константы для дат (от правого нижнего края)
+        // Константы для дат (от правого нижнего края) - теперь это координаты для самих дат
         private const float DATE_DEVELOPED_OFFSET_X = 385f;
         private const float DATE_DEVELOPED_OFFSET_Y = 90f;
         private const float DATE_CHIEF_OFFSET_X = 385f;
@@ -45,10 +50,8 @@ namespace PDFSquareDrawer
         private const float DATE_APPROVED_OFFSET_X = 385f;
         private const float DATE_APPROVED_OFFSET_Y = 19f;
 
-        // Значения дат
-        private const string DATE_DEVELOPED_VALUE = "01.03.2019";
-        private const string DATE_CHIEF_VALUE = "05.03.2019";
-        private const string DATE_APPROVED_VALUE = "01.03.2019";
+        // Значения дат по умолчанию
+        private const string DEFAULT_TRANSFER_DATE = "01.07.2019";
 
         // Константы для прямоугольников (координаты от правого нижнего края)
         private const float RECT1_OFFSET_X = 382.1f; // отступ от правого края влево
@@ -63,7 +66,7 @@ namespace PDFSquareDrawer
         // Константы для зоны распознавания (где раньше было поле "Разработал")
         private const float RECOGNITION_ZONE_OFFSET_X = 487f; // отступ от правого края влево
         private const float RECOGNITION_ZONE_OFFSET_Y = 86f;  // отступ от нижнего края вверх
-        private const float RECOGNITION_ZONE_WIDTH = 61f;    // ширина зоны
+        private const float RECOGNITION_ZONE_WIDTH = 63f;    // ширина зоны
         private const float RECOGNITION_ZONE_HEIGHT = 13f;    // высота зоны
 
         // Список возможных файлов изображений
@@ -81,7 +84,7 @@ namespace PDFSquareDrawer
         private void InitializeComponent()
         {
             this.Text = "PDF Square Drawer";
-            this.Size = new Size(600, 500); // Увеличиваем размер окна
+            this.Size = new Size(600, 550); // Увеличиваем размер окна
             this.StartPosition = FormStartPosition.CenterScreen;
 
             int currentY = 20;
@@ -118,6 +121,18 @@ namespace PDFSquareDrawer
 
             currentY += 40;
 
+            // Текстовое поле для даты приема-передачи
+            Label transferDateLabel = new Label();
+            transferDateLabel.Text = "Дата приема-передачи:";
+            transferDateLabel.Size = new Size(150, 20);
+            transferDateLabel.Location = new Point(50, currentY);
+
+            transferDateTextBox = new TextBox();
+            transferDateTextBox.Size = new Size(100, 25);
+            transferDateTextBox.Location = new Point(210, currentY);
+            transferDateTextBox.Text = DEFAULT_TRANSFER_DATE;
+            currentY += 40;
+
             statusLabel = new Label();
             statusLabel.Size = new Size(400, 30);
             statusLabel.Location = new Point(50, currentY);
@@ -142,6 +157,8 @@ namespace PDFSquareDrawer
             this.Controls.Add(toggleLanguageButton);
             this.Controls.Add(fontLabel);
             this.Controls.Add(fontComboBox);
+            this.Controls.Add(transferDateLabel);
+            this.Controls.Add(transferDateTextBox);
             this.Controls.Add(statusLabel);
             this.Controls.Add(logLabel);
             this.Controls.Add(logTextBox);
@@ -163,16 +180,30 @@ namespace PDFSquareDrawer
                 }
             }
 
-            // Пытаемся выбрать шрифт "GOST type A Italic" по умолчанию
+            // Пытаемся выбрать шрифт "GOST Type A" по умолчанию
             bool foundGostFont = false;
             for (int i = 0; i < fontComboBox.Items.Count; i++)
             {
                 if (fontComboBox.Items[i].ToString().Contains("GOST") &&
-                    fontComboBox.Items[i].ToString().Contains("Italic"))
+                    fontComboBox.Items[i].ToString().Contains("Type A"))
                 {
                     fontComboBox.SelectedIndex = i;
                     foundGostFont = true;
                     break;
+                }
+            }
+
+            // Если шрифт GOST Type A не найден, ищем просто "Gost type A"
+            if (!foundGostFont)
+            {
+                for (int i = 0; i < fontComboBox.Items.Count; i++)
+                {
+                    if (fontComboBox.Items[i].ToString().ToLower().Contains("gost type a"))
+                    {
+                        fontComboBox.SelectedIndex = i;
+                        foundGostFont = true;
+                        break;
+                    }
                 }
             }
 
@@ -340,17 +371,32 @@ namespace PDFSquareDrawer
                         // Рисуем прямоугольники (теперь белые)
                         DrawRectangles(canvas, pageSize, correctionX);
 
-                        // Выбираем текст в зависимости от языка
-                        string chiefText = isRussian ? "Нач.Бюро" : "Chief";
-                        string approvedText = isRussian ? "Утвердил" : "Approved";
+                        // Генерируем зависимые даты
+                        DateTime transferDate;
+                        if (!DateTime.TryParseExact(transferDateTextBox.Text, "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None, out transferDate))
+                        {
+                            transferDate = DateTime.ParseExact(DEFAULT_TRANSFER_DATE, "dd.MM.yyyy", null);
+                            logTextBox.AppendText($"  Неверный формат даты, используется значение по умолчанию: {DEFAULT_TRANSFER_DATE}\r\n");
+                        }
 
-                        AddChiefText(canvas, pageSize, chiefText, CHIEF_TEXT_OFFSET_X - correctionX, CHIEF_TEXT_OFFSET_Y);
-                        AddApprovedText(canvas, pageSize, approvedText, APPROVED_TEXT_OFFSET_X - correctionX, APPROVED_TEXT_OFFSET_Y);
+                        // Генерируем даты с учетом выходных дней
+                        string approvedDate = GenerateWorkingDay(transferDate.AddMonths(-5), transferDate);
+                        string chiefDate = GenerateWorkingDay(DateTime.ParseExact(approvedDate, "dd.MM.yyyy", null).AddMonths(-3), DateTime.ParseExact(approvedDate, "dd.MM.yyyy", null));
+                        string developedDate = GenerateWorkingDay(DateTime.ParseExact(chiefDate, "dd.MM.yyyy", null).AddMonths(-2), DateTime.ParseExact(chiefDate, "dd.MM.yyyy", null));
 
-                        // Добавляем даты
-                        AddDateText(canvas, pageSize, DATE_DEVELOPED_VALUE, DATE_DEVELOPED_OFFSET_X - correctionX, DATE_DEVELOPED_OFFSET_Y);
-                        AddDateText(canvas, pageSize, DATE_CHIEF_VALUE, DATE_CHIEF_OFFSET_X - correctionX, DATE_CHIEF_OFFSET_Y);
-                        AddDateText(canvas, pageSize, DATE_APPROVED_VALUE, DATE_APPROVED_OFFSET_X - correctionX, DATE_APPROVED_OFFSET_Y);
+                        logTextBox.AppendText($"  Дата приема-передачи: {transferDateTextBox.Text}\r\n");
+                        logTextBox.AppendText($"  УтвердилДата: {approvedDate}\r\n");
+                        logTextBox.AppendText($"  Нач.БюроДата: {chiefDate}\r\n");
+                        logTextBox.AppendText($"  РазработалДата: {developedDate}\r\n");
+
+                        // Добавляем текстовые поля в кодировке UTF-8, курсивом
+                        AddChiefText(canvas, pageSize, "Старцев", CHIEF_TEXT_OFFSET_X - correctionX, CHIEF_TEXT_OFFSET_Y);
+                        AddApprovedText(canvas, pageSize, "Афанасьев", APPROVED_TEXT_OFFSET_X - correctionX, APPROVED_TEXT_OFFSET_Y);
+
+                        // Добавляем даты в кодировке UTF-8, курсивом (вместо надписей "РазработалДата" и т.д.)
+                        AddDateValueText(canvas, pageSize, developedDate, DATE_DEVELOPED_OFFSET_X - correctionX, DATE_DEVELOPED_OFFSET_Y);
+                        AddDateValueText(canvas, pageSize, chiefDate, DATE_CHIEF_OFFSET_X - correctionX, DATE_CHIEF_OFFSET_Y);
+                        AddDateValueText(canvas, pageSize, approvedDate, DATE_APPROVED_OFFSET_X - correctionX, DATE_APPROVED_OFFSET_Y);
 
                         // Добавляем изображения
                         string folderPath = Path.GetDirectoryName(filePath);
@@ -430,20 +476,20 @@ namespace PDFSquareDrawer
 
         private void AddChiefText(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, string text, float offsetX, float offsetY)
         {
-            AddTextWithFontFromBottomRight(canvas, pageSize, text, offsetX, offsetY, 14);
+            AddTextWithFontFromBottomRight(canvas, pageSize, text, offsetX, offsetY, MAIN_TEXT_FONT_SIZE, true); // курсив
         }
 
         private void AddApprovedText(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, string text, float offsetX, float offsetY)
         {
-            AddTextWithFontFromBottomRight(canvas, pageSize, text, offsetX, offsetY, 14);
+            AddTextWithFontFromBottomRight(canvas, pageSize, text, offsetX, offsetY, MAIN_TEXT_FONT_SIZE, true); // курсив
         }
 
-        private void AddDateText(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, string text, float offsetX, float offsetY)
+        private void AddDateValueText(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, string text, float offsetX, float offsetY)
         {
-            AddTextWithFontFromBottomRight(canvas, pageSize, text, offsetX, offsetY, 7);
+            AddTextWithFontFromBottomRight(canvas, pageSize, text, offsetX, offsetY, DATE_FONT_SIZE, true); // курсив
         }
 
-        private void AddTextWithFontFromBottomRight(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, string text, float offsetX, float offsetY, float fontSize)
+        private void AddTextWithFontFromBottomRight(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, string text, float offsetX, float offsetY, float fontSize, bool isItalic = false)
         {
             try
             {
@@ -459,8 +505,28 @@ namespace PDFSquareDrawer
                     string fontPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts),
                                                   selectedFont + ".ttf");
 
-                    if (File.Exists(fontPath))
+                    // Проверяем наличие курсивной версии
+                    string fontPathItalic = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts),
+                                                       selectedFont + " Italic.ttf");
+                    if (!File.Exists(fontPathItalic))
                     {
+                        fontPathItalic = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts),
+                                                    selectedFont + "-Italic.ttf");
+                    }
+                    if (!File.Exists(fontPathItalic))
+                    {
+                        fontPathItalic = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts),
+                                                    selectedFont + "Oblique.ttf");
+                    }
+
+                    if (isItalic && File.Exists(fontPathItalic))
+                    {
+                        // Используем курсивную версию шрифта
+                        baseFont = BaseFont.CreateFont(fontPathItalic, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                    }
+                    else if (File.Exists(fontPath))
+                    {
+                        // Используем обычную версию шрифта
                         baseFont = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
                     }
                     else
@@ -475,23 +541,59 @@ namespace PDFSquareDrawer
                                                           selectedFont + ext);
                             if (File.Exists(fullPath))
                             {
-                                baseFont = BaseFont.CreateFont(fullPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-                                fontFound = true;
-                                break;
+                                if (isItalic)
+                                {
+                                    // Пытаемся найти курсивную версию
+                                    string italicPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts),
+                                                                   selectedFont + " Italic" + ext);
+                                    if (File.Exists(italicPath))
+                                    {
+                                        baseFont = BaseFont.CreateFont(italicPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                                        fontFound = true;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        // Если курсив не найден, используем обычный шрифт
+                                        baseFont = BaseFont.CreateFont(fullPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                                        fontFound = true;
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    baseFont = BaseFont.CreateFont(fullPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                                    fontFound = true;
+                                    break;
+                                }
                             }
                         }
 
                         if (!fontFound)
                         {
-                            // Если системный шрифт не найден, используем стандартный курсив
-                            baseFont = BaseFont.CreateFont(BaseFont.HELVETICA_OBLIQUE, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
+                            // Если системный шрифт не найден, используем стандартный курсив или обычный
+                            if (isItalic)
+                            {
+                                baseFont = BaseFont.CreateFont(BaseFont.HELVETICA_OBLIQUE, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
+                            }
+                            else
+                            {
+                                baseFont = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
+                            }
                         }
                     }
                 }
                 catch
                 {
-                    // Если не удалось создать шрифт из файла, используем стандартный курсив
-                    baseFont = BaseFont.CreateFont(BaseFont.HELVETICA_OBLIQUE, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
+                    // Если не удалось создать шрифт из файла, используем стандартный курсив или обычный
+                    if (isItalic)
+                    {
+                        baseFont = BaseFont.CreateFont(BaseFont.HELVETICA_OBLIQUE, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
+                    }
+                    else
+                    {
+                        baseFont = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
+                    }
                 }
 
                 // Пересчитываем координаты от правого нижнего края в абсолютные координаты
@@ -591,12 +693,9 @@ namespace PDFSquareDrawer
         /// <summary>
         /// Определяет путь к изображению подписи на основе извлеченного текста.
         /// </summary>
-        /// <summary>
-        /// Определяет путь к изображению подписи на основе извлеченного текста.
-        /// </summary>
         private string GetSignatureImagePath(string folderPath, string recognizedText)
         {
-            // Приводим текст к нижнему регистру для нечувствительного сравнения
+            // Приводим текст к нижнему регистру для нечувствительного сравнения и убираем пробелы
             string normalizedText = recognizedText.ToLower().Trim();
             logTextBox.AppendText($"  Анализ текста: '{normalizedText}'\r\n");
 
@@ -645,6 +744,45 @@ namespace PDFSquareDrawer
                     return defaultPath;
                 }
             }
+        }
+
+        /// <summary>
+        /// Генерирует рабочий день в заданном диапазоне дат, исключая выходные
+        /// </summary>
+        /// <param name="startDate">Начальная дата диапазона</param>
+        /// <param name="endDate">Конечная дата диапазона</param>
+        /// <returns>Строка с датой в формате dd.MM.yyyy</returns>
+        private string GenerateWorkingDay(DateTime startDate, DateTime endDate)
+        {
+            // Убедимся, что startDate <= endDate
+            if (startDate > endDate)
+            {
+                DateTime temp = startDate;
+                startDate = endDate;
+                endDate = temp;
+            }
+
+            // Создаем список рабочих дней в диапазоне
+            var workingDays = new System.Collections.Generic.List<DateTime>();
+            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+            {
+                // Проверяем, что это не выходной (суббота = 6, воскресенье = 0)
+                if (date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    workingDays.Add(date);
+                }
+            }
+
+            // Если рабочих дней нет, возвращаем последний день диапазона
+            if (workingDays.Count == 0)
+            {
+                return endDate.ToString("dd.MM.yyyy");
+            }
+
+            // Выбираем случайный рабочий день
+            Random random = new Random();
+            DateTime selectedDate = workingDays[random.Next(workingDays.Count)];
+            return selectedDate.ToString("dd.MM.yyyy");
         }
     }
 
