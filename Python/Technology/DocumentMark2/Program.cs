@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.Drawing.Text;
 using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -9,6 +11,8 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 // Для устранения конфликта имен Path
 using Path = System.IO.Path;
+// Добавляем ссылки на Microsoft Word Object Library
+using Word = Microsoft.Office.Interop.Word;
 
 namespace PDFSquareDrawer
 {
@@ -236,7 +240,7 @@ namespace PDFSquareDrawer
                 RECT2_WIDTH = 5f,
                 RECT2_HEIGHT = 12f,      // Обновлено
 
-                RECOGNITION_ZONE_OFFSET_X = 488f,
+                RECOGNITION_ZONE_OFFSET_X = 487f,
                 RECOGNITION_ZONE_OFFSET_Y = 86f,
                 RECOGNITION_ZONE_WIDTH = 63f,
                 RECOGNITION_ZONE_HEIGHT = 13f
@@ -366,6 +370,7 @@ namespace PDFSquareDrawer
             if (radioButton != null && radioButton.Checked)
             {
                 selectedProfile = (int)radioButton.Tag;
+                // Добавляем проверку на null для избежания NullReferenceException
                 if (logTextBox != null)
                 {
                     logTextBox.AppendText($"Выбран профиль: {selectedProfile + 1}\r\n");
@@ -585,14 +590,9 @@ namespace PDFSquareDrawer
                         // Определяем, является ли страница форматом А3
                         bool isA3Format = IsA3Format(pageSize);
 
-                        // Определяем, является ли страница А3 И перевернутой
+                        // Определяем, является ли страница А3 И перевернутой одновременно
                         // ВАЖНО: Проверка на "перевернутость" применяется только к А3!
-                        bool isPageRotated = false; // По умолчанию считаем, что не перевернута
-                        if (isA3Format) // Проверяем перевернутость ТОЛЬКО для А3
-                        {
-                            isPageRotated = pageSize.Height > pageSize.Width;
-                            // Для А4 и других форматов isPageRotated останется false
-                        }
+                        bool isPageRotated = isA3Format && (pageSize.Height > pageSize.Width);
 
                         // Применяем поправку для формата А3
                         float correctionX = 0f;
@@ -606,21 +606,6 @@ namespace PDFSquareDrawer
                             }
                         }
                         // Для А4 и других форматов дополнительная коррекция не применяется
-
-                        // Логируем информацию для отладки
-                        if (logTextBox != null)
-                        {
-                            logTextBox.AppendText($"  Формат страницы: {(isA3Format ? "A3" : "не A3")}\r\n");
-                            if (isA3Format) // Логируем перевернутость только для А3
-                            {
-                                logTextBox.AppendText($"  A3 перевернут: {isPageRotated}\r\n");
-                            }
-                            else
-                            {
-                                logTextBox.AppendText($"  Страница перевернута (проверяется только для A3): {pageSize.Height > pageSize.Width}\r\n");
-                            }
-                            logTextBox.AppendText($"  CorrectionX: {correctionX:F2}\r\n");
-                        }
 
                         // Извлекаем текст из зоны распознавания
                         string recognizedText = "";
@@ -699,13 +684,16 @@ namespace PDFSquareDrawer
                         AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп002.tif"), currentProfile.IMAGE2_OFFSET_X - correctionX, currentProfile.IMAGE2_OFFSET_Y, currentProfile.IMAGE_WIDTH, currentProfile.IMAGE_HEIGHT);
                         AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп001.tif"), currentProfile.IMAGE3_OFFSET_X - correctionX, currentProfile.IMAGE3_OFFSET_Y, currentProfile.IMAGE_WIDTH, currentProfile.IMAGE_HEIGHT);
 
-                        // Рисуем временную красную рамку для зоны распознавания (для отладки)
+                        // Рисование рамки закомментировано
                         // DrawRecognitionZone(canvas, pageSize, correctionX);
                     }
 
                     stamper.Close();
                     reader.Close();
                 }
+
+                // Обрабатываем соответствующий .docx файл
+                ProcessWordDocument(filePath);
             }
             catch (Exception ex)
             {
@@ -759,7 +747,9 @@ namespace PDFSquareDrawer
             canvas.Rectangle(rect2X, rect2Y, currentProfile.RECT2_WIDTH, currentProfile.RECT2_HEIGHT);
             canvas.Fill();
         }
-/*
+
+        // Метод рисования рамки закомментирован
+        /*
         private void DrawRecognitionZone(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, float correctionX)
         {
             // Получаем текущий профиль координат
@@ -772,16 +762,11 @@ namespace PDFSquareDrawer
             float zoneX = pageSize.Right - currentProfile.RECOGNITION_ZONE_OFFSET_X + correctionX;
             float zoneY = pageSize.Bottom + currentProfile.RECOGNITION_ZONE_OFFSET_Y;
 
-            // Логируем координаты для отладки
-            if (logTextBox != null)
-            {
-                bool isPageRotated = pageSize.Height > pageSize.Width;
-                logTextBox.AppendText($"    Рисование рамки: X={zoneX:F2}, Y={zoneY:F2}, W={currentProfile.RECOGNITION_ZONE_WIDTH:F2}, H={currentProfile.RECOGNITION_ZONE_HEIGHT:F2} (перевернута: {isPageRotated})\r\n");
-            }
             canvas.Rectangle(zoneX, zoneY, currentProfile.RECOGNITION_ZONE_WIDTH, currentProfile.RECOGNITION_ZONE_HEIGHT);
             canvas.Stroke();
         }
-*/
+        */
+
         private void AddChiefText(PdfContentByte canvas, iTextSharp.text.Rectangle pageSize, string text, float offsetX, float offsetY)
         {
             AddTextWithFontFromBottomRight(canvas, pageSize, text, offsetX, offsetY, MAIN_TEXT_FONT_SIZE, true); // курсив
@@ -969,10 +954,7 @@ namespace PDFSquareDrawer
         }
 
         /// <summary>
-        /// Извлекает текст из заданной области на странице PDF, используя те же координаты, что и для рисования рамки.
-        /// </summary>
-        /// <summary>
-        /// Извлекает текст из заданной области на странице PDF, используя те же координаты, что и для рисования рамки.
+        /// Извлекает текст из заданной области на странице PDF.
         /// </summary>
         private string ExtractTextFromRecognitionZoneWithSameCoords(PdfReader reader, int pageNumber, iTextSharp.text.Rectangle pageSize, float correctionX)
         {
@@ -990,15 +972,12 @@ namespace PDFSquareDrawer
                 // ВАЖНО: Проверка на "перевернутость" применяется только к А3!
                 bool isPageRotated = isA3Format && (pageSize.Height > pageSize.Width);
 
-                // Используем точно такие же координаты, как в DrawRecognitionZone
+                // 1. Определяем координаты зоны распознавания
                 float zoneX = pageSize.Right - currentProfile.RECOGNITION_ZONE_OFFSET_X + correctionX;
                 float zoneY = pageSize.Bottom + currentProfile.RECOGNITION_ZONE_OFFSET_Y;
-                float zoneWidth = currentProfile.RECOGNITION_ZONE_WIDTH;
-                float zoneHeight = currentProfile.RECOGNITION_ZONE_HEIGHT;
-
-                // Создаем прямоугольник для зоны распознавания
+                // Создаем прямоугольник для зоны
                 iTextSharp.text.Rectangle recognitionRect = new iTextSharp.text.Rectangle(
-                    zoneX, zoneY, zoneX + zoneWidth, zoneY + zoneHeight
+                    zoneX, zoneY, zoneX + currentProfile.RECOGNITION_ZONE_WIDTH, zoneY + currentProfile.RECOGNITION_ZONE_HEIGHT
                 );
 
                 // Логируем координаты для отладки
@@ -1007,15 +986,15 @@ namespace PDFSquareDrawer
                     logTextBox.AppendText($"    PageSize: W={pageSize.Width:F2}, H={pageSize.Height:F2}\r\n");
                     logTextBox.AppendText($"    Формат A3: {isA3Format}\r\n");
                     logTextBox.AppendText($"    Страница перевернута (только для A3): {isPageRotated}\r\n");
-                    logTextBox.AppendText($"    Оригинальные координаты зоны распознавания: X={zoneX:F2}, Y={zoneY:F2}, W={zoneWidth:F2}, H={zoneHeight:F2}\r\n");
+                    logTextBox.AppendText($"    Оригинальные координаты зоны распознавания: X={zoneX:F2}, Y={zoneY:F2}, W={currentProfile.RECOGNITION_ZONE_WIDTH:F2}, H={currentProfile.RECOGNITION_ZONE_HEIGHT:F2}\r\n");
                 }
 
                 // Для инверсных страниц (А3 и перевернутых) корректируем координаты и размеры
                 if (isPageRotated)
                 {
                     // Попробуем поменять местами ширину и высоту зоны распознавания
-                    float correctedWidth = zoneHeight;
-                    float correctedHeight = zoneWidth;
+                    float correctedWidth = currentProfile.RECOGNITION_ZONE_HEIGHT;
+                    float correctedHeight = currentProfile.RECOGNITION_ZONE_WIDTH;
 
                     // Пересчитываем координаты для инверсной страницы
                     // Возможно, потребуется смещение
@@ -1035,14 +1014,14 @@ namespace PDFSquareDrawer
                     }
                 }
 
-                // Используем RegionTextRenderFilter и FilteredTextRenderListener для извлечения текста с позициями
+                // 2. Используем RegionTextRenderFilter и FilteredTextRenderListener для извлечения текста с позициями
                 RegionTextRenderFilter filter = new RegionTextRenderFilter(recognitionRect);
                 FilteredTextRenderListener listener = new FilteredTextRenderListener(new LocationTextExtractionStrategy(), filter);
 
-                // Извлекаем текст с применением фильтра
+                // 3. Извлекаем текст с применением фильтра
                 extractedText = PdfTextExtractor.GetTextFromPage(reader, pageNumber, listener);
 
-                // Очищаем текст от лишних пробелов и символов новой строки
+                // 4. Очищаем текст от лишних пробелов и символов новой строки
                 extractedText = extractedText.Trim();
 
                 // Логируем результат для отладки
@@ -1195,6 +1174,604 @@ namespace PDFSquareDrawer
             Random random = new Random();
             DateTime selectedDate = workingDays[random.Next(workingDays.Count)];
             return selectedDate.ToString("dd.MM.yyyy");
+        }
+
+        /// <summary>
+        /// Обрабатывает соответствующий Word документ (.docx)
+        /// </summary>
+        private void ProcessWordDocument(string pdfFilePath)
+        {
+            object missing = System.Type.Missing;
+            try
+            {
+                // Формируем путь к .docx файлу
+                string docxPath = pdfFilePath.Replace(".pdf", ".docx");
+                string outputDocxPath = pdfFilePath.Replace(".pdf", "_Обработано.docx");
+
+                if (!File.Exists(docxPath))
+                {
+                    if (logTextBox != null)
+                    {
+                        logTextBox.AppendText($"  Предупреждение: файл Word не найден: {Path.GetFileName(docxPath)}\r\n");
+                    }
+                    return;
+                }
+
+                if (logTextBox != null)
+                {
+                    logTextBox.AppendText($"  Обработка Word документа: {Path.GetFileName(docxPath)}\r\n");
+                }
+
+                // Создаем экземпляр Word приложения
+                Word.Application wordApp = new Word.Application();
+                Word.Document doc = null;
+
+                try
+                {
+                    // Открываем документ
+                    object fileName = docxPath;
+                    object readOnly = false;
+                    object isVisible = false;
+                    //object missing = System.Type.Missing; // Локальная переменная для ref параметров
+
+                    doc = wordApp.Documents.Open(
+                        ref fileName,
+                        ref missing,
+                        ref readOnly,
+                        ref missing,
+                        ref missing,
+                        ref missing,
+                        ref missing,
+                        ref missing,
+                        ref missing,
+                        ref missing,
+                        ref missing,
+                        ref isVisible,
+                        ref missing,
+                        ref missing,
+                        ref missing,
+                        ref missing
+                    );
+
+                    // Получаем даты из PDF файла (нужно сохранить их где-то или передать как параметры)
+                    // Для демонстрации используем фиктивные даты
+                    string approvedDate = "01.03.2019";
+                    string chiefDate = "05.03.2019";
+                    string developedDate = "01.03.2019";
+
+                    // Извлекаем текст из PDF для определения имени подписи
+                    string recognizedText = "";
+                    string imagePath1 = "";
+                    string folderPath = Path.GetDirectoryName(pdfFilePath);
+
+                    try
+                    {
+                        using (FileStream inputPdfStream = new FileStream(pdfFilePath, FileMode.Open, FileAccess.Read))
+                        {
+                            PdfReader reader = new PdfReader(inputPdfStream);
+                            iTextSharp.text.Rectangle pageSize = reader.GetPageSize(1);
+
+                            // Определяем, является ли страница форматом А3
+                            bool isA3Format = IsA3Format(pageSize);
+
+                            // Определяем, является ли страница А3 И перевернутой одновременно
+                            bool isPageRotated = isA3Format && (pageSize.Height > pageSize.Width);
+
+                            // Применяем поправку для формата А3
+                            float correctionX = 0f;
+                            if (isA3Format)
+                            {
+                                correctionX = A3_CORRECTION_X;
+                                // Применяем дополнительную коррекцию только для А3
+                                if (isPageRotated)
+                                {
+                                    correctionX += ROTATED_PAGE_CORRECTION_X;
+                                }
+                            }
+
+                            recognizedText = ExtractTextFromRecognitionZoneWithSameCoords(reader, 1, pageSize, correctionX);
+                            imagePath1 = GetSignatureImagePath(folderPath, recognizedText);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        if (logTextBox != null)
+                        {
+                            logTextBox.AppendText($"  Ошибка извлечения текста из PDF для Word: {ex.Message}\r\n");
+                        }
+                        MessageBox.Show($"Ошибка извлечения текста из PDF для Word: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+
+                    // Обрабатываем каждую таблицу в документе
+                    for (int tableIndex = 1; tableIndex <= doc.Tables.Count; tableIndex++)
+                    {
+                        Word.Table table = doc.Tables[tableIndex];
+
+                        // Обрабатываем каждую строку таблицы
+                        for (int rowIndex = 1; rowIndex <= table.Rows.Count; rowIndex++)
+                        {
+                            // Ищем ячейку со словом "Разраб." в текущей строке
+                            Word.Cell targetCell = null;
+                            int targetColumnIndex = -1;
+
+                            for (int colIndex = 1; colIndex <= table.Columns.Count; colIndex++)
+                            {
+                                try
+                                {
+                                    Word.Cell cell = table.Cell(rowIndex, colIndex);
+                                    if (cell != null && cell.Range != null &&
+                                        cell.Range.Text != null &&
+                                        cell.Range.Text.Contains("Разраб."))
+                                    {
+                                        targetCell = cell;
+                                        targetColumnIndex = colIndex;
+                                        break;
+                                    }
+                                }
+                                catch
+                                {
+                                    // Игнорируем ошибки доступа к ячейкам
+                                    continue;
+                                }
+                            }
+
+                            // Если нашли ячейку "Разраб."
+                            if (targetCell != null && targetColumnIndex > 0)
+                            {
+                                if (logTextBox != null)
+                                {
+                                    logTextBox.AppendText($"    Найдена ячейка 'Разраб.' в строке {rowIndex}, столбце {targetColumnIndex}\r\n");
+                                }
+
+                                try
+                                {
+                                    // 1. УДАЛИТЬ данные в следующих по строке ячейках слева направо
+                                    // ВМЕСТО двух ячеек удаляем только одну ячейку сразу справа от "Разраб."
+                                    int clearColIndex = targetColumnIndex + 1; // Только одна ячейка сразу справа
+                                    if (clearColIndex <= table.Columns.Count)
+                                    {
+                                        try
+                                        {
+                                            Word.Cell clearCell = table.Cell(rowIndex, clearColIndex);
+                                            if (clearCell != null && clearCell.Range != null)
+                                            {
+                                                clearCell.Range.Text = "";
+                                                if (logTextBox != null)
+                                                {
+                                                    logTextBox.AppendText($"    Очищена ячейка [{rowIndex},{clearColIndex}]\r\n");
+                                                }
+                                            }
+                                        }
+                                        catch
+                                        {
+                                            // Игнорируем ошибки
+                                        }
+                                    }
+
+                                    // 2. В следующей ячейке справа от "Разраб." записываем распознанное слово
+                                    // ЭТО ТА ЖЕ ЯЧЕЙКА, КОТОРАЯ БЫЛА ОЧИЩЕНА ВЫШЕ
+                                    int nameColIndex = targetColumnIndex + 1; // Сразу справа от "Разраб."
+                                    if (nameColIndex <= table.Columns.Count)
+                                    {
+                                        try
+                                        {
+                                            Word.Cell nameCell = table.Cell(rowIndex, nameColIndex);
+                                            if (nameCell != null && nameCell.Range != null)
+                                            {
+                                                // Определяем имя на основе распознанного текста
+                                                string nameToInsert = GetNameFromRecognizedText(recognizedText);
+                                                nameCell.Range.Text = nameToInsert;
+
+                                                // Устанавливаем шрифт GOST 2.304 A, размер 11
+                                                nameCell.Range.Font.Name = "GOST 2.304 A";
+                                                nameCell.Range.Font.Size = 11;
+
+                                                if (logTextBox != null)
+                                                {
+                                                    logTextBox.AppendText($"    Вставлено имя '{nameToInsert}' в ячейку [{rowIndex},{nameColIndex}]\r\n");
+                                                }
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            if (logTextBox != null)
+                                            {
+                                                logTextBox.AppendText($"    Ошибка вставки имени в ячейку [{rowIndex},{nameColIndex}]: {ex.Message}\r\n");
+                                            }
+                                        }
+                                    }
+
+                                    // 3. В следующую ячейку строки вставляем картинку (справа от имени)
+                                    int imageColIndex = targetColumnIndex + 2; // Справа от имени
+                                    if (imageColIndex <= table.Columns.Count)
+                                    {
+                                        try
+                                        {
+                                            Word.Cell imageCell = table.Cell(rowIndex, imageColIndex);
+                                            if (imageCell != null)
+                                            {
+                                                // Очищаем содержимое ячейки
+                                                imageCell.Range.Text = "";
+
+                                                // Вставляем изображение
+                                                if (File.Exists(imagePath1))
+                                                {
+                                                    object range = imageCell.Range;
+                                                    Word.InlineShape inlineShape = imageCell.Range.InlineShapes.AddPicture(
+                                                        imagePath1, ref missing, ref missing, ref range);
+
+                                                    // Масштабируем изображение (примерные размеры)
+                                                    inlineShape.Width = 80; // пикселей
+                                                    inlineShape.Height = 30; // пикселей
+
+                                                    if (logTextBox != null)
+                                                    {
+                                                        logTextBox.AppendText($"    Вставлена картинка '{Path.GetFileName(imagePath1)}' в ячейку [{rowIndex},{imageColIndex}]\r\n");
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            if (logTextBox != null)
+                                            {
+                                                logTextBox.AppendText($"    Ошибка вставки картинки в ячейку [{rowIndex},{imageColIndex}]: {ex.Message}\r\n");
+                                            }
+                                        }
+                                    }
+
+                                    // 4. В следующую ячейку строки вставляем дату (справа от картинки)
+                                    int dateColIndex = targetColumnIndex + 3; // Справа от картинки
+                                    if (dateColIndex <= table.Columns.Count)
+                                    {
+                                        try
+                                        {
+                                            Word.Cell dateCell = table.Cell(rowIndex, dateColIndex);
+                                            if (dateCell != null && dateCell.Range != null)
+                                            {
+                                                // Генерируем случайную дату в диапазоне от approvedDate до approvedDate+1 месяц
+                                                DateTime startDate = DateTime.ParseExact(approvedDate, "dd.MM.yyyy", null);
+                                                DateTime endDate = startDate.AddMonths(1);
+                                                Random random = new Random();
+                                                TimeSpan timeSpan = endDate - startDate;
+                                                DateTime randomDate = startDate.AddDays(random.Next(0, (int)timeSpan.TotalDays + 1));
+                                                string randomDateString = randomDate.ToString("dd.MM.yyyy");
+
+                                                dateCell.Range.Text = randomDateString;
+
+                                                // Устанавливаем шрифт GOST 2.304 A, размер 11
+                                                dateCell.Range.Font.Name = "GOST 2.304 A";
+                                                dateCell.Range.Font.Size = 11;
+
+                                                if (logTextBox != null)
+                                                {
+                                                    logTextBox.AppendText($"    Вставлена дата '{randomDateString}' в ячейку [{rowIndex},{dateColIndex}]\r\n");
+                                                }
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            if (logTextBox != null)
+                                            {
+                                                logTextBox.AppendText($"    Ошибка вставки даты в ячейку [{rowIndex},{dateColIndex}]: {ex.Message}\r\n");
+                                            }
+                                        }
+                                    }
+
+                                    // 5. Переходим на строку ниже и заменяем содержимое ячейки под "Разраб." на "Нач. Бюро"
+                                    int nextRowIndex = rowIndex + 1;
+                                    if (nextRowIndex <= table.Rows.Count)
+                                    {
+                                        try
+                                        {
+                                            Word.Cell belowCell = table.Cell(nextRowIndex, targetColumnIndex);
+                                            if (belowCell != null && belowCell.Range != null)
+                                            {
+                                                belowCell.Range.Text = "Нач. Бюро";
+
+                                                // Устанавливаем шрифт GOST 2.304 A, размер 11
+                                                belowCell.Range.Font.Name = "GOST 2.304 A";
+                                                belowCell.Range.Font.Size = 11;
+
+                                                if (logTextBox != null)
+                                                {
+                                                    logTextBox.AppendText($"    Заменено содержимое ячейки [{nextRowIndex},{targetColumnIndex}] на 'Нач. Бюро'\r\n");
+                                                }
+                                            }
+
+                                            // В следующей ячейке справа записываем слово "Старцев"
+                                            int starcevColIndex = targetColumnIndex + 1;
+                                            if (starcevColIndex <= table.Columns.Count)
+                                            {
+                                                Word.Cell starcevCell = table.Cell(nextRowIndex, starcevColIndex);
+                                                if (starcevCell != null && starcevCell.Range != null)
+                                                {
+                                                    starcevCell.Range.Text = "Старцев";
+
+                                                    // Устанавливаем шрифт GOST 2.304 A, размер 11
+                                                    starcevCell.Range.Font.Name = "GOST 2.304 A";
+                                                    starcevCell.Range.Font.Size = 11;
+
+                                                    if (logTextBox != null)
+                                                    {
+                                                        logTextBox.AppendText($"    Вставлено 'Старцев' в ячейку [{nextRowIndex},{starcevColIndex}]\r\n");
+                                                    }
+                                                }
+                                            }
+
+                                            // В следующей ячейке справа вставляем картинку "Подп002.tif"
+                                            int image2ColIndex = targetColumnIndex + 2;
+                                            if (image2ColIndex <= table.Columns.Count)
+                                            {
+                                                Word.Cell image2Cell = table.Cell(nextRowIndex, image2ColIndex);
+                                                if (image2Cell != null)
+                                                {
+                                                    // Очищаем содержимое ячейки
+                                                    image2Cell.Range.Text = "";
+
+                                                    // Вставляем изображение
+                                                    string image2Path = Path.Combine(folderPath, "Подп002.tif");
+                                                    if (File.Exists(image2Path))
+                                                    {
+                                                        object range = image2Cell.Range;
+                                                        Word.InlineShape inlineShape = image2Cell.Range.InlineShapes.AddPicture(
+                                                            image2Path, ref missing, ref missing, ref range);
+
+                                                        // Масштабируем изображение
+                                                        inlineShape.Width = 80; // пикселей
+                                                        inlineShape.Height = 30; // пикселей
+
+                                                        if (logTextBox != null)
+                                                        {
+                                                            logTextBox.AppendText($"    Вставлена картинка 'Подп002.tif' в ячейку [{nextRowIndex},{image2ColIndex}]\r\n");
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            // В следующей ячейке справа вставляем дату (на неделю позже предыдущей)
+                                            int date2ColIndex = targetColumnIndex + 3;
+                                            if (date2ColIndex <= table.Columns.Count)
+                                            {
+                                                Word.Cell date2Cell = table.Cell(nextRowIndex, date2ColIndex);
+                                                if (date2Cell != null && date2Cell.Range != null)
+                                                {
+                                                    // Генерируем дату на неделю позже предыдущей
+                                                    DateTime prevDate = DateTime.ParseExact(approvedDate, "dd.MM.yyyy", null);
+                                                    DateTime newDate = prevDate.AddDays(7);
+                                                    string newDateString = newDate.ToString("dd.MM.yyyy");
+
+                                                    date2Cell.Range.Text = newDateString;
+
+                                                    // Устанавливаем шрифт GOST 2.304 A, размер 11
+                                                    date2Cell.Range.Font.Name = "GOST 2.304 A";
+                                                    date2Cell.Range.Font.Size = 11;
+
+                                                    if (logTextBox != null)
+                                                    {
+                                                        logTextBox.AppendText($"    Вставлена дата '{newDateString}' в ячейку [{nextRowIndex},{date2ColIndex}]\r\n");
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            if (logTextBox != null)
+                                            {
+                                                logTextBox.AppendText($"    Ошибка обработки строки ниже [{nextRowIndex}]: {ex.Message}\r\n");
+                                            }
+                                        }
+                                    }
+
+                                    // 6. Спускаемся еще на строку ниже под словом "Разраб." и заменяем ее содержимое на "Утвердил"
+                                    int approveRowIndex = rowIndex + 2;
+                                    if (approveRowIndex <= table.Rows.Count)
+                                    {
+                                        try
+                                        {
+                                            Word.Cell approveCell = table.Cell(approveRowIndex, targetColumnIndex);
+                                            if (approveCell != null && approveCell.Range != null)
+                                            {
+                                                approveCell.Range.Text = "Утвердил";
+
+                                                // Устанавливаем шрифт GOST 2.304 A, размер 11
+                                                approveCell.Range.Font.Name = "GOST 2.304 A";
+                                                approveCell.Range.Font.Size = 11;
+
+                                                if (logTextBox != null)
+                                                {
+                                                    logTextBox.AppendText($"    Заменено содержимое ячейки [{approveRowIndex},{targetColumnIndex}] на 'Утвердил'\r\n");
+                                                }
+                                            }
+
+                                            // В следующей ячейке справа записываем слово "Афанасьев"
+                                            int afanasevColIndex = targetColumnIndex + 1;
+                                            if (afanasevColIndex <= table.Columns.Count)
+                                            {
+                                                Word.Cell afanasevCell = table.Cell(approveRowIndex, afanasevColIndex);
+                                                if (afanasevCell != null && afanasevCell.Range != null)
+                                                {
+                                                    afanasevCell.Range.Text = "Афанасьев";
+
+                                                    // Устанавливаем шрифт GOST 2.304 A, размер 11
+                                                    afanasevCell.Range.Font.Name = "GOST 2.304 A";
+                                                    afanasevCell.Range.Font.Size = 11;
+
+                                                    if (logTextBox != null)
+                                                    {
+                                                        logTextBox.AppendText($"    Вставлено 'Афанасьев' в ячейку [{approveRowIndex},{afanasevColIndex}]\r\n");
+                                                    }
+                                                }
+                                            }
+
+                                            // В следующей ячейке справа вставляем картинку "Подп001.tif"
+                                            int image3ColIndex = targetColumnIndex + 2;
+                                            if (image3ColIndex <= table.Columns.Count)
+                                            {
+                                                Word.Cell image3Cell = table.Cell(approveRowIndex, image3ColIndex);
+                                                if (image3Cell != null)
+                                                {
+                                                    // Очищаем содержимое ячейки
+                                                    image3Cell.Range.Text = "";
+
+                                                    // Вставляем изображение
+                                                    string image3Path = Path.Combine(folderPath, "Подп001.tif");
+                                                    if (File.Exists(image3Path))
+                                                    {
+                                                        object range = image3Cell.Range;
+                                                        Word.InlineShape inlineShape = image3Cell.Range.InlineShapes.AddPicture(
+                                                            image3Path, ref missing, ref missing, ref range);
+
+                                                        // Масштабируем изображение
+                                                        inlineShape.Width = 80; // пикселей
+                                                        inlineShape.Height = 30; // пикселей
+
+                                                        if (logTextBox != null)
+                                                        {
+                                                            logTextBox.AppendText($"    Вставлена картинка 'Подп001.tif' в ячейку [{approveRowIndex},{image3ColIndex}]\r\n");
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            // В следующей ячейке справа вставляем дату (на неделю позже предыдущей)
+                                            int date3ColIndex = targetColumnIndex + 3;
+                                            if (date3ColIndex <= table.Columns.Count)
+                                            {
+                                                Word.Cell date3Cell = table.Cell(approveRowIndex, date3ColIndex);
+                                                if (date3Cell != null && date3Cell.Range != null)
+                                                {
+                                                    // Генерируем дату на неделю позже предыдущей
+                                                    DateTime prevDate = DateTime.ParseExact(approvedDate, "dd.MM.yyyy", null).AddDays(7);
+                                                    DateTime newDate = prevDate.AddDays(7);
+                                                    string newDateString = newDate.ToString("dd.MM.yyyy");
+
+                                                    date3Cell.Range.Text = newDateString;
+
+                                                    // Устанавливаем шрифт GOST 2.304 A, размер 11
+                                                    date3Cell.Range.Font.Name = "GOST 2.304 A";
+                                                    date3Cell.Range.Font.Size = 11;
+
+                                                    if (logTextBox != null)
+                                                    {
+                                                        logTextBox.AppendText($"    Вставлена дата '{newDateString}' в ячейку [{approveRowIndex},{date3ColIndex}]\r\n");
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            if (logTextBox != null)
+                                            {
+                                                logTextBox.AppendText($"    Ошибка обработки строки 'Утвердил' [{approveRowIndex}]: {ex.Message}\r\n");
+                                            }
+                                        }
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    if (logTextBox != null)
+                                    {
+                                        logTextBox.AppendText($"  Ошибка обработки строки {rowIndex}: {ex.Message}\r\n");
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Сохраняем документ с новым именем
+                    object saveAsFile = outputDocxPath;
+                    doc.SaveAs2(ref saveAsFile, ref missing, ref missing, ref missing,
+                               ref missing, ref missing, ref missing, ref missing,
+                               ref missing, ref missing, ref missing, ref missing,
+                               ref missing, ref missing, ref missing, ref missing);
+
+                    if (logTextBox != null)
+                    {
+                        logTextBox.AppendText($"  Word документ сохранен как: {Path.GetFileName(outputDocxPath)}\r\n");
+                    }
+                }
+                finally
+                {
+
+                    // Закрываем документ и приложение Word
+                    if (doc != null)
+                    {
+                        object saveChanges = Word.WdSaveOptions.wdDoNotSaveChanges;
+                        object originalFormat = Word.WdOriginalFormat.wdOriginalDocumentFormat;
+                        object routeDocument = false;
+                        doc.Close(ref saveChanges, ref originalFormat, ref routeDocument);
+                    }
+
+                    wordApp.Quit(ref missing, ref missing, ref missing);
+
+                    ///////////////////////////////////////////
+                    // В конце работы с Word объектами
+                    if (doc != null)
+                    {
+                        Marshal.ReleaseComObject(doc);
+                        doc = null;
+                    }
+                    if (wordApp != null)
+                    {
+                        Marshal.ReleaseComObject(wordApp);
+                        wordApp = null;
+                    }
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                    ///////////////////////////////////////////
+
+                }
+            }
+            catch (Exception ex)
+            {
+                if (logTextBox != null)
+                {
+                    logTextBox.AppendText($"  Ошибка обработки Word документа: {ex.Message}\r\n");
+                }
+                MessageBox.Show($"Ошибка обработки Word документа: {ex.Message}", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Определяет имя на основе распознанного текста
+        /// </summary>
+        private string GetNameFromRecognizedText(string recognizedText)
+        {
+            // Приводим текст к нижнему регистру для нечувствительного сравнения и убираем пробелы
+            string normalizedText = recognizedText.ToLower().Trim();
+
+            // Проверяем специальное условие для "Самылов"
+            if (normalizedText.Contains("самылов"))
+            {
+                return "Самылов";
+            }
+            // Логика выбора имени - ищем вхождение ключевых слов
+            else if (normalizedText.Contains("максимов"))
+            {
+                return "Максимов";
+            }
+            else if (normalizedText.Contains("старцев"))
+            {
+                return "Старцев";
+            }
+            else if (normalizedText.Contains("русских"))
+            {
+                return "Русских";
+            }
+            else if (normalizedText.Contains("седюк"))
+            {
+                return "Седюк";
+            }
+            else if (normalizedText.Contains("тихомиров"))
+            {
+                return "Тихомиров";
+            }
+            else
+            {
+                return "Не распознано";
+            }
         }
     }
 
