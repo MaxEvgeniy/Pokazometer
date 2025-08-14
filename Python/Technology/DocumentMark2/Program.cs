@@ -88,12 +88,12 @@ namespace PDFSquareDrawer
         // Значения дат по умолчанию
         private const string DEFAULT_TRANSFER_DATE = "01.07.2019";
 
-        //// Список возможных файлов изображений
-        //private string[] possibleImageFiles = {
-        //    "Подп001.tif", "Подп002.tif", "Подп003.tif",
-        //    "Подп004.tif", "Подп005.tif", "Подп006.tif", "Подп007.tif",
-        //    "Подп_Не_Распознано.tif"
-        //};
+        // Список возможных файлов изображений
+        private string[] possibleImageFiles = {
+            "Подп001.tif", "Подп002.tif", "Подп003.tif",
+            "Подп004.tif", "Подп005.tif", "Подп006.tif", "Подп007.tif",
+            "Подп_Не_Распознано.tif"
+        };
 
         public Form1()
         {
@@ -676,16 +676,16 @@ namespace PDFSquareDrawer
                         // Добавляем изображения
                         string folderPath = Path.GetDirectoryName(filePath);
 
-                        // Выбираем изображение подписи на основе распознанного текста
-                        //string imagePath1 = GetSignatureImagePath(folderPath, recognizedText);
-                        //if (logTextBox != null)
-                        //{
-                        //    logTextBox.AppendText($"  Выбрано изображение: {Path.GetFileName(imagePath1)}\r\n");
-                        //}
+                        //Выбираем изображение подписи на основе распознанного текста
+                            string imagePath1 = GetSignatureImagePath(folderPath, recognizedText);
+                        if (logTextBox != null)
+                        {
+                            logTextBox.AppendText($"  Выбрано изображение: {Path.GetFileName(imagePath1)}\r\n");
+                        }
 
-                        //AddImageToPdf(canvas, pageSize, imagePath1, currentProfile.IMAGE1_OFFSET_X - correctionX, currentProfile.IMAGE1_OFFSET_Y, currentProfile.IMAGE_WIDTH, currentProfile.IMAGE_HEIGHT);
-                        //AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп002.tif"), currentProfile.IMAGE2_OFFSET_X - correctionX, currentProfile.IMAGE2_OFFSET_Y, currentProfile.IMAGE_WIDTH, currentProfile.IMAGE_HEIGHT);
-                        //AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп001.tif"), currentProfile.IMAGE3_OFFSET_X - correctionX, currentProfile.IMAGE3_OFFSET_Y, currentProfile.IMAGE_WIDTH, currentProfile.IMAGE_HEIGHT);
+                        AddImageToPdf(canvas, pageSize, imagePath1, currentProfile.IMAGE1_OFFSET_X - correctionX, currentProfile.IMAGE1_OFFSET_Y, currentProfile.IMAGE_WIDTH, currentProfile.IMAGE_HEIGHT);
+                        AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп002.tif"), currentProfile.IMAGE2_OFFSET_X - correctionX, currentProfile.IMAGE2_OFFSET_Y, currentProfile.IMAGE_WIDTH, currentProfile.IMAGE_HEIGHT);
+                        AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп001.tif"), currentProfile.IMAGE3_OFFSET_X - correctionX, currentProfile.IMAGE3_OFFSET_Y, currentProfile.IMAGE_WIDTH, currentProfile.IMAGE_HEIGHT);
 
                         // Рисование рамки закомментировано
                         // DrawRecognitionZone(canvas, pageSize, correctionX);
