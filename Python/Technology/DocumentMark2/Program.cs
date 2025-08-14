@@ -674,15 +674,15 @@ namespace PDFSquareDrawer
                         string folderPath = Path.GetDirectoryName(filePath);
 
                         // Выбираем изображение подписи на основе распознанного текста
-                        string imagePath1 = GetSignatureImagePath(folderPath, recognizedText);
-                        if (logTextBox != null)
-                        {
-                            logTextBox.AppendText($"  Выбрано изображение: {Path.GetFileName(imagePath1)}\r\n");
-                        }
+                        //string imagePath1 = GetSignatureImagePath(folderPath, recognizedText);
+                        //if (logTextBox != null)
+                        //{
+                        //    logTextBox.AppendText($"  Выбрано изображение: {Path.GetFileName(imagePath1)}\r\n");
+                        //}
 
-                        AddImageToPdf(canvas, pageSize, imagePath1, currentProfile.IMAGE1_OFFSET_X - correctionX, currentProfile.IMAGE1_OFFSET_Y, currentProfile.IMAGE_WIDTH, currentProfile.IMAGE_HEIGHT);
-                        AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп002.tif"), currentProfile.IMAGE2_OFFSET_X - correctionX, currentProfile.IMAGE2_OFFSET_Y, currentProfile.IMAGE_WIDTH, currentProfile.IMAGE_HEIGHT);
-                        AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп001.tif"), currentProfile.IMAGE3_OFFSET_X - correctionX, currentProfile.IMAGE3_OFFSET_Y, currentProfile.IMAGE_WIDTH, currentProfile.IMAGE_HEIGHT);
+                        //AddImageToPdf(canvas, pageSize, imagePath1, currentProfile.IMAGE1_OFFSET_X - correctionX, currentProfile.IMAGE1_OFFSET_Y, currentProfile.IMAGE_WIDTH, currentProfile.IMAGE_HEIGHT);
+                        //AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп002.tif"), currentProfile.IMAGE2_OFFSET_X - correctionX, currentProfile.IMAGE2_OFFSET_Y, currentProfile.IMAGE_WIDTH, currentProfile.IMAGE_HEIGHT);
+                        //AddImageToPdf(canvas, pageSize, Path.Combine(folderPath, "Подп001.tif"), currentProfile.IMAGE3_OFFSET_X - correctionX, currentProfile.IMAGE3_OFFSET_Y, currentProfile.IMAGE_WIDTH, currentProfile.IMAGE_HEIGHT);
 
                         // Рисование рамки закомментировано
                         // DrawRecognitionZone(canvas, pageSize, correctionX);
@@ -1186,7 +1186,7 @@ namespace PDFSquareDrawer
             {
                 // Формируем путь к .docx файлу
                 string docxPath = pdfFilePath.Replace(".pdf", ".docx");
-                string outputDocxPath = pdfFilePath.Replace(".pdf", "_Обработано.docx");
+                string outputDocxPath = pdfFilePath.Replace(".pdf", "_(Технология)_Обработано.docx");
 
                 if (!File.Exists(docxPath))
                 {
@@ -1270,7 +1270,7 @@ namespace PDFSquareDrawer
                             }
 
                             recognizedText = ExtractTextFromRecognitionZoneWithSameCoords(reader, 1, pageSize, correctionX);
-                            imagePath1 = GetSignatureImagePath(folderPath, recognizedText);
+                            ///////////////////////////////////////////imagePath1 = GetSignatureImagePath(folderPath, recognizedText);
                         }
                     }
                     catch (Exception ex)
@@ -1441,7 +1441,7 @@ namespace PDFSquareDrawer
 
                                                 // Устанавливаем шрифт GOST 2.304 A, размер 11
                                                 dateCell.Range.Font.Name = "GOST 2.304 A";
-                                                dateCell.Range.Font.Size = 11;
+                                                dateCell.Range.Font.Size = 8;
 
                                                 if (logTextBox != null)
                                                 {
@@ -1501,33 +1501,33 @@ namespace PDFSquareDrawer
 
                                             // В следующей ячейке справа вставляем картинку "Подп002.tif"
                                             int image2ColIndex = targetColumnIndex + 2;
-                                            if (image2ColIndex <= table.Columns.Count)
-                                            {
-                                                Word.Cell image2Cell = table.Cell(nextRowIndex, image2ColIndex);
-                                                if (image2Cell != null)
-                                                {
-                                                    // Очищаем содержимое ячейки
-                                                    image2Cell.Range.Text = "";
+                                            //if (image2ColIndex <= table.Columns.Count)
+                                            //{
+                                            //    Word.Cell image2Cell = table.Cell(nextRowIndex, image2ColIndex);
+                                            //    if (image2Cell != null)
+                                            //    {
+                                            //        // Очищаем содержимое ячейки
+                                            //        image2Cell.Range.Text = "";
 
-                                                    // Вставляем изображение
-                                                    string image2Path = Path.Combine(folderPath, "Подп002.tif");
-                                                    if (File.Exists(image2Path))
-                                                    {
-                                                        object range = image2Cell.Range;
-                                                        Word.InlineShape inlineShape = image2Cell.Range.InlineShapes.AddPicture(
-                                                            image2Path, ref missing, ref missing, ref range);
+                                            //        // Вставляем изображение
+                                            //        string image2Path = Path.Combine(folderPath, "Подп002.tif");
+                                            //        if (File.Exists(image2Path))
+                                            //        {
+                                            //            object range = image2Cell.Range;
+                                            //            Word.InlineShape inlineShape = image2Cell.Range.InlineShapes.AddPicture(
+                                            //                image2Path, ref missing, ref missing, ref range);
 
-                                                        // Масштабируем изображение
-                                                        inlineShape.Width = 80; // пикселей
-                                                        inlineShape.Height = 30; // пикселей
+                                            //            // Масштабируем изображение
+                                            //            inlineShape.Width = 80; // пикселей
+                                            //            inlineShape.Height = 30; // пикселей
 
-                                                        if (logTextBox != null)
-                                                        {
-                                                            logTextBox.AppendText($"    Вставлена картинка 'Подп002.tif' в ячейку [{nextRowIndex},{image2ColIndex}]\r\n");
-                                                        }
-                                                    }
-                                                }
-                                            }
+                                            //            if (logTextBox != null)
+                                            //            {
+                                            //                logTextBox.AppendText($"    Вставлена картинка 'Подп002.tif' в ячейку [{nextRowIndex},{image2ColIndex}]\r\n");
+                                            //            }
+                                            //        }
+                                            //    }
+                                            //}
 
                                             // В следующей ячейке справа вставляем дату (на неделю позже предыдущей)
                                             int date2ColIndex = targetColumnIndex + 3;
@@ -1545,7 +1545,7 @@ namespace PDFSquareDrawer
 
                                                     // Устанавливаем шрифт GOST 2.304 A, размер 11
                                                     date2Cell.Range.Font.Name = "GOST 2.304 A";
-                                                    date2Cell.Range.Font.Size = 11;
+                                                    date2Cell.Range.Font.Size = 8;
 
                                                     if (logTextBox != null)
                                                     {
@@ -1606,33 +1606,33 @@ namespace PDFSquareDrawer
 
                                             // В следующей ячейке справа вставляем картинку "Подп001.tif"
                                             int image3ColIndex = targetColumnIndex + 2;
-                                            if (image3ColIndex <= table.Columns.Count)
-                                            {
-                                                Word.Cell image3Cell = table.Cell(approveRowIndex, image3ColIndex);
-                                                if (image3Cell != null)
-                                                {
-                                                    // Очищаем содержимое ячейки
-                                                    image3Cell.Range.Text = "";
+                                            //if (image3ColIndex <= table.Columns.Count)
+                                            //{
+                                            //    Word.Cell image3Cell = table.Cell(approveRowIndex, image3ColIndex);
+                                            //    if (image3Cell != null)
+                                            //    {
+                                            //        // Очищаем содержимое ячейки
+                                            //        image3Cell.Range.Text = "";
 
-                                                    // Вставляем изображение
-                                                    string image3Path = Path.Combine(folderPath, "Подп001.tif");
-                                                    if (File.Exists(image3Path))
-                                                    {
-                                                        object range = image3Cell.Range;
-                                                        Word.InlineShape inlineShape = image3Cell.Range.InlineShapes.AddPicture(
-                                                            image3Path, ref missing, ref missing, ref range);
+                                            //        // Вставляем изображение
+                                            //        string image3Path = Path.Combine(folderPath, "Подп001.tif");
+                                            //        if (File.Exists(image3Path))
+                                            //        {
+                                            //            object range = image3Cell.Range;
+                                            //            Word.InlineShape inlineShape = image3Cell.Range.InlineShapes.AddPicture(
+                                            //                image3Path, ref missing, ref missing, ref range);
 
-                                                        // Масштабируем изображение
-                                                        inlineShape.Width = 80; // пикселей
-                                                        inlineShape.Height = 30; // пикселей
+                                            //            // Масштабируем изображение
+                                            //            inlineShape.Width = 80; // пикселей
+                                            //            inlineShape.Height = 30; // пикселей
 
-                                                        if (logTextBox != null)
-                                                        {
-                                                            logTextBox.AppendText($"    Вставлена картинка 'Подп001.tif' в ячейку [{approveRowIndex},{image3ColIndex}]\r\n");
-                                                        }
-                                                    }
-                                                }
-                                            }
+                                            //            if (logTextBox != null)
+                                            //            {
+                                            //                logTextBox.AppendText($"    Вставлена картинка 'Подп001.tif' в ячейку [{approveRowIndex},{image3ColIndex}]\r\n");
+                                            //            }
+                                            //        }
+                                            //    }
+                                            //}
 
                                             // В следующей ячейке справа вставляем дату (на неделю позже предыдущей)
                                             int date3ColIndex = targetColumnIndex + 3;
@@ -1650,7 +1650,7 @@ namespace PDFSquareDrawer
 
                                                     // Устанавливаем шрифт GOST 2.304 A, размер 11
                                                     date3Cell.Range.Font.Name = "GOST 2.304 A";
-                                                    date3Cell.Range.Font.Size = 11;
+                                                    date3Cell.Range.Font.Size = 8;
 
                                                     if (logTextBox != null)
                                                     {
