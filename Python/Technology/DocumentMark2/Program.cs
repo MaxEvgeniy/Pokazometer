@@ -1294,12 +1294,12 @@ namespace PDFSquareDrawer
                     developedDateTech = developedDateTechDate.ToString("dd.MM.yyyy");
 
                     // Генерируем дату на неделю позже предыдущей
-                    DateTime prevDate = DateTime.ParseExact(approvedDate, "dd.MM.yyyy", null);
+                    DateTime prevDate = DateTime.ParseExact(developedDateTech, "dd.MM.yyyy", null);
                     DateTime newDate = prevDate.AddDays(7);
                     chiefDateTech = newDate.ToString("dd.MM.yyyy");
 
                     // Генерируем дату на неделю позже предыдущей
-                    prevDate = DateTime.ParseExact(approvedDate, "dd.MM.yyyy", null).AddDays(7);
+                    prevDate = DateTime.ParseExact(chiefDateTech, "dd.MM.yyyy", null).AddDays(7);
                     newDate = prevDate.AddDays(7);
                     approvedDateTech = newDate.ToString("dd.MM.yyyy");
                     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
