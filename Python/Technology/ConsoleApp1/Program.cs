@@ -12,7 +12,7 @@ namespace PDFProcessor
     {
         // Настройки путей
         private static readonly string InputFolder = @"C:\PDF\1\Rename";
-        private static readonly string OutputFolder = @"C:\PDF\1\Rename\Processed";
+        private static readonly string OutputFolder = @"C:\PDF\1\Rename";
         private static readonly string ImagesFolder = @"C:\PDF\1\Rename"; // Папка с изображениями
 
         // Координаты для считывания текста (x, y, width, height)
