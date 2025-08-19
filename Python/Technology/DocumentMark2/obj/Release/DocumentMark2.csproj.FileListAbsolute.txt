@@ -1,0 +1,15 @@
+D:\MyProjects\Python\Technology\DocumentMark2\bin\Release\DocumentMark2.exe.config
+D:\MyProjects\Python\Technology\DocumentMark2\bin\Release\DocumentMark2.exe
+D:\MyProjects\Python\Technology\DocumentMark2\bin\Release\DocumentMark2.pdb
+D:\MyProjects\Python\Technology\DocumentMark2\bin\Release\BouncyCastle.Cryptography.dll
+D:\MyProjects\Python\Technology\DocumentMark2\bin\Release\itextsharp.dll
+D:\MyProjects\Python\Technology\DocumentMark2\bin\Release\BouncyCastle.Cryptography.xml
+D:\MyProjects\Python\Technology\DocumentMark2\bin\Release\itextsharp.xml
+D:\MyProjects\Python\Technology\DocumentMark2\obj\Release\DocumentMark2.csproj.AssemblyReference.cache
+D:\MyProjects\Python\Technology\DocumentMark2\obj\Release\DocumentMark2.csproj.ResolveComReference.cache
+D:\MyProjects\Python\Technology\DocumentMark2\obj\Release\DocumentMark2.Properties.Resources.resources
+D:\MyProjects\Python\Technology\DocumentMark2\obj\Release\DocumentMark2.csproj.GenerateResource.cache
+D:\MyProjects\Python\Technology\DocumentMark2\obj\Release\DocumentMark2.csproj.CoreCompileInputs.cache
+D:\MyProjects\Python\Technology\DocumentMark2\obj\Release\DocumentMark2.csproj.CopyComplete
+D:\MyProjects\Python\Technology\DocumentMark2\obj\Release\DocumentMark2.exe
+D:\MyProjects\Python\Technology\DocumentMark2\obj\Release\DocumentMark2.pdb
