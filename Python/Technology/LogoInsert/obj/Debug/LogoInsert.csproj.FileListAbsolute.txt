@@ -1,0 +1,12 @@
+D:\MyProjects\Python\Technology\LogoInsert\bin\Debug\LogoInsert.exe.config
+D:\MyProjects\Python\Technology\LogoInsert\bin\Debug\LogoInsert.exe
+D:\MyProjects\Python\Technology\LogoInsert\bin\Debug\LogoInsert.pdb
+D:\MyProjects\Python\Technology\LogoInsert\bin\Debug\BouncyCastle.Cryptography.dll
+D:\MyProjects\Python\Technology\LogoInsert\bin\Debug\itextsharp.dll
+D:\MyProjects\Python\Technology\LogoInsert\bin\Debug\BouncyCastle.Cryptography.xml
+D:\MyProjects\Python\Technology\LogoInsert\bin\Debug\itextsharp.xml
+D:\MyProjects\Python\Technology\LogoInsert\obj\Debug\LogoInsert.csproj.AssemblyReference.cache
+D:\MyProjects\Python\Technology\LogoInsert\obj\Debug\LogoInsert.csproj.CoreCompileInputs.cache
+D:\MyProjects\Python\Technology\LogoInsert\obj\Debug\LogoInsert.csproj.CopyComplete
+D:\MyProjects\Python\Technology\LogoInsert\obj\Debug\LogoInsert.exe
+D:\MyProjects\Python\Technology\LogoInsert\obj\Debug\LogoInsert.pdb
